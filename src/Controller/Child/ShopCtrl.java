@@ -3,381 +3,204 @@ package Controller.Child;
 import Controller.Base.AbstractObjCtrl;
 import DataBase.Child.ManagerDb;
 import DataBase.Child.ShopDb;
-import Obj.Data.*;
-import Util.GuiUtil;
+import Obj.Data.Manager;
+import Obj.Data.Shop;
+import UI.Shop.Child.*;
+import UI.Shop.ShopUI;
 import Util.ObjUtil;
-import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 public class ShopCtrl extends AbstractObjCtrl
 {
+    //==========================================Variable==========================================
+    private ShopUI shopUI;
+    
     //========================================Constructor=========================================
-    public ShopCtrl() { super(); }
-    public ShopCtrl(String id) { super(id); }
+    public ShopCtrl()
+    {
+        super();
+        this.shopUI = new ShopUI();
 
-    //============================================================================================
-    //========================================Information=========================================
-    //============================================================================================
-
-    //============================================Main============================================
-    public JPanel displayInfo() 
-    { 
-        // ===Main Panel===
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        
-        // ===Private Info Panel===
-        JPanel privateInfoPanel = this.displayPrivateInfo();
-
-        // ===Active Managers Panel===
-        JPanel activeManagersPanel = this.displayActiveManagers();
-
-        // ===Active Staffs Panel===
-        JPanel activeStaffsPanel = this.displayActiveStaffs();
-
-        // ===Active Customers Panel===
-        JPanel activeCustomersPanel = this.displayActiveCustomers();
-
-        // ===Items Panel===
-        JPanel itemsPanel = this.displayItems();
-
-        // ===Customer Requests Panel===
-        JPanel customerRequestsPanel = this.displayCustomerRequests();
-
-        // ===Display===
-        mainPanel.add(privateInfoPanel);
-        mainPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        mainPanel.add(activeManagersPanel);
-        mainPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        mainPanel.add(activeStaffsPanel);
-        mainPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        mainPanel.add(activeCustomersPanel);
-        mainPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        mainPanel.add(itemsPanel);
-        mainPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        mainPanel.add(customerRequestsPanel);
-        
-        return mainPanel;
+        this.defaultMainUI();
+        this.defaultInfoUI();
+        this.defaultCreateManagerUI();
+        this.defaultChangeCheckInUI();
     }
 
-    //========================================Private Info========================================
-    private JPanel displayPrivateInfo()
+    public ShopCtrl(String id)
     {
+        super(id);
+        this.shopUI = new ShopUI();
+
+        this.login();
+        this.defaultMainUI();
+        this.defaultInfoUI();
+        this.defaultCreateManagerUI();
+        this.defaultChangeCheckInUI();
+    }
+
+    //==========================================Override==========================================
+    @Override
+    protected <T> String insertInfo(T info)
+    {
+        return ShopDb.getInstance().insertShopData((Shop)info);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public final Shop queryInfo()
+    {
+        return ShopDb.getInstance().queryShopData(id);
+    }
+
+    @Override 
+    protected <T> String updateInfo(T info)
+    {
+        return ShopDb.getInstance().updateShopData((Shop)info);
+    }
+
+
+    //============================================================================================
+    //=============================================UI=============================================
+    //============================================================================================
+    
+    //==========================================Main UI===========================================
+    private void defaultMainUI()
+    {
+        ShopMainUI mainUI = this.shopUI.getMainUI();
+        this.setDefaultClose(mainUI);
+
+        // Info Button
+        mainUI.getInfoButton().addActionListener((ActionEvent e) -> 
+        {
+            this.shopUI.getMainUI().setVisible(false);
+            this.shopUI.getInfoUI().setVisible(true);
+        });
+
+        // Create Manager Button
+        mainUI.getCreateManagerButton().addActionListener((ActionEvent e) -> 
+        {
+            this.shopUI.getMainUI().setVisible(false);
+            this.shopUI.getCreateManagerUI().setVisible(true);
+        });
+
+        // Change CheckIn Button
+        mainUI.getChangeCheckInButton().addActionListener((ActionEvent e) -> 
+        {
+            this.shopUI.getMainUI().setVisible(false);
+            this.shopUI.getChangeCheckInUI().setVisible(true);
+        });
+
+        // Quit Button
+        mainUI.getQuitButton().addActionListener((ActionEvent e) -> 
+        {
+            System.exit(0);
+        });
+    }
+
+    //=======================================Information UI=======================================
+    private void defaultInfoUI()
+    {
+        ShopInfoUI infoUI = this.shopUI.getInfoUI();
+        this.setDefaultClose(infoUI);
+
+        // Info Panel
         Shop shop = this.queryInfo();
-
-        // Panel
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        
-        // Title Label
-        JLabel titleLabel = new JLabel("Shop");
-        GuiUtil.getInstance().setAlignmentCenter(titleLabel);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
-
-        // Id Label
-        JLabel idLabel = GuiUtil.getInstance().getNormalLabel("Id: " + shop.getId());
-
-        // Name Label
-        JLabel nameLabel = GuiUtil.getInstance().getNormalLabel("Name: " + shop.getName());
-
-        // UserName Label
-        JLabel userNameLabel = GuiUtil.getInstance().getNormalLabel("User Name: " + shop.getUserName());
-
-        // Password Label
-        JLabel passwordLabel = GuiUtil.getInstance().getNormalLabel("Password: " + shop.getPassword());
-
-        // SystemCode Label
-        JLabel systemCodeLabel = GuiUtil.getInstance().getNormalLabel("System Code: " + shop.getSystemCode());
-
-        // CheckInCode Label
-        JLabel checkInCodeLabel = GuiUtil.getInstance().getNormalLabel("Check In Code: " + shop.getCheckInCode());
-
-        // Display
-        panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(idLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(nameLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(userNameLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(passwordLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(systemCodeLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(checkInCodeLabel);
-
-        return panel;
-    }
-
-    //=======================================ActiveManagers=======================================
-    // Main
-    private JPanel displayActiveManagers()
-    {
-        // Panel
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        // Components
-        JLabel titleLabel = this.getTitleActiveManagersLabel();
-        JPanel activeManagersPanel = this.getActiveManagersPanel();
-
-        // Display
-        panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(activeManagersPanel);
-        
-        return panel;
-    }
-
-    // Title Label
-    private JLabel getTitleActiveManagersLabel()
-    {
-        // Title Label
-        JLabel titleLabel = new JLabel("Active Managers");
-        GuiUtil.getInstance().setAlignmentCenter(titleLabel);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
-        
-        return titleLabel;
-    }
-
-    // ActiveManagers Panel
-    private JPanel getActiveManagersPanel()
-    {
-        JPanel activeManagersPanel = new JPanel();
-        activeManagersPanel.setLayout(new BoxLayout(activeManagersPanel, BoxLayout.Y_AXIS));
-
-        int loop = 0;
-        if (this.queryInfo().getActiveManagers() == null) return activeManagersPanel;
-        for (Manager activeManager : this.queryInfo().getActiveManagers())
+        if (shop == null)
         {
-            JLabel label = new JLabel((loop + 1) + ". " + activeManager.getId());
-            GuiUtil.getInstance().setAlignmentCenter(label);
-            label.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTextSize));
-
-            activeManagersPanel.add(label);
-            activeManagersPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-            loop++;
+            System.out.println("Shop is not found with Id: " + this.id);
+        }
+        else
+        {
+            infoUI.setInfoPanel(shop);
         }
 
-        return activeManagersPanel;
-    }
-
-    //========================================ActiveStaffs========================================
-    // Main
-    private JPanel displayActiveStaffs()
-    {   
-        // Panel
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        // Components
-        JLabel titleLabel = this.getTitleActiveStaffsLabel();
-        JPanel activeStaffsPanel = this.getActiveStaffsPanel();
-
-        // Display
-        panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(activeStaffsPanel);
-        
-        return panel;
-    }
-
-    // Title Label
-    private JLabel getTitleActiveStaffsLabel()
-    {
-        // Title Label
-        JLabel titleLabel = new JLabel("Active Staffs");
-        GuiUtil.getInstance().setAlignmentCenter(titleLabel);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
-        
-        return titleLabel;
-    }
-
-    // ActiveStaffs Panel
-    private JPanel getActiveStaffsPanel()
-    {
-        JPanel activeStaffsPanel = new JPanel();
-        activeStaffsPanel.setLayout(new BoxLayout(activeStaffsPanel, BoxLayout.Y_AXIS));
-
-        int loop = 0;
-        if (this.queryInfo().getActiveStaffs() == null) return activeStaffsPanel;
-        for (Staff activeStaff : this.queryInfo().getActiveStaffs())
+        // Back Button
+        infoUI.getBackButton().addActionListener((ActionEvent e) -> 
         {
-            JLabel label = new JLabel((loop + 1) + ". " + activeStaff.getId());
-            GuiUtil.getInstance().setAlignmentCenter(label);
-            label.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTextSize));
-
-            activeStaffsPanel.add(label);
-            activeStaffsPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-            loop++;
-        }
-
-        return activeStaffsPanel;
+            this.shopUI.getInfoUI().setVisible(false);
+            this.shopUI.getMainUI().setVisible(true);
+        });
     }
 
-    //======================================ActiveCustomers=======================================
-    private JPanel displayActiveCustomers()
+    //======================================CreateManager UI======================================
+    private void defaultCreateManagerUI()
     {
-        // Panel
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        ShopCreateManagerUI createManagerUI = this.shopUI.getCreateManagerUI();
+        this.setDefaultClose(createManagerUI);
 
-        // Components
-        JLabel titleLabel = this.getTitleActiveCustomersLabel();
-        JPanel activeCustomersPanel = this.getActiveCustomersPanel();
-
-        // Display
-        panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(activeCustomersPanel);
-        
-        return panel;
-    }
-
-    // Title Label
-    private JLabel getTitleActiveCustomersLabel()
-    {
-        // Title Label
-        JLabel titleLabel = new JLabel("Active Customers");
-        GuiUtil.getInstance().setAlignmentCenter(titleLabel);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
-        
-        return titleLabel;
-    }
-
-    // ActiveCustomers Panel
-    private JPanel getActiveCustomersPanel()
-    {
-        JPanel activeCustomersPanel = new JPanel();
-        activeCustomersPanel.setLayout(new BoxLayout(activeCustomersPanel, BoxLayout.Y_AXIS));
-
-        int loop = 0;
-        if (this.queryInfo().getActiveCustomers() == null) return activeCustomersPanel;
-        for (Customer activeCustomer : this.queryInfo().getActiveCustomers())
+        // Back Button
+        createManagerUI.getBackButton().addActionListener((ActionEvent e) -> 
         {
-            JLabel label = new JLabel((loop + 1) + ". " + activeCustomer.getId());
-            GuiUtil.getInstance().setAlignmentCenter(label);
-            label.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTextSize));
+            this.shopUI.getCreateManagerUI().setVisible(false);
+            this.shopUI.getMainUI().setVisible(true);
+        });
 
-            activeCustomersPanel.add(label);
-            activeCustomersPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-            loop++;
-        }
-
-        return activeCustomersPanel;
-    }
-
-    //===========================================Items============================================
-    private JPanel displayItems()
-    {
-        // Panel
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        // Components
-        JLabel titleLabel = this.getTitleItemsLabel();
-        JPanel itemsPanel = this.getItemsPanel();
-
-        // Display
-        panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(itemsPanel);
-        
-        return panel;
-    }
-
-    // Title Label
-    private JLabel getTitleItemsLabel()
-    {
-        // Title Label
-        JLabel titleLabel = new JLabel("Items");
-        GuiUtil.getInstance().setAlignmentCenter(titleLabel);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
-        
-        return titleLabel;
-    }
-
-    // Items Panel
-    private JPanel getItemsPanel()
-    {
-        JPanel itemsPanel = new JPanel();
-        itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
-
-        int loop = 0;
-        if (this.queryInfo().getItems() == null) return itemsPanel;
-        for (Item item : this.queryInfo().getItems())
+        // Create Button
+        createManagerUI.getCreateButton().addActionListener((ActionEvent e) -> 
         {
-            JLabel label = new JLabel((loop + 1) + ". " + item.getId());
-            GuiUtil.getInstance().setAlignmentCenter(label);
-            label.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTextSize));
+            String name = createManagerUI.getNameTextField();
+            String userName = createManagerUI.getUserNameTextField();
+            String password = createManagerUI.getPasswordTextField();
 
-            itemsPanel.add(label);
-            itemsPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-            loop++;
-        }
-
-        return itemsPanel;
+            int createManager = this.createManager(name, userName, password);
+            if (createManager == 1)
+            {
+                JOptionPane.showMessageDialog(null, "UserName is already exist or empty");
+            }
+            else if (createManager == 0)
+            {
+                JOptionPane.showMessageDialog(null, "Create Manager Success");
+                createManagerUI.setVisible(false);
+                this.shopUI.getMainUI().setVisible(true);
+            }
+        });
     }
 
-    //======================================CustomerRequests======================================
-    private JPanel displayCustomerRequests()
+    //======================================ChangeCheckIn UI======================================
+    private void defaultChangeCheckInUI()
     {
-        // Panel
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        ShopChangeCheckInUI changeCheckInUI = this.shopUI.getChangeCheckInUI();
+        this.setDefaultClose(changeCheckInUI);
 
-        // Components
-        JLabel titleLabel = this.getTitleCustomerRequestsLabel();
-        JPanel customerRequestsPanel = this.getCustomerRequestsPanel();
-
-        // Display
-        panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(customerRequestsPanel);
-        
-        return panel;
-    }
-
-    // Title Label
-    private JLabel getTitleCustomerRequestsLabel()
-    {
-        // Title Label
-        JLabel titleLabel = new JLabel("Customer Requests");
-        GuiUtil.getInstance().setAlignmentCenter(titleLabel);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
-        
-        return titleLabel;
-    }
-
-    // CustomerRequests Panel
-    private JPanel getCustomerRequestsPanel()
-    {
-        JPanel customerRequestsPanel = new JPanel();
-        customerRequestsPanel.setLayout(new BoxLayout(customerRequestsPanel, BoxLayout.Y_AXIS));
-
-        int loop = 0;
-        if (this.queryInfo().getCustomerRequests() == null) return customerRequestsPanel;
-        for (CustomerRequest customerRequest : this.queryInfo().getCustomerRequests())
+        // Cancel Button
+        changeCheckInUI.getCancelButton().addActionListener((ActionEvent e) -> 
         {
-            JLabel label = new JLabel((loop + 1) + ". " + customerRequest.getId());
-            GuiUtil.getInstance().setAlignmentCenter(label);
-            label.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTextSize));
+            this.shopUI.getChangeCheckInUI().setVisible(false);
+            this.shopUI.getMainUI().setVisible(true);
+        });
 
-            customerRequestsPanel.add(label);
-            customerRequestsPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-            loop++;
-        }
+        // Apply Button
+        changeCheckInUI.getApplyButton().addActionListener((ActionEvent e) ->
+        {
+            System.out.println("//====================================Change CheckIn Code=====================================");
 
-        return customerRequestsPanel;
+            // Logic Handler
+            String checkInCode = changeCheckInUI.getCheckInCode();
+
+            int changeCheckInCode = this.changeCheckInCode(checkInCode);
+            if (changeCheckInCode == 1)
+            {
+                JOptionPane.showMessageDialog(null, "CheckIn Code is already exist");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Change CheckIn Code Success");
+                changeCheckInUI.dispose();
+                this.shopUI.getMainUI().setVisible(true);
+            }
+        });
     }
-
-
 
     //============================================================================================
-    //=======================================Create Manager=======================================
+    //=========================================Controller=========================================
     //============================================================================================
-    public int createManager(String name, String userName, String password)
+    
+    //=======================================CreateManager========================================
+    private int createManager(String name, String userName, String password)
     {
         String managerId = ObjUtil.getInstance().getRandomStr(10);
         Shop shop = this.queryInfo();
@@ -395,13 +218,9 @@ public class ShopCtrl extends AbstractObjCtrl
         return 0;
     }
 
-    
-
-    //============================================================================================
-    //====================================Change Check In Code====================================
-    //============================================================================================
-    public int changeCheckInCode(String checkInCode) 
-    { 
+    //====================================Change CheckIn Code=====================================
+    private int changeCheckInCode(String checkInCode)
+    {
         Shop shop = ShopDb.getInstance().queryShopByCheckInCode(checkInCode);
         if (shop != null) return 1;
 
@@ -412,12 +231,8 @@ public class ShopCtrl extends AbstractObjCtrl
         return 0;
     }
 
-
-
-    //============================================================================================
     //===========================================Other============================================
-    //============================================================================================
-    public boolean logout()
+    private boolean logout()
     {
         Shop shop = this.queryInfo();
         if (shop == null)
@@ -431,7 +246,7 @@ public class ShopCtrl extends AbstractObjCtrl
         return true;
     }
 
-    public boolean login()
+    private boolean login()
     {
         Shop shop = this.queryInfo();
         if (shop == null)
@@ -445,23 +260,26 @@ public class ShopCtrl extends AbstractObjCtrl
         return true;
     }    
     
-    //============================================================================================
-    //==========================================Override==========================================
-    //============================================================================================
-    @Override
-    protected <T> String insertInfo(T info)
+    private void setDefaultClose(JFrame frame)
     {
-        return ShopDb.getInstance().insertShopData((Shop)info);
+        frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                if (!logout())
+                {
+                    System.out.println("Log out failed");
+                } else {
+                }
+                System.exit(0);
+            }
+        });
     }
-    @Override
-    @SuppressWarnings("unchecked")
-    public final Shop queryInfo()
+
+    //============================================Test============================================
+    public static void main(String[] args) 
     {
-        return ShopDb.getInstance().queryShopData(id);
-    }
-    @Override 
-    protected <T> String updateInfo(T info)
-    {
-        return ShopDb.getInstance().updateShopData((Shop)info);
+        new ShopCtrl().shopUI.getMainUI().setVisible(true);
     }
 }

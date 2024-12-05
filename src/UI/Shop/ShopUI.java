@@ -20,8 +20,8 @@ public class ShopUI
     }
 
     //============================================Get=============================================
-    public ShopMainUI getMainUI() { return mainUI; }
-    public ShopInfoUI getInfoUI() { return infoUI; }
-    public ShopCreateManagerUI getCreateManagerUI() { return createManagerUI; }
-    public ShopChangeCheckInUI getChangeCheckInUI() { return changeCheckInUI; }
+    public ShopMainUI getMainUI() { return this.mainUI; }
+    public ShopInfoUI getInfoUI() { return this.infoUI; }
+    public ShopCreateManagerUI getCreateManagerUI() { return this.createManagerUI; }
+    public ShopChangeCheckInUI getChangeCheckInUI() { return this.changeCheckInUI; }
 }

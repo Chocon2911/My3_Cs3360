@@ -22,7 +22,7 @@ public class ShopInfoUI extends JFrame
 {
     //==========================================Variable==========================================
     // local
-    private JPanel infoPanel;
+    private JPanel infoPanel = new JPanel();
 
     // public
     private JButton backButton;
@@ -30,13 +30,14 @@ public class ShopInfoUI extends JFrame
     //========================================Constructor=========================================
     public ShopInfoUI() 
     {
+        super("App2.Shop.Main.Information");
         GuiUtil guiUtil = GuiUtil.getInstance();
 
         // ===Frame===
-        JFrame frame = new JFrame("App2.Shop.Main.Information");
-        frame.setSize(600, 700);
-        frame.setResizable(true);
-        frame.setLayout(new BorderLayout());
+        setSize(600, 700);
+        setResizable(true);
+        setLayout(new BorderLayout());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
 
@@ -81,8 +82,8 @@ public class ShopInfoUI extends JFrame
 
 
         // ===Display===
-        frame.add(backPanel, BorderLayout.WEST);
-        frame.add(scrollPane, BorderLayout.CENTER);
+        add(backPanel, BorderLayout.WEST);
+        add(scrollPane, BorderLayout.CENTER);
     }
 
     //============================================Get=============================================

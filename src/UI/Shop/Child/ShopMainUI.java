@@ -20,12 +20,13 @@ public class ShopMainUI extends JFrame
     //========================================Constructor=========================================
     public ShopMainUI()
     {
+        super("Shop.Main");
         GuiUtil guiUtil = GuiUtil.getInstance();
 
         // Frame
-        JFrame frame = new JFrame("App2.Shop.Main");
-        frame.setSize(guiUtil.frameWidth, guiUtil.frameHeight);
-        frame.setResizable(false);
+        setSize(guiUtil.frameWidth, guiUtil.frameHeight);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Main Panel
         JPanel panel = new JPanel();
@@ -65,12 +66,12 @@ public class ShopMainUI extends JFrame
         panel.add(this.quitButton);
         panel.add(Box.createVerticalGlue());
         
-        frame.add(panel);
+        add(panel);
     }
 
     //============================================Get=============================================
     public JButton getInfoButton() { return this.infoButton; }
     public JButton getCreateManagerButton() { return this.createManagerButton; }
-    public JButton getChangeCheckInCodeButton() { return this.changeCheckInCodeButton; }
+    public JButton getChangeCheckInButton() { return this.changeCheckInCodeButton; }
     public JButton getQuitButton() { return this.quitButton; }
 }

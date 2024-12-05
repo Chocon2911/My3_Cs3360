@@ -20,10 +20,10 @@ public class App2SignUpUI extends JFrame
     public App2SignUpUI()
     {
         // ===Frame===
-        JFrame frame = new JFrame("App2.Main.SignUp");
-        frame.setResizable(false);
-        frame.setSize(GuiUtil.getInstance().frameWidth, GuiUtil.getInstance().frameWidth);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super("App2.Main.SignUp");
+        setResizable(false);
+        setSize(GuiUtil.getInstance().frameWidth, GuiUtil.getInstance().frameWidth);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
 
@@ -188,13 +188,14 @@ public class App2SignUpUI extends JFrame
         panel.add(buttonPanel);
         panel.add(Box.createVerticalGlue());
 
-        frame.add(panel);
+        add(panel);
     }
 
     //============================================Get=============================================
     // TextField
+    public String getNameStr() { return this.nameTextField.getText(); }
     public String getUserName() { return this.userNameTextField.getText(); }
-    public String getPassword() { return new String(this.passwordTextField.getPassword()); }
+    public String getPassword() { return String.valueOf(this.passwordTextField.getPassword()); }
     public String getSystemCode() { return this.systemCodeTextField.getText(); }
     public String getCheckInCode() { return this.checkInCodeTextField.getText(); }
 

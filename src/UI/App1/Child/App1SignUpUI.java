@@ -1,37 +1,30 @@
-package UI.Shop.Child;
+package UI.App1.Child;
 
 import Util.GuiUtil;
 import java.awt.Font;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
-public class ShopCreateManagerUI extends JFrame
+public class App1SignUpUI extends JFrame
 {
     //==========================================Variable==========================================
-    // TextField
-    private JTextField nameTextField;
-    private JTextField userNameTextField;
-    private JPasswordField passwordTextField;
+    // Text Field
+    private JTextField nameField;
+    private JTextField userNameField;
+    private JPasswordField passwordField;
 
     // Button
-    private JButton createButton;
-    private JButton backButton;
+    private JButton registerButton;
+    private JButton cancelButton;
 
     //========================================Constructor=========================================
-    public ShopCreateManagerUI()
+    public App1SignUpUI()
     {
-        super("App2.Shop.Main.CreateManager");
+        super("App1.Main.SignUp");
         GuiUtil guiUtil = GuiUtil.getInstance();
 
         // ===Frame===
-        setSize(guiUtil.frameWidth, guiUtil.frameHeight);
-        setResizable(true);
+        setResizable(false);
+        setSize(guiUtil.frameWidth, guiUtil.frameWidth);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -43,10 +36,10 @@ public class ShopCreateManagerUI extends JFrame
 
 
         // ===Title Label===
-        JLabel titleLabel = new JLabel("Create Manager");
+        JLabel titleLabel = new JLabel("Sign Up");
         titleLabel.setFont(new Font("Arial", Font.BOLD, guiUtil.bigTitleSize));
         guiUtil.setAlignmentCenter(titleLabel);
-
+        
 
 
         // ===Name Panel===
@@ -56,18 +49,17 @@ public class ShopCreateManagerUI extends JFrame
         guiUtil.setFixedSize(namePanel, guiUtil.panelTextFieldWidth, guiUtil.panelTextFieldHeight);
 
         // Name Label
-        JLabel nameLabel = new JLabel("Name: ");
-        guiUtil.setAlignmentCenter(nameLabel);
-        guiUtil.setFixedSize(nameLabel, guiUtil.smallLabelWidth, guiUtil.normalLabelHeight);
+        JLabel nameLabel = new JLabel("Name:");
+        guiUtil.setFixedSize(nameLabel, guiUtil.smallLabelWidth, guiUtil.smallLabelHeight);
 
-        // Name TextField
-        this.nameTextField = new JTextField(guiUtil.textFieldAmount);
+        // Name Field
+        this.nameField = new JTextField(guiUtil.textFieldAmount);
 
         // Display
         namePanel.add(Box.createHorizontalGlue());
         namePanel.add(nameLabel);
         namePanel.add(Box.createHorizontalStrut(guiUtil.horizontalStrut));
-        namePanel.add(this.nameTextField);
+        namePanel.add(this.nameField);
         namePanel.add(Box.createHorizontalGlue());
 
 
@@ -78,19 +70,18 @@ public class ShopCreateManagerUI extends JFrame
         userNamePanel.setLayout(new BoxLayout(userNamePanel, BoxLayout.X_AXIS));
         guiUtil.setFixedSize(userNamePanel, guiUtil.panelTextFieldWidth, guiUtil.panelTextFieldHeight);
 
-        // UserName Label
-        JLabel userNameLabel = new JLabel("UserName: ");
-        guiUtil.setAlignmentCenter(userNameLabel);
-        guiUtil.setFixedSize(userNameLabel, guiUtil.smallLabelWidth, guiUtil.normalLabelHeight);
+        // Label
+        JLabel userNameLabel = new JLabel("User Name:");
+        guiUtil.setFixedSize(userNameLabel, guiUtil.smallLabelWidth, guiUtil.smallLabelHeight);
 
-        // UserName TextField
-        this.userNameTextField = new JTextField(guiUtil.textFieldAmount);
+        // Text Field
+        this.userNameField = new JTextField(guiUtil.textFieldAmount);
 
         // Display
         userNamePanel.add(Box.createHorizontalGlue());
         userNamePanel.add(userNameLabel);
         userNamePanel.add(Box.createHorizontalStrut(guiUtil.horizontalStrut));
-        userNamePanel.add(this.userNameTextField);
+        userNamePanel.add(this.userNameField);
         userNamePanel.add(Box.createHorizontalGlue());
 
 
@@ -101,19 +92,18 @@ public class ShopCreateManagerUI extends JFrame
         passwordPanel.setLayout(new BoxLayout(passwordPanel, BoxLayout.X_AXIS));
         guiUtil.setFixedSize(passwordPanel, guiUtil.panelTextFieldWidth, guiUtil.panelTextFieldHeight);
 
-        // Password Label
-        JLabel passwordLabel = new JLabel("Password: ");
-        guiUtil.setAlignmentCenter(passwordLabel);
-        guiUtil.setFixedSize(passwordLabel, guiUtil.smallLabelWidth, guiUtil.normalLabelHeight);
+        // Label
+        JLabel passwordLabel = new JLabel("Password:");
+        guiUtil.setFixedSize(passwordLabel, guiUtil.smallLabelWidth, guiUtil.smallLabelHeight);
 
-        // Password TextField
-        this.passwordTextField = new JPasswordField(guiUtil.textFieldAmount);
+        // password Field
+        this.passwordField = new JPasswordField(guiUtil.textFieldAmount);
 
         // Display
         passwordPanel.add(Box.createHorizontalGlue());
         passwordPanel.add(passwordLabel);
         passwordPanel.add(Box.createHorizontalStrut(guiUtil.horizontalStrut));
-        passwordPanel.add(this.passwordTextField);
+        passwordPanel.add(this.passwordField);
         passwordPanel.add(Box.createHorizontalGlue());
 
 
@@ -122,25 +112,25 @@ public class ShopCreateManagerUI extends JFrame
         // Panel
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-        guiUtil.setAlignmentCenter(buttonPanel);
+        guiUtil.setFixedSize(buttonPanel, guiUtil.panelTextFieldWidth, guiUtil.panelTextFieldHeight);
 
-        // Back Button
-        this.backButton = guiUtil.createButton("Cancel", guiUtil.smallButtonWidth, guiUtil.smallButtonHeight);
-        guiUtil.setAlignmentCenter(this.backButton);
+        // Cancel Button
+        this.cancelButton = guiUtil.createButton("Cancel", guiUtil.smallButtonWidth, guiUtil.smallButtonHeight);
+        guiUtil.setAlignmentCenter(this.cancelButton);
 
-        // Create Button
-        this.createButton = guiUtil.createButton("Create", guiUtil.smallButtonWidth, guiUtil.smallButtonHeight);
-        guiUtil.setAlignmentCenter(this.createButton);
+        // Register Button
+        this.registerButton = guiUtil.createButton("Register", guiUtil.smallButtonWidth, guiUtil.smallButtonHeight);
+        guiUtil.setAlignmentCenter(this.registerButton);
 
         // Display
         buttonPanel.add(Box.createHorizontalGlue());
-        buttonPanel.add(this.backButton);
+        buttonPanel.add(this.cancelButton);
         buttonPanel.add(Box.createHorizontalStrut(guiUtil.horizontalStrut));
-        buttonPanel.add(this.createButton);
+        buttonPanel.add(this.registerButton);
         buttonPanel.add(Box.createHorizontalGlue());
 
-        
-        
+
+
         // ===Display===
         panel.add(Box.createVerticalGlue());
         panel.add(titleLabel);
@@ -159,11 +149,11 @@ public class ShopCreateManagerUI extends JFrame
 
     //============================================Get=============================================
     // TextField
-    public String getNameTextField() { return this.nameTextField.getText(); }
-    public String getUserNameTextField() { return this.userNameTextField.getText(); }
-    public String getPasswordTextField() { return new String(this.passwordTextField.getPassword()); }
+    public final String getNameTextField() { return this.nameField.getText(); }
+    public final String getUserNameTextField() { return this.userNameField.getText(); }
+    public final String getPasswordTextField() { return new String(this.passwordField.getPassword()); }
 
     // Button
-    public JButton getBackButton() { return this.backButton; }
-    public JButton getCreateButton() { return this.createButton; }
+    public final JButton getRegisterButton() { return this.registerButton; }
+    public final JButton getCancelButton() { return this.cancelButton; }
 }

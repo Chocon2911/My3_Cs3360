@@ -14,10 +14,10 @@ public class App2MainUI extends JFrame
     public App2MainUI()
     {
         // Frame
-        JFrame frame = new JFrame("App2.Main");
-        frame.setSize(GuiUtil.getInstance().frameWidth, GuiUtil.getInstance().frameHeight);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super("App2.Main");
+        setSize(GuiUtil.getInstance().frameWidth, GuiUtil.getInstance().frameHeight);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Main Panel
         JPanel panel = GuiUtil.getInstance().getMainPanel();
@@ -48,7 +48,7 @@ public class App2MainUI extends JFrame
         panel.add(quitButton);
         panel.add(Box.createVerticalGlue());
 
-        frame.add(panel);
+        add(panel);
     }
 
     //============================================Get=============================================

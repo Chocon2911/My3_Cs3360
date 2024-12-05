@@ -23,12 +23,13 @@ public class ShopChangeCheckInUI extends JFrame
     //========================================Constructor=========================================
     public ShopChangeCheckInUI()
     {
+        super("App2.Shop.Main.ChangeCheckInCode");
         GuiUtil guiUtil = GuiUtil.getInstance();
 
         // ===Frame===
-        JFrame frame = new JFrame("App2.Shop.Main.ChangeCheckInCode");
-        frame.setSize(guiUtil.frameWidth, guiUtil.frameHeight);
-        frame.setResizable(false);
+        setSize(guiUtil.frameWidth, guiUtil.frameHeight);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // ===Panel===
         JPanel panel = new JPanel();
@@ -96,7 +97,7 @@ public class ShopChangeCheckInUI extends JFrame
         panel.add(buttonPanel);
         panel.add(Box.createVerticalGlue());
 
-        frame.add(panel);
+        add(panel);
     }
 
     //============================================Get=============================================

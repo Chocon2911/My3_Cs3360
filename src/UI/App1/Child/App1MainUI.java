@@ -1,43 +1,44 @@
-package UI.Manager.Child;
+package UI.App1.Child;
 
 import Util.GuiUtil;
 import java.awt.Font;
 import javax.swing.*;
 
-public class ManagerPreMainUI extends JFrame
+public class App1MainUI extends JFrame
 {
     //==========================================Variable==========================================
-    private JButton infoButton;
-    private JButton joinShopButton;
+    private JButton loginButton;
+    private JButton signUpButton;
     private JButton quitButton;
 
     //========================================Constructor=========================================
-    public ManagerPreMainUI()
+    public App1MainUI()
     {
-        super("Manager.PreMain");
+        super("App1");
         GuiUtil guiUtil = GuiUtil.getInstance();
 
         // Frame
         setSize(guiUtil.frameWidth, guiUtil.frameHeight);
-        setResizable(true);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Panel
+        // Main Panel
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         // Title Label
-        JLabel titleLabel = new JLabel("Manager");
+        JLabel titleLabel = new JLabel("App1");
         guiUtil.setAlignmentCenter(titleLabel);
         titleLabel.setFont(new Font("Arial", Font.BOLD, guiUtil.bigTitleSize));
+        
+        // Login Button
+        this.loginButton = guiUtil.createButton("Login", guiUtil.bigButtonWidth, guiUtil.bigButtonHeight);
+        guiUtil.setAlignmentCenter(this.loginButton);
 
-        // Infomation Button
-        this.infoButton = guiUtil.createButton("Information", guiUtil.bigButtonWidth, guiUtil.bigButtonHeight);
-        guiUtil.setAlignmentCenter(this.infoButton);
-
-        // JoinShop Button
-        this.joinShopButton = guiUtil.createButton("Join Shop", guiUtil.bigButtonWidth, guiUtil.bigButtonHeight);
-        guiUtil.setAlignmentCenter(this.joinShopButton);
-
+        // SignUp Button
+        this.signUpButton = guiUtil.createButton("Sign Up", guiUtil.bigButtonWidth, guiUtil.bigButtonHeight);
+        guiUtil.setAlignmentCenter(this.signUpButton);
+        
         // Quit Button
         this.quitButton = guiUtil.createButton("Quit", guiUtil.bigButtonWidth, guiUtil.bigButtonHeight);
         guiUtil.setAlignmentCenter(this.quitButton);
@@ -46,9 +47,9 @@ public class ManagerPreMainUI extends JFrame
         panel.add(Box.createVerticalGlue());
         panel.add(titleLabel);
         panel.add(Box.createVerticalStrut(guiUtil.verticalStrut));
-        panel.add(this.infoButton);
+        panel.add(this.loginButton);
         panel.add(Box.createVerticalStrut(guiUtil.verticalStrut));
-        panel.add(this.joinShopButton);
+        panel.add(this.signUpButton);
         panel.add(Box.createVerticalStrut(guiUtil.verticalStrut));
         panel.add(this.quitButton);
         panel.add(Box.createVerticalGlue());
@@ -57,7 +58,7 @@ public class ManagerPreMainUI extends JFrame
     }
 
     //============================================Get=============================================
-    public JButton getInfoButton() { return this.infoButton; }
-    public JButton getJoinShopButton() { return this.joinShopButton; }
+    public JButton getLoginButton() { return this.loginButton; }
+    public JButton getSignUpButton() { return this.signUpButton; }
     public JButton getQuitButton() { return this.quitButton; }
 }

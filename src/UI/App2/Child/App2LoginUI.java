@@ -18,9 +18,9 @@ public class App2LoginUI extends JFrame
     public App2LoginUI()
     {
         // ===Frame===
-        JFrame frame = new JFrame("App2.Main.Login");
-        frame.setSize(GuiUtil.getInstance().frameWidth, GuiUtil.getInstance().frameHeight);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super("App2.Main.Login");
+        setSize(GuiUtil.getInstance().frameWidth, GuiUtil.getInstance().frameHeight);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
 
@@ -108,8 +108,7 @@ public class App2LoginUI extends JFrame
         panel.add(buttonPanel);
         panel.add(Box.createVerticalGlue());
 
-        frame.add(panel);
-        frame.setVisible(true);
+        add(panel);
     }
 
     //============================================Get=============================================
