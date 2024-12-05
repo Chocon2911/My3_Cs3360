@@ -140,9 +140,9 @@ public class ManagerCreateStaffUI extends JFrame
 
     //============================================Get=============================================
     // TextField
-    public String getNameTextField() { return this.nameTextField.getText(); }
-    public String getUserNameTextField() { return this.userNameTextField.getText(); }
-    public String getPasswordTextField() { return new String(this.passwordTextField.getPassword()); }
+    public String getNameStr() { return this.nameTextField.getText(); }
+    public String getUserName() { return this.userNameTextField.getText(); }
+    public String getPassword() { return new String(this.passwordTextField.getPassword()); }
 
     // Button
     public JButton getCreateButton() { return this.createButton; }

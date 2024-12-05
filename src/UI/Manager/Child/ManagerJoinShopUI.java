@@ -99,7 +99,7 @@ public class ManagerJoinShopUI extends JFrame
 
     //============================================Get=============================================
     // TextField
-    public JTextField getCheckInCodeTextField() { return this.checkInCodeTextField; }
+    public String getCheckInCode() { return this.checkInCodeTextField.getText(); }
 
     // Button
     public JButton getJoinButton() { return this.joinButton; }

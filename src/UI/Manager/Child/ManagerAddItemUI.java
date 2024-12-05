@@ -179,10 +179,10 @@ public class ManagerAddItemUI extends JFrame
 
     //============================================Get=============================================
     // TextField
-    public String getNameTextField() { return this.nameTextField.getText(); }
-    public String getPriceTextField() { return this.priceTextField.getText(); }
-    public String getItemType() { return this.itemTypeStrJList.getSelectedValue(); }
-    public String getAmountTextField() { return this.amountTextField.getText(); }
+    public String getNameStr() { return this.nameTextField.getText(); }
+    public String getPriceStr() { return this.priceTextField.getText(); }
+    public String getItemTypeStr() { return this.itemTypeStrJList.getSelectedValue(); }
+    public String getAmountStr() { return this.amountTextField.getText(); }
 
     // Button
     public JButton getAddButton() { return this.addButton; }

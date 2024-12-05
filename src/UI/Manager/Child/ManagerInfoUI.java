@@ -11,7 +11,7 @@ public class ManagerInfoUI extends JFrame
 {
     //==========================================Variable==========================================
     // Local
-    private JPanel infoPanel;
+    private JPanel infoPanel = new JPanel();
 
     // Public
     private JButton backButton;
