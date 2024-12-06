@@ -17,6 +17,7 @@ public class App2Ctrl
     {
         this.app2UI = new App2UI();
 
+        this.app2UI.getMainUI().setVisible(true);
         this.defaultMainUI();
         this.defaultLoginUI();
         this.defaultSignUpUI();

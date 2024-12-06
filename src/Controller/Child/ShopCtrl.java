@@ -108,7 +108,13 @@ public class ShopCtrl extends AbstractObjCtrl
         // Quit Button
         mainUI.getQuitButton().addActionListener((ActionEvent e) -> 
         {
-            System.exit(0);
+            if (!this.logout())
+            {
+                System.out.println("Logout failed.");
+            }
+
+            this.shopUI = null;
+            new App2Ctrl();
         });
     }
 
@@ -261,6 +267,7 @@ public class ShopCtrl extends AbstractObjCtrl
 
         shop.setIsLogin(true);
         ShopDb.getInstance().updateShopData(shop);
+        this.shopUI.getMainUI().setVisible(true);
         return true;
     }    
     

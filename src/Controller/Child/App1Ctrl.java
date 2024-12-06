@@ -10,6 +10,10 @@ import UI.App1.App1UI;
 import UI.App1.Child.*;
 import Util.ObjUtil;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class App1Ctrl
@@ -21,6 +25,7 @@ public class App1Ctrl
     {
         this.app1UI = new App1UI();
 
+        this.app1UI.getMainUI().setVisible(true);
         this.defaultMainUI();
         this.defaultLoginUI();
         this.defaultSignUpUI();
@@ -34,6 +39,7 @@ public class App1Ctrl
     private void defaultMainUI()
     {
         App1MainUI mainUI = app1UI.getMainUI();
+        this.setDefaultClose(mainUI);
 
         // Login Button
         mainUI.getLoginButton().addActionListener((ActionEvent e) -> 
@@ -60,6 +66,7 @@ public class App1Ctrl
     private void defaultLoginUI()
     {
         App1LoginUI loginUI = app1UI.getLoginUI();
+        this.setDefaultClose(loginUI);
 
         // Login Button
         loginUI.getLoginButton().addActionListener((ActionEvent e) -> 
@@ -82,6 +89,10 @@ public class App1Ctrl
             else if (login == 2 || login == 4 || login == 6) // Wrong Password
             {
                 JOptionPane.showMessageDialog(null, "Wrong Password!");
+            }
+            else if (login == 7 || login == 8 || login == 9) // Already Login
+            {
+                JOptionPane.showMessageDialog(null, "User Already Login!");
             }
             else // True UserName and Password
             {
@@ -124,6 +135,7 @@ public class App1Ctrl
     private void defaultSignUpUI()
     {
         App1SignUpUI signUpUI = this.app1UI.getSignUpUI();
+        this.setDefaultClose(signUpUI);
 
         // Register Button
         signUpUI.getRegisterButton().addActionListener((ActionEvent e) -> 
@@ -175,29 +187,34 @@ public class App1Ctrl
         Customer customer = CustomerDb.getInstance().queryCustomerByUserName(userName);
         if (customer != null)
         {
-            if (customer.getPassword().equals(password)) // Login Customer
-            {
-                customer.setIsLogin(true);
-                return 1;
-            }
-            else return 2;
+            if (!customer.getPassword().equals(password)) return 2; // Password Wrong
+            if (customer.getIsLogin()) return 7; // Customer Already Login
+
+            customer.setIsLogin(true);
+            return 1; // Login Customer   
         }
 
         Staff staff = StaffDb.getInstance().queryStaffByUserName(userName);
         if (staff != null)
         {
-            if (staff.getPassword().equals(password)) return 3; // Login Staff
-            else return 4;
+            if (!staff.getPassword().equals(password)) return 4; // Password Wrong
+            if (staff.getIsLogin()) return 8; // Staff Already Login
+
+            staff.setIsLogin(true);
+            return 3; // Login Staff
         }
 
         Manager manager = ManagerDb.getInstance().queryManagerByUserName(userName);
         if (manager != null)
         {
-            if (manager.getPassword().equals(password)) return 5; // Login Manager
-            else return 6; 
+            if (!manager.getPassword().equals(password)) return 6; // Password Wrong
+            if (manager.getIsLogin()) return 9; // Manager Already Login
+
+            manager.setIsLogin(true); 
+            return 5; // Login Manager
         }
 
-        return 0;
+        return 0; // Wrong UserName
     }
 
     private String getCustomerId(String userName, String password)
@@ -251,5 +268,23 @@ public class App1Ctrl
         else if (e.contains("Customers.UserName")) return 1;
 
         return 0;
+    }
+
+    private void setDefaultClose(JFrame frame)
+    {
+        frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                System.exit(0);
+            }
+        });
+    }
+
+    //============================================Test============================================
+    public static void main(String[] args) 
+    {
+        new App1Ctrl();
     }
 }

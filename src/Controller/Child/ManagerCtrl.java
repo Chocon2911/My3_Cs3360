@@ -12,6 +12,7 @@ import Util.ObjUtil;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -38,7 +39,8 @@ public class ManagerCtrl extends AbstractObjCtrl
     {
         super(id);
         this.managerUI = new ManagerUI();
-
+        
+        this.login();
         this.defaultPreMainUI();
         this.defaultMainUI();
         this.defaultJoinShopUI();
@@ -97,6 +99,7 @@ public class ManagerCtrl extends AbstractObjCtrl
                 this.managerUI.getInfoUI().setInfoPanel(manager);
             }
 
+            this.managerUI.getInfoUI().setInfoPanel(manager);
             preMainUI.setVisible(false);
             this.managerUI.getInfoUI().setVisible(true);
         });
@@ -111,6 +114,11 @@ public class ManagerCtrl extends AbstractObjCtrl
         // Quit Button
         preMainUI.getQuitButton().addActionListener((ActionEvent e) ->
         {
+            if (!logout())
+            {
+                System.out.println("Log out failed");
+            }
+
             System.exit(0);
         });
     }
@@ -136,6 +144,7 @@ public class ManagerCtrl extends AbstractObjCtrl
                 this.managerUI.getInfoUI().setInfoPanel(manager);
             }
 
+            this.managerUI.getInfoUI().setInfoPanel(manager);
             this.managerUI.getMainUI().setVisible(false);
             this.managerUI.getInfoUI().setVisible(true);
         });
@@ -164,7 +173,12 @@ public class ManagerCtrl extends AbstractObjCtrl
         // Quit Button
         mainUI.getQuitButton().addActionListener((ActionEvent e) ->
         {
-            System.exit(0);
+            if (!logout())
+            {
+                System.out.println("Log out failed");
+            }
+
+            new App1Ctrl();
         });
     }
 
@@ -178,7 +192,24 @@ public class ManagerCtrl extends AbstractObjCtrl
         infoUI.getBackButton().addActionListener((ActionEvent e) ->
         {
             infoUI.setVisible(false);
-            this.managerUI.getMainUI().setVisible(true);
+            Manager manager = this.queryInfo();
+            if (manager == null) 
+            {
+                System.out.println("Manager is not found with Id: " + this.id);
+                this.managerUI.getMainUI().setVisible(true);
+            }
+
+            else if (manager.getShop() == null)
+            {
+                System.out.println("Manager doesn't join shop");
+                this.managerUI.getPreMainUI().setVisible(true);
+            }
+
+            else if (manager.getShop() != null)
+            {
+                System.out.println("Manager joins shop: " + manager.getShop().getCheckInCode());
+                this.managerUI.getMainUI().setVisible(true);
+            }
         });
     }
 
@@ -469,7 +500,9 @@ public class ManagerCtrl extends AbstractObjCtrl
         }
 
         manager.setIsLogin(true);
+        manager.setShop(null);
         this.updateInfo(manager);
+        this.managerUI.getPreMainUI().setVisible(true);
         return true;
     }
 
@@ -482,6 +515,7 @@ public class ManagerCtrl extends AbstractObjCtrl
             return false;
         }
 
+        System.out.println("logout(): Log out successfully");
         manager.setIsLogin(false);
         manager.setShop(null);
         this.updateInfo(manager);
@@ -498,8 +532,9 @@ public class ManagerCtrl extends AbstractObjCtrl
                 if (!logout())
                 {
                     System.out.println("Log out failed");
-                } else {
                 }
+
+                System.out.println("Log out successfully");
                 System.exit(0);
             }
         });

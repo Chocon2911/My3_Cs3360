@@ -82,19 +82,18 @@ public class ManagerInfoUI extends JFrame
     public void setInfoPanel(Manager manager)
     {
         this.infoPanel.removeAll();
+        this.infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         if (manager == null) return;
-
-        // MainPanel
-        this.infoPanel = GuiUtil.getInstance().getMainPanel();
+        System.out.print("Set Info Panel");
 
         // Name Label
-        JLabel nameLabel = GuiUtil.getInstance().getNormalLabel(manager.getName());
+        JLabel nameLabel = GuiUtil.getInstance().getNormalLabel("Name: " + manager.getName());
 
         // UserName Label
-        JLabel userNameLabel = GuiUtil.getInstance().getNormalLabel(manager.getUserName());
+        JLabel userNameLabel = GuiUtil.getInstance().getNormalLabel("User Name: " + manager.getUserName());
 
         // Password Label
-        JLabel passwordLabel = GuiUtil.getInstance().getNormalLabel(manager.getPassword());
+        JLabel passwordLabel = GuiUtil.getInstance().getNormalLabel("Password: " + manager.getPassword());
 
         // ShopName Label
         JLabel shopNameLabel = GuiUtil.getInstance().getNormalLabel("Doesn't join Shop yet!");
