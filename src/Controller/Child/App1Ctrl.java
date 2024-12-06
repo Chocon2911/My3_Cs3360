@@ -2,11 +2,13 @@ package Controller.Child;
 
 import DataBase.Child.CustomerDb;
 import DataBase.Child.CustomerRequestDb;
+import DataBase.Child.IdDb;
 import DataBase.Child.ItemDb;
 import DataBase.Child.ManagerDb;
 import DataBase.Child.RequestedItemDb;
 import DataBase.Child.ShopDb;
 import DataBase.Child.StaffDb;
+import DataBase.Child.UserNameDb;
 import Obj.Data.Customer;
 import Obj.Data.Manager;
 import Obj.Data.Staff;
@@ -295,7 +297,8 @@ public class App1Ctrl
         ItemDb.getInstance().createItemTable();
         RequestedItemDb.getInstance().createRequestedItemTable();
         CustomerRequestDb.getInstance().createCustomerRequestTable();
-
+        IdDb.getInstance().createIdTable();
+        UserNameDb.getInstance().createUserNameTable();
 
         new App1Ctrl();
     }

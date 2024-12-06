@@ -42,13 +42,13 @@ public class CustomerRequestDb extends AbstractDb
 
         List<DbData> data = this.getDataFromCustomerRequest(customerRequest);
 
+        // Insert Global
+        String idE = new IdDb().insertId(customerRequest.getId());
+        if (idE != null) return idE;
+
+        // Insert CustomerRequest
         System.out.println("===insert CustomerRequest===");
         String result = this.insertData(url, sql, data);
-        if (result == null) 
-        {
-            String idE = new IdDb().insertId(customerRequest.getId());
-            if (idE != null) return idE; 
-        }
 
         return result;
     }

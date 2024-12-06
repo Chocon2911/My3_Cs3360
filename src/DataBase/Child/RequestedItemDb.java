@@ -42,13 +42,13 @@ public class RequestedItemDb extends AbstractDb
 
         List<DbData> data = this.getDataFromRequestedItem(requestedItem);
 
+        // Insert Global
+        String idE = new IdDb().insertId(requestedItem.getId());
+        if (idE != null) return idE;
+
+        // Insert RequestedItem
         System.out.println("===insert RequestedItem===");
         String result = this.insertData(url, sql, data);
-        if (result == null) 
-        {
-            String idE = new IdDb().insertId(requestedItem.getId());
-            if (idE != null) return idE;
-        }
 
         return result;
     }
