@@ -77,6 +77,7 @@ public class App2Ctrl
                 JOptionPane.showMessageDialog(null, "Login Success");
                 loginUI.setVisible(false);
                 new ShopCtrl(this.getUserId(userName, password));
+                this.app2UI = null; // Delete
             }
             else if (login == 1) 
             {
@@ -92,6 +93,7 @@ public class App2Ctrl
         loginUI.getCancelButton().addActionListener((ActionEvent e) -> 
         { 
             loginUI.setVisible(false);
+            loginUI.wipeOutField();
             app2UI.getMainUI().setVisible(true);
         });
     }
@@ -132,6 +134,7 @@ public class App2Ctrl
             {
                 JOptionPane.showMessageDialog(null, "Register Success");
                 signUpUI.setVisible(false);
+                signUpUI.wipeOutField();
                 app2UI.getMainUI().setVisible(true);
             }
 
@@ -141,6 +144,7 @@ public class App2Ctrl
         signUpUI.getCancelButton().addActionListener((ActionEvent e) -> 
         { 
             signUpUI.setVisible(false);
+            signUpUI.wipeOutField();
             app2UI.getMainUI().setVisible(true);
         });
     }

@@ -86,6 +86,17 @@ public class ManagerCtrl extends AbstractObjCtrl
         // Info Button
         preMainUI.getInfoButton().addActionListener((ActionEvent e) ->
         {
+            // Info Panel
+            Manager manager = this.queryInfo();
+            if (manager == null)
+            {
+                System.out.println("Manager is not found with Id: " + this.id);
+            }
+            else
+            {
+                this.managerUI.getInfoUI().setInfoPanel(manager);
+            }
+
             preMainUI.setVisible(false);
             this.managerUI.getInfoUI().setVisible(true);
         });
@@ -114,6 +125,17 @@ public class ManagerCtrl extends AbstractObjCtrl
         // Info Button
         mainUI.getInfoButton().addActionListener((ActionEvent e) ->
         {
+            // Info Panel
+            Manager manager = this.queryInfo();
+            if (manager == null)
+            {
+                System.out.println("Manager is not found with Id: " + this.id);
+            }
+            else
+            {
+                this.managerUI.getInfoUI().setInfoPanel(manager);
+            }
+
             this.managerUI.getMainUI().setVisible(false);
             this.managerUI.getInfoUI().setVisible(true);
         });
@@ -152,21 +174,10 @@ public class ManagerCtrl extends AbstractObjCtrl
         ManagerInfoUI infoUI = this.managerUI.getInfoUI();
         this.setDefaultClose(infoUI);
 
-        // Info Panel
-        Manager manager = this.queryInfo();
-        if (manager == null)
-        {
-            System.out.println("Manager is not found with Id: " + this.id);
-        }
-        else
-        {
-            infoUI.setInfoPanel(manager);
-        }
-
         // Back Button
         infoUI.getBackButton().addActionListener((ActionEvent e) ->
         {
-            this.managerUI.getInfoUI().setVisible(false);
+            infoUI.setVisible(false);
             this.managerUI.getMainUI().setVisible(true);
         });
     }
@@ -200,6 +211,7 @@ public class ManagerCtrl extends AbstractObjCtrl
             {
                 JOptionPane.showMessageDialog(null, "Join Shop successfully");
                 joinShopUI.setVisible(false);
+                joinShopUI.wipeOutField();
                 this.managerUI.getMainUI().setVisible(true);
             }
         });
@@ -230,6 +242,7 @@ public class ManagerCtrl extends AbstractObjCtrl
             {
                 JOptionPane.showMessageDialog(null, "Create Staff Successfully");
                 createStaffUI.setVisible(false);
+                createStaffUI.wipeOutField();
                 this.managerUI.getMainUI().setVisible(true);
             }
         });
@@ -238,6 +251,7 @@ public class ManagerCtrl extends AbstractObjCtrl
         createStaffUI.getCancelButton().addActionListener((ActionEvent e) ->
         {
             createStaffUI.setVisible(false);
+            createStaffUI.wipeOutField();
             this.managerUI.getMainUI().setVisible(true);
         });
     }
@@ -265,6 +279,7 @@ public class ManagerCtrl extends AbstractObjCtrl
             {
                 JOptionPane.showMessageDialog(null, "Delete Staff Successfully");
                 deleteStaffUI.setVisible(false);
+                deleteStaffUI.wipeOutField();
                 this.managerUI.getMainUI().setVisible(true);
             }
         });
@@ -273,6 +288,7 @@ public class ManagerCtrl extends AbstractObjCtrl
         deleteStaffUI.getCancelButton().addActionListener((ActionEvent e) ->
         {
             deleteStaffUI.setVisible(false);
+            deleteStaffUI.wipeOutField();
             this.managerUI.getMainUI().setVisible(true);
         });
     }
@@ -313,6 +329,7 @@ public class ManagerCtrl extends AbstractObjCtrl
                 {
                     JOptionPane.showMessageDialog(null, "Item added successfully");
                     addItemUI.setVisible(false);
+                    addItemUI.wipeOutField();
                     this.managerUI.getMainUI().setVisible(true);
                 }
             }
@@ -326,6 +343,7 @@ public class ManagerCtrl extends AbstractObjCtrl
         addItemUI.getCancelButton().addActionListener((ActionEvent e) ->
         {
             addItemUI.setVisible(false);
+            addItemUI.wipeOutField();
             this.managerUI.getMainUI().setVisible(true);
         });
     }

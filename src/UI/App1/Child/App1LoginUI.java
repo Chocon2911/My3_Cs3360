@@ -128,4 +128,11 @@ public class App1LoginUI extends JFrame
     // Button
     public JButton getCancelButton() { return this.cancelButton; }
     public JButton getLoginButton() { return this.loginButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.userNameTextField.setText("");
+        this.passwordTextField.setText("");
+    }
 }

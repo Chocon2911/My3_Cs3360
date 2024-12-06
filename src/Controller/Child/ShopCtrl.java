@@ -76,6 +76,17 @@ public class ShopCtrl extends AbstractObjCtrl
         // Info Button
         mainUI.getInfoButton().addActionListener((ActionEvent e) -> 
         {
+            // Info Panel
+            Shop shop = this.queryInfo();
+            if (shop == null)
+            {
+                System.out.println("Shop is not found with Id: " + this.id);
+            }
+            else
+            {
+                this.shopUI.getInfoUI().setInfoPanel(shop);
+            }
+
             this.shopUI.getMainUI().setVisible(false);
             this.shopUI.getInfoUI().setVisible(true);
         });
@@ -107,17 +118,6 @@ public class ShopCtrl extends AbstractObjCtrl
         ShopInfoUI infoUI = this.shopUI.getInfoUI();
         this.setDefaultClose(infoUI);
 
-        // Info Panel
-        Shop shop = this.queryInfo();
-        if (shop == null)
-        {
-            System.out.println("Shop is not found with Id: " + this.id);
-        }
-        else
-        {
-            infoUI.setInfoPanel(shop);
-        }
-
         // Back Button
         infoUI.getBackButton().addActionListener((ActionEvent e) -> 
         {
@@ -135,7 +135,8 @@ public class ShopCtrl extends AbstractObjCtrl
         // Back Button
         createManagerUI.getBackButton().addActionListener((ActionEvent e) -> 
         {
-            this.shopUI.getCreateManagerUI().setVisible(false);
+            createManagerUI.setVisible(false);
+            createManagerUI.wipeOutField();
             this.shopUI.getMainUI().setVisible(true);
         });
 
@@ -155,6 +156,7 @@ public class ShopCtrl extends AbstractObjCtrl
             {
                 JOptionPane.showMessageDialog(null, "Create Manager Success");
                 createManagerUI.setVisible(false);
+                createManagerUI.wipeOutField();
                 this.shopUI.getMainUI().setVisible(true);
             }
         });
@@ -169,7 +171,8 @@ public class ShopCtrl extends AbstractObjCtrl
         // Cancel Button
         changeCheckInUI.getCancelButton().addActionListener((ActionEvent e) -> 
         {
-            this.shopUI.getChangeCheckInUI().setVisible(false);
+            changeCheckInUI.setVisible(false);
+            changeCheckInUI.wipeOutField();
             this.shopUI.getMainUI().setVisible(true);
         });
 
@@ -189,7 +192,8 @@ public class ShopCtrl extends AbstractObjCtrl
             else
             {
                 JOptionPane.showMessageDialog(null, "Change CheckIn Code Success");
-                changeCheckInUI.dispose();
+                changeCheckInUI.setVisible(false);
+                changeCheckInUI.wipeOutField();
                 this.shopUI.getMainUI().setVisible(true);
             }
         });
@@ -270,8 +274,8 @@ public class ShopCtrl extends AbstractObjCtrl
                 if (!logout())
                 {
                     System.out.println("Log out failed");
-                } else {
                 }
+                
                 System.exit(0);
             }
         });

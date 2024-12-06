@@ -107,4 +107,10 @@ public class ShopChangeCheckInUI extends JFrame
     // Button
     public JButton getCancelButton() { return this.cancelButton; }
     public JButton getApplyButton() { return this.applyButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.checkInTextField.setText("");
+    }
 }

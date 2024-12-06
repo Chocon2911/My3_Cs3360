@@ -104,4 +104,10 @@ public class ManagerDeleteStaffUI extends JFrame
     // Button
     public JButton getDeleteButton() { return this.deleteButton; }
     public JButton getCancelButton() { return this.cancelButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.userNameTextField.setText("");
+    }
 }

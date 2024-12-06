@@ -97,8 +97,9 @@ public class ShopInfoUI extends JFrame
     public void setInfoPanel(Shop shop)
     {
         // ===Main Panel===
-        this.infoPanel = new JPanel();
+        this.infoPanel.removeAll();
         this.infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        if (shop == null) return;
         
         // ===Private Info Panel===
         JPanel privateInfoPanel = this.displayPrivateInfo(shop);

@@ -156,4 +156,12 @@ public class App1SignUpUI extends JFrame
     // Button
     public final JButton getRegisterButton() { return this.registerButton; }
     public final JButton getCancelButton() { return this.cancelButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.nameField.setText("");
+        this.userNameField.setText("");
+        this.passwordField.setText("");
+    }
 }

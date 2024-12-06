@@ -187,4 +187,11 @@ public class ManagerAddItemUI extends JFrame
     // Button
     public JButton getAddButton() { return this.addButton; }
     public JButton getCancelButton() { return this.cancelButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.nameTextField.setText("");
+        this.priceTextField.setText("");
+    }
 }

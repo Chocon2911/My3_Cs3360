@@ -119,4 +119,11 @@ public class App2LoginUI extends JFrame
     // Button
     public JButton getCancelButton() { return this.cancelButton; }
     public JButton getLoginButton() { return this.loginButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.userNameTextField.setText(null);
+        this.passwordTextField.setText(null);
+    }
 }

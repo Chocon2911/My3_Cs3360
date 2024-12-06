@@ -104,4 +104,10 @@ public class ManagerJoinShopUI extends JFrame
     // Button
     public JButton getJoinButton() { return this.joinButton; }
     public JButton getCancelButton() { return this.cancelButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.checkInCodeTextField.setText("");
+    }
 }

@@ -81,6 +81,7 @@ public class ManagerInfoUI extends JFrame
     //========================================Information=========================================
     public void setInfoPanel(Manager manager)
     {
+        this.infoPanel.removeAll();
         if (manager == null) return;
 
         // MainPanel

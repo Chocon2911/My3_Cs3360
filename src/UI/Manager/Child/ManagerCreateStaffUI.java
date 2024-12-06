@@ -147,4 +147,12 @@ public class ManagerCreateStaffUI extends JFrame
     // Button
     public JButton getCreateButton() { return this.createButton; }
     public JButton getCancelButton() { return this.cancelButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.nameTextField.setText("");
+        this.userNameTextField.setText("");
+        this.passwordTextField.setText("");
+    }
 }

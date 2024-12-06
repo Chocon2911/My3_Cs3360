@@ -83,8 +83,7 @@ public class App1Ctrl
             {
                 JOptionPane.showMessageDialog(null, "Wrong Password!");
             }
-            // True UserName and Password
-            else
+            else // True UserName and Password
             {
                 System.out.println("Login Success!");
                 JOptionPane.showMessageDialog(null, "Login Success!");
@@ -116,6 +115,7 @@ public class App1Ctrl
         loginUI.getCancelButton().addActionListener((ActionEvent e) -> 
         { 
             loginUI.setVisible(false);
+            loginUI.wipeOutField();
             app1UI.getMainUI().setVisible(true);
         });
     }
@@ -149,8 +149,17 @@ public class App1Ctrl
                 System.out.println("Sign Up Success!");
                 JOptionPane.showMessageDialog(null, "Sign Up Success!");
                 signUpUI.setVisible(false);
+                signUpUI.wipeOutField();
                 app1UI.getMainUI().setVisible(true);
             }
+        });
+
+        // Cancel Button
+        signUpUI.getCancelButton().addActionListener((ActionEvent e) -> 
+        { 
+            signUpUI.setVisible(false);
+            signUpUI.wipeOutField();
+            app1UI.getMainUI().setVisible(true);
         });
     }
 
