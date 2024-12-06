@@ -114,6 +114,7 @@ public class ShopCtrl extends AbstractObjCtrl
             }
 
             this.shopUI = null;
+            mainUI.dispose();
             new App2Ctrl();
         });
     }
@@ -218,12 +219,12 @@ public class ShopCtrl extends AbstractObjCtrl
 
         String e = ManagerDb.getInstance().insertManagerData(insertManager);
         if (e == null) return 0;
-        else if (e.contains("Managers.Id"))
+        else if (e.contains("Id"))
         {
             System.out.println("Error: Id already exists");
             return this.createManager(name, userName, password);
         }
-        else if (e.contains("Managers.UserName")) return 1;
+        else if (e.contains("UserName")) return 1;
 
         return 0;
     }

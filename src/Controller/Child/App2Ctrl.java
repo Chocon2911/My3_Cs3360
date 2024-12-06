@@ -1,6 +1,12 @@
 package Controller.Child;
 
+import DataBase.Child.CustomerDb;
+import DataBase.Child.CustomerRequestDb;
+import DataBase.Child.ItemDb;
+import DataBase.Child.ManagerDb;
+import DataBase.Child.RequestedItemDb;
 import DataBase.Child.ShopDb;
+import DataBase.Child.StaffDb;
 import Obj.Data.Shop;
 import UI.App2.App2UI;
 import UI.App2.Child.*;
@@ -181,12 +187,12 @@ public class App2Ctrl
 
         String e = ShopDb.getInstance().insertShopData(shop);
         if (e == null) return 0;
-        else if (e.contains("Shops.Id"))
+        else if (e.contains("Id"))
         {
             System.out.println("Error: Id already exists");
             return this.signUp(name, userName, password, checkInCode, systemCode);
         }
-        else if (e.contains("Shops.UserName")) return 1;
+        else if (e.contains("UserName")) return 1;
         else if (e.contains("Shops.CheckInCode")) return 2;
 
         return 0;
@@ -195,6 +201,14 @@ public class App2Ctrl
     //============================================Test============================================
     public static void main(String[] args) 
     {
+        ShopDb.getInstance().createShopTable();
+        CustomerDb.getInstance().createCustomerTable();
+        StaffDb.getInstance().createStaffTable();
+        ManagerDb.getInstance().createManagerTable();
+        ItemDb.getInstance().createItemTable();
+        RequestedItemDb.getInstance().createRequestedItemTable();
+        CustomerRequestDb.getInstance().createCustomerRequestTable();
+
         new App2Ctrl().app2UI.getMainUI().setVisible(true);
     }
 }

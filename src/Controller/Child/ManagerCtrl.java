@@ -12,7 +12,6 @@ import Util.ObjUtil;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -480,7 +479,7 @@ public class ManagerCtrl extends AbstractObjCtrl
         Item item = new Item(itemId, name, price, itemType, initAmount);
         String e = ItemDb.getInstance().insertItemData(item);
         if (e == null) return 0; // Add Successfully
-        else if (e.contains("Items.Id")) // Id already exists
+        else if (e.contains("Id")) // Id already exists
         {
             System.out.println("addItem(): Id already exists: " + itemId);
             return addItem(name, price, initAmount, itemType);
