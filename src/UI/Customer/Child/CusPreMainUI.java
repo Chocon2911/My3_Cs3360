@@ -20,7 +20,6 @@ public class CusPreMainUI extends JFrame {
         this.setTitle("Customer PreMain UI");
         this.setSize(450,550);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         joinshopPreMainUI = new JButton("Join A Shop");
         informationPreMainUI = new JButton("User Information");

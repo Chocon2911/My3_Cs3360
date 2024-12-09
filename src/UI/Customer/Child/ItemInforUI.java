@@ -23,7 +23,6 @@ public class ItemInforUI extends JFrame {
         this.setTitle("Item information");
         this.setSize(450,550);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Dimension buttonSize = new Dimension(140, 30);
         backshoppingButton = new JButton("Back to Shopping");

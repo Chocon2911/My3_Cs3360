@@ -11,6 +11,7 @@ public class CustomerUI
     private CusShoppingUI csui;
     private CusCartUI ccui;
     private ItemInforUI iiui;
+    private CusCheckShopCodeUI cscui;
 
     //========================================Constructor=========================================
     public CustomerUI()
@@ -21,6 +22,7 @@ public class CustomerUI
         this.csui = new CusShoppingUI();
         this.ccui = new CusCartUI();
         this.iiui = new ItemInforUI();
+        this.cscui = new CusCheckShopCodeUI();
     }
 
     //============================================Get=============================================
@@ -47,5 +49,9 @@ public class CustomerUI
     public ItemInforUI getItemInforUI()
     {
         return iiui;
+    }
+    public CusCheckShopCodeUI getCheckShopCodeUI()
+    {
+        return cscui;
     }
 }

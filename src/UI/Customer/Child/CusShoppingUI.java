@@ -18,7 +18,7 @@ public class CusShoppingUI extends JFrame {
         this.setTitle("Choose your Product");
         this.setSize(450,550);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         Dimension buttonSize = new Dimension(80, 30);
 
         backButton = new JButton("Back");

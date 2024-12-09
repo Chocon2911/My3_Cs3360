@@ -21,7 +21,6 @@ public class CusMainUI extends JFrame{
         this.setTitle("Welcome to our shop!");
         this.setSize(450,550);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         labelMainUI = new JLabel("Customer", JLabel.CENTER);
         labelMainUI.setFont(labelMainUI.getFont().deriveFont(30.0f));

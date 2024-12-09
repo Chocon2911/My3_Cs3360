@@ -2,9 +2,13 @@ package Controller.Child;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import Controller.Base.AbstractObjCtrl;
@@ -14,6 +18,7 @@ import DataBase.Child.RequestedItemDb;
 import DataBase.Child.ShopDb;
 import Obj.Data.Customer;
 import Obj.Data.CustomerRequest;
+import Obj.Data.Manager;
 import Obj.Data.RequestedItem;
 import Obj.Data.Shop;
 import UI.Customer.Child.CusCartUI;
@@ -48,28 +53,37 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         pmui.getJoinshopPreMainUIButton().addActionListener(this); //Join Shop
         pmui.getInformationPreMainUIButton().addActionListener(this);//Information PreMainUI//
         pmui.getQuitPreMainUIButton().addActionListener(this); //Quit
+        this.setDefaultClose(pmui);
+        pmui.setVisible(true);
+
 
         cmui.getInformation_button().addActionListener(this); //Information MainUI//
         cmui.getShopping_button().addActionListener(this); //Shopping
         cmui.getCart_button().addActionListener(this);  //Cart
         cmui.getExit_button().addActionListener(this);  //Exit 
+        this.setDefaultClose(cmui);
 
         ciui.getBackButton().addActionListener(this); //Back (Information)
+        this.setDefaultClose(ciui);
 
         csui.getBackButton().addActionListener(this); //Back (Shopping)
+        this.setDefaultClose(csui);
 
         ccui.getBackButton().addActionListener(this); //Back(Cart)
         ccui.getRequestButton().addActionListener(this); //Request
         ccui.getRemoveButton().addActionListener(this); //Remove
+        this.setDefaultClose(ccui);
 
         iiui.getBackshoppingButton().addActionListener(this); //Back (Item)//
         iiui.getAddButton().addActionListener(this); //Add
+        this.setDefaultClose(iiui);
 
         cscui.getJoinbutton().addActionListener(this); // Join
         cscui.getCheckcode().addActionListener(this); //Enter Checkcode
         cscui.getBackbutton().addActionListener(this); //Back(Checkcode)
+        this.setDefaultClose(cscui);
 
-        pmui.setVisible(true);
+        
     }
 
     //=========================================UI Handle==========================================
@@ -122,6 +136,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
             ccui = null;
             iiui = null;
             new App1Ctrl();
+            customer.setIsLogin(false);
         }
         else if(src.equals("Shopping"))
         {
@@ -136,6 +151,8 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         else if(src.equals("Exit"))
         {
             cmui.setVisible(false);
+            customer.setShop(null);
+            this.updateInfo(customer);
             pmui.setVisible(true);
         }
         else if(src.equals("Back"))
@@ -245,6 +262,42 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         }
     }
 
+        private boolean logout()
+    {
+        Customer customer = this.queryInfo();
+        if (customer == null)
+        {
+            System.out.println("logout(): Error: Manager not found");
+            return false;
+        }
+
+        System.out.println("logout(): Log out successfully");
+        customer.setIsLogin(false);
+        customer.setShop(null);
+        this.updateInfo(customer);
+        return true;
+    }
+
+    private void setDefaultClose(JFrame frame)
+    {
+        frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                if (!logout())
+                {
+                    System.out.println("Log out failed");
+                }
+
+                System.out.println("Log out successfully");
+                System.exit(0);
+            }
+        });
+    }
+
+
+    //==========================================Override==========================================
     @Override
     protected <T> String insertInfo(T info) 
     { 
@@ -295,6 +348,8 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     {
         return CustomerDb.getInstance().updateCustomerData((Customer)info);
     }
+
+    
 }
 
 

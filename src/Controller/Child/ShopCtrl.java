@@ -293,5 +293,5 @@ public class ShopCtrl extends AbstractObjCtrl
     public static void main(String[] args) 
     {
         new ShopCtrl().shopUI.getMainUI().setVisible(true);
-    }
+    }   
 }

@@ -19,7 +19,6 @@ public class CusCartUI extends JFrame {
         this.setTitle("Your Cart");
         this.setSize(450,550);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Dimension buttonSize = new Dimension(80, 30);
         backButton = new JButton("Back");

@@ -23,7 +23,6 @@ public class CusInforUI extends JFrame{
         this.setTitle("User information");
         this.setSize(450,550);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         backButton = new JButton("Back");
         backButton.setPreferredSize(new Dimension(80, 30));
