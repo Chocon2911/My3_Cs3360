@@ -23,7 +23,7 @@ public class StaffDepositCustomerUI extends JFrame
         setSize(GuiUtil.getInstance().frameWidth, GuiUtil.getInstance().frameWidth);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // ===Customer Panel===
+        // ===Main Panel===
         JPanel depositPanel = new JPanel();
         depositPanel.setLayout(new BoxLayout(depositPanel, BoxLayout.Y_AXIS));
 
