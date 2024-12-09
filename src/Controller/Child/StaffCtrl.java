@@ -158,8 +158,15 @@ public class StaffCtrl extends AbstractObjCtrl
         staffInfoUI.getBackButton().addActionListener((ActionEvent e) ->
         {
             staffInfoUI.setVisible(false);
-
-            staffUI.getStaffMainUI().setVisible(true);
+            Staff staff = this.queryInfo();
+            if (staff.getShop()== null)
+            {
+                staffUI.getPreMainStaffUI().setVisible(true);
+            }
+            else if (staff.getShop()!= null)
+            {
+                staffUI.getStaffMainUI().setVisible(true);
+            }
         });
     }
 
