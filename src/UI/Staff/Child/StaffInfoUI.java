@@ -92,6 +92,7 @@ public class StaffInfoUI extends JFrame
     public void setStaffInfo(Staff staff)
     {
         // ===Main Panel===
+        this.staffInfoPanel.removeAll();
         this.staffInfoPanel.setLayout(new BoxLayout(staffInfoPanel, BoxLayout.Y_AXIS));
 
         // ===Staff Information Panel===
@@ -116,19 +117,27 @@ public class StaffInfoUI extends JFrame
         GuiUtil.getInstance().setAlignmentCenter(titleLabel);
         titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
 
-        // Id Label
-        JLabel staffIdLabel = GuiUtil.getInstance().getNormalLabel("Id: " + staff.getId());
+        // Username Label
+        JLabel staffUsernamLabel = GuiUtil.getInstance().getNormalLabel("Username: " + staff.getUserName());
 
         // Name Label
         JLabel staffNameLabel = GuiUtil.getInstance().getNormalLabel("Name: " + staff.getName());
+
+        // Password Label
+        JLabel staffPasswordLabel = GuiUtil.getInstance().getNormalLabel("Password: " + staff.getPassword());
+
+        // Shop name Label
+        JLabel staffShopLabel = GuiUtil.getInstance().getNormalLabel("Password: ");
 
         // Display
         panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
         panel.add(titleLabel);
         panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(staffIdLabel);
+        panel.add(staffUsernamLabel);
         panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
         panel.add(staffNameLabel);
+        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
+        panel.add(staffPasswordLabel);
 
         return panel;
     }
