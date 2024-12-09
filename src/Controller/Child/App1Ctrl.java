@@ -108,7 +108,7 @@ public class App1Ctrl
                 if (login == 1) // Login Customer
                 {
                     System.out.println("Login Customer");
-                    new CustomerCtrl(this.getCustomerId(userName, password));
+                    new CustomerController(this.getCustomerId(userName, password));
                 }
                 else if (login == 3) // Login Staff
                 {
