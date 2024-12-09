@@ -99,9 +99,15 @@ public class ManagerDeleteStaffUI extends JFrame
 
     //============================================Get=============================================
     // TextField
-    public String getUserNameTextField() { return this.userNameTextField.getText(); }
+    public String getUserName() { return this.userNameTextField.getText(); }
     
     // Button
     public JButton getDeleteButton() { return this.deleteButton; }
     public JButton getCancelButton() { return this.cancelButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.userNameTextField.setText("");
+    }
 }

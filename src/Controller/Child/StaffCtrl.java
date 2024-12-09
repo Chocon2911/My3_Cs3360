@@ -47,6 +47,7 @@ public class StaffCtrl extends AbstractObjCtrl
         // Display Staff Information Button
         staffMainUI.getDisplayInformationButton().addActionListener((ActionEvent e) ->
         {
+            // Get Customer Infomation
             staffMainUI.setVisible(false);
             staffUI.getInforUI().setVisible(true);
         });
@@ -166,7 +167,7 @@ public class StaffCtrl extends AbstractObjCtrl
 
 private int accept(String id, String amount)
 {
-    Shop shop = ShopDb.getInstance().queryShopPriData(id);
+    Shop shop = ShopDb.getInstance().queryShopData(id);
     if (shop == null) return 1; // ID Not Found
     return 0;
 }

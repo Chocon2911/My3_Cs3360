@@ -166,4 +166,12 @@ public class ShopCreateManagerUI extends JFrame
     // Button
     public JButton getBackButton() { return this.backButton; }
     public JButton getCreateButton() { return this.createButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.nameTextField.setText(null);
+        this.userNameTextField.setText(null);
+        this.passwordTextField.setText(null);
+    }
 }

@@ -1,6 +1,14 @@
 package Controller.Child;
 
+import DataBase.Child.CustomerDb;
+import DataBase.Child.CustomerRequestDb;
+import DataBase.Child.IdDb;
+import DataBase.Child.ItemDb;
+import DataBase.Child.ManagerDb;
+import DataBase.Child.RequestedItemDb;
 import DataBase.Child.ShopDb;
+import DataBase.Child.StaffDb;
+import DataBase.Child.UserNameDb;
 import Obj.Data.Shop;
 import UI.App2.App2UI;
 import UI.App2.Child.*;
@@ -17,6 +25,7 @@ public class App2Ctrl
     {
         this.app2UI = new App2UI();
 
+        this.app2UI.getMainUI().setVisible(true);
         this.defaultMainUI();
         this.defaultLoginUI();
         this.defaultSignUpUI();
@@ -77,6 +86,7 @@ public class App2Ctrl
                 JOptionPane.showMessageDialog(null, "Login Success");
                 loginUI.setVisible(false);
                 new ShopCtrl(this.getUserId(userName, password));
+                this.app2UI = null; // Delete
             }
             else if (login == 1) 
             {
@@ -92,6 +102,7 @@ public class App2Ctrl
         loginUI.getCancelButton().addActionListener((ActionEvent e) -> 
         { 
             loginUI.setVisible(false);
+            loginUI.wipeOutField();
             app2UI.getMainUI().setVisible(true);
         });
     }
@@ -132,6 +143,7 @@ public class App2Ctrl
             {
                 JOptionPane.showMessageDialog(null, "Register Success");
                 signUpUI.setVisible(false);
+                signUpUI.wipeOutField();
                 app2UI.getMainUI().setVisible(true);
             }
 
@@ -141,6 +153,7 @@ public class App2Ctrl
         signUpUI.getCancelButton().addActionListener((ActionEvent e) -> 
         { 
             signUpUI.setVisible(false);
+            signUpUI.wipeOutField();
             app2UI.getMainUI().setVisible(true);
         });
     }
@@ -176,12 +189,12 @@ public class App2Ctrl
 
         String e = ShopDb.getInstance().insertShopData(shop);
         if (e == null) return 0;
-        else if (e.contains("Shops.Id"))
+        else if (e.contains("Id"))
         {
             System.out.println("Error: Id already exists");
             return this.signUp(name, userName, password, checkInCode, systemCode);
         }
-        else if (e.contains("Shops.UserName")) return 1;
+        else if (e.contains("UserName")) return 1;
         else if (e.contains("Shops.CheckInCode")) return 2;
 
         return 0;
@@ -190,6 +203,16 @@ public class App2Ctrl
     //============================================Test============================================
     public static void main(String[] args) 
     {
+        ShopDb.getInstance().createShopTable();
+        CustomerDb.getInstance().createCustomerTable();
+        StaffDb.getInstance().createStaffTable();
+        ManagerDb.getInstance().createManagerTable();
+        ItemDb.getInstance().createItemTable();
+        RequestedItemDb.getInstance().createRequestedItemTable();
+        CustomerRequestDb.getInstance().createCustomerRequestTable();
+        IdDb.getInstance().createIdTable();
+        UserNameDb.getInstance().createUserNameTable();
+
         new App2Ctrl().app2UI.getMainUI().setVisible(true);
     }
 }

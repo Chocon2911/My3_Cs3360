@@ -47,16 +47,16 @@ public class StaffDb extends AbstractDb
 
         List<DbData> data = this.getDataFromStaff(staff);
 
+        // Insert Global
+        String idE = new IdDb().insertId(staff.getId());
+        if (idE != null) return idE;
+
+        String userNameE = new UserNameDb().insertUserName(staff.getUserName());
+        if (userNameE != null) return userNameE;
+
+        // Insert Staff
         System.out.println("===insert Staff===");
         String result = this.insertData(url, sql, data);
-        if (result == null)
-        {
-            String idE = new IdDb().insertId(staff.getId());
-            if (idE != null) return idE;
-
-            String userNameE = new UserNameDb().insertUserName(staff.getUserName());
-            if (userNameE != null) return userNameE;
-        }
 
         return result;
     }

@@ -122,10 +122,17 @@ public class App1LoginUI extends JFrame
 
     //============================================Get=============================================
     // TextField
-    public JTextField getUserNameTextField() { return this.userNameTextField; }
-    public JPasswordField getPasswordTextField() { return this.passwordTextField; }
+    public String getUserName() { return this.userNameTextField.getText(); }
+    public String getPassword() { return new String(this.passwordTextField.getPassword()); }
 
     // Button
     public JButton getCancelButton() { return this.cancelButton; }
     public JButton getLoginButton() { return this.loginButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.userNameTextField.setText("");
+        this.passwordTextField.setText("");
+    }
 }

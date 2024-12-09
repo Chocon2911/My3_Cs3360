@@ -149,11 +149,19 @@ public class App1SignUpUI extends JFrame
 
     //============================================Get=============================================
     // TextField
-    public final String getNameTextField() { return this.nameField.getText(); }
-    public final String getUserNameTextField() { return this.userNameField.getText(); }
-    public final String getPasswordTextField() { return new String(this.passwordField.getPassword()); }
+    public final String getNameStr() { return this.nameField.getText(); }
+    public final String getUserName() { return this.userNameField.getText(); }
+    public final String getPassword() { return new String(this.passwordField.getPassword()); }
 
     // Button
     public final JButton getRegisterButton() { return this.registerButton; }
     public final JButton getCancelButton() { return this.cancelButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.nameField.setText("");
+        this.userNameField.setText("");
+        this.passwordField.setText("");
+    }
 }

@@ -202,4 +202,14 @@ public class App2SignUpUI extends JFrame
     // Button
     public JButton getCancelButton() { return this.cancelButton; }
     public JButton getRegisterButton() { return this.registerButton; }
+
+    //===========================================Other============================================
+    public void wipeOutField()
+    {
+        this.nameTextField.setText(null);
+        this.userNameTextField.setText(null);
+        this.passwordTextField.setText(null);
+        this.systemCodeTextField.setText(null);
+        this.checkInCodeTextField.setText(null);
+    }
 }
