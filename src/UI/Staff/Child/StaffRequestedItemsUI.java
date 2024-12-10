@@ -1,6 +1,9 @@
 package UI.Staff.Child;
 
 import Util.GuiUtil;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
 import javax.swing.*;
 
 public class StaffRequestedItemsUI extends JFrame
@@ -16,6 +19,7 @@ public class StaffRequestedItemsUI extends JFrame
     // ===Constructor===
     public StaffRequestedItemsUI()
     {
+        GuiUtil guiUtil = GuiUtil.getInstance();
         // ===Frame===
         super("Staff.Main.Requests.Items");
         setResizable(false);
@@ -46,8 +50,8 @@ public class StaffRequestedItemsUI extends JFrame
         GuiUtil.getInstance().setAlignmentCenterRight(acceptButton);
 
         // Back Button 
-        this.backButton = GuiUtil.getInstance().createButton("Back", GuiUtil.getInstance().smallButtonWidth, GuiUtil.getInstance().smallButtonHeight);
-        GuiUtil.getInstance().setAlignmentCenterLeft(backButton); 
+        this.backButton = guiUtil.createButton("Back", guiUtil.smallButtonWidth, guiUtil.bigButtonHeight);
+        this.backButton.setAlignmentY(Component.TOP_ALIGNMENT);
         
         // Display
         buttonPanel.add(Box.createHorizontalGlue());
@@ -57,5 +61,23 @@ public class StaffRequestedItemsUI extends JFrame
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(backButton);
 
+
+        // ===Scroll Panel===
+        JScrollPane scrollPanel = new JScrollPane(requestedItemsPanel);
+        scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPanel.getVerticalScrollBar().setUnitIncrement(30);
+
+        // Display
+        requestedItemsPanel.add(Box.createHorizontalGlue());
+        requestedItemsPanel.add(buttonPanel);
+        requestedItemsPanel.add(Box.createHorizontalStrut(GuiUtil.getInstance().horizontalStrut));
+
+        add(requestedItemsPanel);
+        add(scrollPanel, BorderLayout.EAST);
     }
+    // ===Get===
+    // Get Button
+    public JButton getRefuseButton() {return this.refuseButton;}
+    public JButton getBackButton() {return this.backButton;}
+    public JButton getAcceptButton() {return this.acceptButton;}
 }

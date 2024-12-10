@@ -110,7 +110,7 @@ public class StaffCustomerRequestUI extends JFrame
         GuiUtil.getInstance().setAlignmentCenter(titleLabel);
         titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
 
-        // Id Label
+        // Requests Label
         JLabel requestsLabel = GuiUtil.getInstance().getNormalLabel("Requests: " + customer.getCustomerRequests());
 
         // Display
