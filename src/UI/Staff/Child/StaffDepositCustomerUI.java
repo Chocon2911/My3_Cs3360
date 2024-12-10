@@ -7,7 +7,7 @@ public class StaffDepositCustomerUI extends JFrame
 {
     // ===Variable===
     // TextField
-    private JTextField customerID;
+    private JTextField customerName;
     private JTextField depositAmount;
 
     // Button
@@ -23,7 +23,7 @@ public class StaffDepositCustomerUI extends JFrame
         setSize(GuiUtil.getInstance().frameWidth, GuiUtil.getInstance().frameWidth);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // ===Customer Panel===
+        // ===Main Panel===
         JPanel depositPanel = new JPanel();
         depositPanel.setLayout(new BoxLayout(depositPanel, BoxLayout.Y_AXIS));
 
@@ -32,25 +32,25 @@ public class StaffDepositCustomerUI extends JFrame
 
 
 
-        // ===Customer ID Panel===
+        // ===Customer Name Panel===
         // Panel
-        JPanel customerIdPanel = new JPanel();
-        customerIdPanel.setLayout(new BoxLayout(customerIdPanel, BoxLayout.X_AXIS));
-        GuiUtil.getInstance().setFixedSize(customerIdPanel, GuiUtil.getInstance().panelTextFieldWidth, GuiUtil.getInstance().panelTextFieldHeight);
+        JPanel customerNamePanel = new JPanel();
+        customerNamePanel.setLayout(new BoxLayout(customerNamePanel, BoxLayout.X_AXIS));
+        GuiUtil.getInstance().setFixedSize(customerNamePanel, GuiUtil.getInstance().panelTextFieldWidth, GuiUtil.getInstance().panelTextFieldHeight);
 
         // Label
-        JLabel customerIdLabel = new JLabel("Customer ID:");
-        GuiUtil.getInstance().setFixedSize(customerIdLabel, GuiUtil.getInstance().smallLabelWidth, GuiUtil.getInstance().smallLabelHeight);
+        JLabel customerNameLabel = new JLabel("Username: ");
+        GuiUtil.getInstance().setFixedSize(customerNameLabel, GuiUtil.getInstance().smallLabelWidth, GuiUtil.getInstance().smallLabelHeight);
 
         // IdField
-        this.customerID = new JTextField(GuiUtil.getInstance().textFieldAmount);
+        this.customerName = new JTextField(GuiUtil.getInstance().textFieldAmount);
 
         // Display
-        customerIdPanel.add(Box.createHorizontalGlue());
-        customerIdPanel.add(customerIdLabel);
-        customerIdPanel.add(Box.createHorizontalStrut(GuiUtil.getInstance().horizontalStrut));
-        customerIdPanel.add(customerID);
-        customerIdPanel.add(Box.createHorizontalGlue());
+        customerNamePanel.add(Box.createHorizontalGlue());
+        customerNamePanel.add(customerNameLabel);
+        customerNamePanel.add(Box.createHorizontalStrut(GuiUtil.getInstance().horizontalStrut));
+        customerNamePanel.add(customerName);
+        customerNamePanel.add(Box.createHorizontalGlue());
 
 
 
@@ -64,7 +64,7 @@ public class StaffDepositCustomerUI extends JFrame
         JLabel depositAmountLabel = new JLabel("Amount:");
         GuiUtil.getInstance().setFixedSize(depositAmountLabel, GuiUtil.getInstance().smallLabelWidth, GuiUtil.getInstance().smallLabelHeight);
 
-        // IdField
+        // Deposit Feild
         this.depositAmount = new JTextField(GuiUtil.getInstance().textFieldAmount);
 
         // Display
@@ -103,7 +103,7 @@ public class StaffDepositCustomerUI extends JFrame
         depositPanel.add(Box.createVerticalGlue());
         depositPanel.add(titleLabel);
         depositPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        depositPanel.add(customerIdPanel);
+        depositPanel.add(customerNamePanel);
         depositPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
         depositPanel.add(depositAmountPanel);
         depositPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
@@ -115,7 +115,7 @@ public class StaffDepositCustomerUI extends JFrame
 
     // ===Get===
     // Get TextField
-    public String getCustomerId() {return this.customerID.getText();}
+    public String getCustomerName() {return this.customerName.getText();}
     public String getDepositAmount() {return this.depositAmount.getText();}
 
     // Get Button

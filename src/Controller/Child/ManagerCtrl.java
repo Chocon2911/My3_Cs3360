@@ -1,291 +1,156 @@
 package Controller.Child;
 
 import Controller.Base.AbstractObjCtrl;
-import DataBase.Child.ItemDb;
-import DataBase.Child.ManagerDb;
-import DataBase.Child.ShopDb;
-import DataBase.Child.StaffDb;
+import DataBase.Child.*;
 import Obj.Data.*;
-import UI.Manager.Child.*;
-import UI.Manager.ManagerUI;
-import Util.ObjUtil;
+import UI.Staff.Child.StaffCustomerRequestInfoUI;
+import UI.Staff.Child.StaffCustomerRequestUI;
+import UI.Staff.Child.StaffDepositCustomerUI;
+import UI.Staff.Child.StaffInfoUI;
+import UI.Staff.Child.StaffMainUI;
+import UI.Staff.Child.StaffPreMainUI;
+import UI.Staff.StaffUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
-public class ManagerCtrl extends AbstractObjCtrl
+public class StaffCtrl extends AbstractObjCtrl
 {
-    private ManagerUI managerUI;
+    private StaffUI staffUI;
 
     //========================================Constructor=========================================
-    public ManagerCtrl()
-    {
+    public StaffCtrl() 
+    { 
         super();
-        this.managerUI = new ManagerUI();
+        this.staffUI = new StaffUI();
 
         this.defaultPreMainUI();
         this.defaultMainUI();
-        this.defaultJoinShopUI();
         this.defaultInfoUI();
-        this.defaultCreateStaffUI();
-        this.defaultDeleteStaffUI();
-        this.defaultAddItemUI();
+        this.defaultDepositCustomerUI();
+        this.defaultCustomerRequestUI();
+        this.defaultCustomerRequestInfoUI();
     }
+    public StaffCtrl(String id) 
+    { 
+        super(id); 
+        this.staffUI = new StaffUI();
 
-    public ManagerCtrl(String id)
-    {
-        super(id);
-        this.managerUI = new ManagerUI();
-        
         this.login();
         this.defaultPreMainUI();
         this.defaultMainUI();
-        this.defaultJoinShopUI();
         this.defaultInfoUI();
-        this.defaultCreateStaffUI();
-        this.defaultDeleteStaffUI();
-        this.defaultAddItemUI();
+        this.defaultDepositCustomerUI();
+        this.defaultCustomerRequestUI();
+        this.defaultCustomerRequestInfoUI();
+
+        this.staffUI.getPreMainUI().setVisible(true);
     }
 
     //==========================================Override==========================================
     @Override
     protected <T> String insertInfo(T info)
     {
-        return ManagerDb.getInstance().insertManagerData((Manager)info);
+        return new StaffDb().insertStaffData((Staff)info);
     }
+
     @Override
     @SuppressWarnings("unchecked")
-    public final Manager queryInfo() 
-    { 
-        Manager manager = ManagerDb.getInstance().queryManagerData(id);
-        if (manager == null)
+    public final Staff queryInfo()
+    {
+        Staff staff = new StaffDb().queryStaffData(id);
+        if (staff == null)
         {
-            System.out.println("queryInfo(): Manager is null with Id: " + id);
-            return null;
-        } 
+            System.out.println("Staff not found: " + id);
+        }
 
-        return manager;
+        return staff;
     }
-    @Override
+
+    @Override 
     protected <T> String updateInfo(T info)
     {
-        return ManagerDb.getInstance().updateManagerData((Manager)info);
+        return new StaffDb().updateStaffData((Staff)info);
     }
 
     //============================================================================================
     //=============================================UI=============================================
     //============================================================================================
-
+    
     //=========================================PreMain UI=========================================
     private void defaultPreMainUI()
     {
-        ManagerPreMainUI preMainUI = this.managerUI.getPreMainUI();
+        StaffPreMainUI preMainUI = this.staffUI.getPreMainUI();
         this.setDefaultClose(preMainUI);
 
         // Info Button
         preMainUI.getInfoButton().addActionListener((ActionEvent e) ->
         {
-            // Info Panel
-            Manager manager = this.queryInfo();
-            if (manager == null)
-            {
-                System.out.println("Manager is not found with Id: " + this.id);
-            }
-            else
-            {
-                this.managerUI.getInfoUI().setInfoPanel(manager);
-            }
+            Staff staff = this.queryInfo();
 
-            this.managerUI.getInfoUI().setInfoPanel(manager);
+            this.staffUI.getInfoUI().setInfoPanel(staff);
             preMainUI.setVisible(false);
-            this.managerUI.getInfoUI().setVisible(true);
+            preMainUI.setVisible(true);
         });
 
-        // Join Shop Button
-        preMainUI.getJoinShopButton().addActionListener((ActionEvent e) ->
+        // JoinShop Button
+        preMainUI.getJoinShopButton().addActionListener((ActionEvent e) -> 
         {
             preMainUI.setVisible(false);
-            this.managerUI.getJoinShopUI().setVisible(true);
+            preMainUI.setVisible(true);
         });
 
         // Quit Button
-        preMainUI.getQuitButton().addActionListener((ActionEvent e) ->
+        preMainUI.getQuitButton().addActionListener((ActionEvent e) -> 
         {
             if (!logout())
             {
-                System.out.println("Log out failed");
+                System.out.println("Logout failed");
             }
 
-            System.exit(0);
-        });
-    }
-
-
-    //==========================================Main UI===========================================
-    private void defaultMainUI()
-    {
-        ManagerMainUI mainUI = this.managerUI.getMainUI();
-        this.setDefaultClose(mainUI);
-
-        // Info Button
-        mainUI.getInfoButton().addActionListener((ActionEvent e) ->
-        {
-            // Info Panel
-            Manager manager = this.queryInfo();
-            if (manager == null)
-            {
-                System.out.println("Manager is not found with Id: " + this.id);
-            }
-            else
-            {
-                this.managerUI.getInfoUI().setInfoPanel(manager);
-            }
-
-            this.managerUI.getInfoUI().setInfoPanel(manager);
-            this.managerUI.getMainUI().setVisible(false);
-            this.managerUI.getInfoUI().setVisible(true);
-        });
-
-        // CreateStaff Button
-        mainUI.getCreateStaffButton().addActionListener((ActionEvent e) ->
-        {
-            this.managerUI.getMainUI().setVisible(false);
-            this.managerUI.getCreateStaffUI().setVisible(true);
-        });
-
-        // DeleteStaff Button
-        mainUI.getDeleteStaffButton().addActionListener((ActionEvent e) ->
-        {
-            this.managerUI.getMainUI().setVisible(false);
-            this.managerUI.getDeleteStaffUI().setVisible(true);
-        });
-
-        // AddItem Button
-        mainUI.getAddItemButton().addActionListener((ActionEvent e) ->
-        {
-            this.managerUI.getMainUI().setVisible(false);
-            this.managerUI.getAddItemUI().setVisible(true);
-        });
-
-        // Quit Button
-        mainUI.getQuitButton().addActionListener((ActionEvent e) ->
-        {
-            if (!logout())
-            {
-                System.out.println("Log out failed");
-            }
 
             new App1Ctrl();
         });
     }
 
+    //==========================================Main UI===========================================
+    private void defaultMainUI()
+    {
+        StaffMainUI mainUI = this.staffUI.getMainUI();
+        this.setDefaultClose(mainUI);
+    }
+
     //==========================================Info UI===========================================
     private void defaultInfoUI()
     {
-        ManagerInfoUI infoUI = this.managerUI.getInfoUI();
+        StaffInfoUI infoUI = this.staffUI.getInfoUI();
         this.setDefaultClose(infoUI);
-
-        // Back Button
-        infoUI.getBackButton().addActionListener((ActionEvent e) ->
-        {
-            infoUI.setVisible(false);
-            Manager manager = this.queryInfo();
-            if (manager == null) 
-            {
-                System.out.println("Manager is not found with Id: " + this.id);
-                this.managerUI.getMainUI().setVisible(true);
-            }
-
-            else if (manager.getShop() == null)
-            {
-                System.out.println("Manager doesn't join shop");
-                this.managerUI.getPreMainUI().setVisible(true);
-            }
-
-            else if (manager.getShop() != null)
-            {
-                System.out.println("Manager joins shop: " + manager.getShop().getCheckInCode());
-                this.managerUI.getMainUI().setVisible(true);
-            }
-        });
     }
 
-    //========================================JoinShop UI=========================================
-    private void defaultJoinShopUI()
+    //=====================================DepositCustomer UI=====================================
+    private void defaultDepositCustomerUI()
     {
-        ManagerJoinShopUI joinShopUI = this.managerUI.getJoinShopUI();
-        this.setDefaultClose(joinShopUI);
-
-        // Join Button
-        joinShopUI.getJoinButton().addActionListener((ActionEvent e) ->
-        {
-            System.out.println("//=========================================Join Shop==========================================");
-
-            // Logic Handler
-            String checkInCode = joinShopUI.getCheckInCode();
-
-            int joinShop = this.joinShop(checkInCode);
-            if (joinShop == 1) // Wrong CheckInCode
-            {
-                System.out.println("joinShop(): Wrong CheckInCode: " + checkInCode);
-                JOptionPane.showMessageDialog(null, "Wrong CheckInCode!");
-            }
-            else if (joinShop == 2) // Shop is not online
-            {
-                System.out.println("joinShop(): Shop is not online: " + checkInCode);
-                JOptionPane.showMessageDialog(null, "Wrong CheckInCode");
-            } 
-            else if (joinShop == 0) // Success
-            {
-                JOptionPane.showMessageDialog(null, "Join Shop successfully");
-                joinShopUI.setVisible(false);
-                joinShopUI.wipeOutField();
-                this.managerUI.getMainUI().setVisible(true);
-            }
-        });
+        StaffDepositCustomerUI depositCustomerUI = this.staffUI.getDepositCustomerUI();
+        this.setDefaultClose(depositCustomerUI);
     }
 
-    //=======================================CreateStaff UI=======================================
-    private void defaultCreateStaffUI()
+    //=====================================CustomerRequest UI=====================================
+    private void defaultCustomerRequestUI()
     {
-        ManagerCreateStaffUI createStaffUI = this.managerUI.getCreateStaffUI();
-        this.setDefaultClose(createStaffUI);
-
-        // Create Button
-        createStaffUI.getCreateButton().addActionListener((ActionEvent e) ->
-        {
-            System.out.println("//=========================================Create Staff==========================================");
-
-            // Logic Handler
-            String name = createStaffUI.getNameStr();
-            String userName = createStaffUI.getUserName();
-            String password = createStaffUI.getPassword();
-
-            int createStaff = this.createStaff(name, userName, password);
-            if (createStaff == 1) // UserName is already exist
-            {
-                JOptionPane.showMessageDialog(null, "User Name is already exist");
-            }
-            else if (createStaff == 0) // Create Successfully
-            {
-                JOptionPane.showMessageDialog(null, "Create Staff Successfully");
-                createStaffUI.setVisible(false);
-                createStaffUI.wipeOutField();
-                this.managerUI.getMainUI().setVisible(true);
-            }
-        });
-
-        // Cancel Button
-        createStaffUI.getCancelButton().addActionListener((ActionEvent e) ->
-        {
-            createStaffUI.setVisible(false);
-            createStaffUI.wipeOutField();
-            this.managerUI.getMainUI().setVisible(true);
-        });
+        StaffCustomerRequestUI customerReqUI = this.staffUI.getCustomerRequestUI();
+        this.setDefaultClose(customerReqUI);
     }
+
+    //===================================CustomerRequestInfo UI===================================
+    private void defaultCustomerRequestInfoUI()
+    {
+        StaffCustomerRequestInfoUI customerReqInfoUI = this.staffUI.getCusteomRequestInfoUI();
+        this.setDefaultClose(customerReqInfoUI);
+    }
+
     
+<<<<<<< HEAD
     //=======================================DeleteStaff UI=======================================
     private void defaultDeleteStaffUI()
     {
@@ -383,43 +248,14 @@ public class ManagerCtrl extends AbstractObjCtrl
     }
 
 
+=======
+>>>>>>> 4d53e4bf972b8319945d7af0c3c12be0d2350bb3
 
     //============================================================================================
     //=========================================Controller=========================================
     //============================================================================================
-
-    //=========================================Join Shop==========================================
-    private int joinShop(String checkInCode)
-    {
-        Shop shop = ShopDb.getInstance().queryShopByCheckInCode(checkInCode);
-        if (shop == null) // No Shop with CheckInCode 
-        {
-            System.out.println("joinShop(): No Shop with CheckInCode: " + checkInCode);
-            return 1;
-        }
-        else if (!shop.getIsLogin()) // Shop is not online yet
-        {
-            System.out.println("joinShop(): Shop is not online yet: " + checkInCode);
-            return 2;
-        }
-
-        Manager manager = this.queryInfo();
-        manager.setShop(shop);
-        this.updateInfo(manager);
-        return 0;
-    }
-
-    private String getShopIdByCheckInCode(String checkInCode)
-    {
-        Shop shop = ShopDb.getInstance().queryShopByCheckInCode(checkInCode);
-        if (shop == null)
-        {
-            System.out.println("getShopIdByCheckInCode(): No Shop with CheckInCode: " + checkInCode);
-            return null;
-        }
-        return shop.getId();
-    }
     
+<<<<<<< HEAD
     //========================================Create Staff========================================
     private int createStaff(String name, String userName, String password)
     {
@@ -499,36 +335,36 @@ public class ManagerCtrl extends AbstractObjCtrl
         return 0; // Add Successfully
     }
 
+=======
+>>>>>>> 4d53e4bf972b8319945d7af0c3c12be0d2350bb3
     //===========================================Other============================================
     private boolean login()
     {
-        Manager manager = this.queryInfo();
-        if (manager == null)
+        Staff staff = this.queryInfo();
+        if (staff == null)
         {
-            System.out.println("login(): Error: Manager not found");
+            System.out.println("login(): Error: Staff not found");
             return false;
         }
 
-        manager.setIsLogin(true);
-        manager.setShop(null);
-        this.updateInfo(manager);
-        this.managerUI.getPreMainUI().setVisible(true);
+        staff.setIsLogin(true);
+        this.updateInfo(staff);
         return true;
-    }
+    } 
 
     private boolean logout()
     {
-        Manager manager = this.queryInfo();
-        if (manager == null)
+        this.cleanUI();
+        
+        Staff staff = this.queryInfo();
+        if (staff == null)
         {
-            System.out.println("logout(): Error: Manager not found");
+            System.out.println("logout(): Error: Staff not found");
             return false;
         }
 
-        System.out.println("logout(): Log out successfully");
-        manager.setIsLogin(false);
-        manager.setShop(null);
-        this.updateInfo(manager);
+        staff.setIsLogin(false);
+        this.updateInfo(staff);
         return true;
     }
 
@@ -550,9 +386,20 @@ public class ManagerCtrl extends AbstractObjCtrl
         });
     }
 
+    private void cleanUI()
+    {
+        this.staffUI.getPreMainUI().dispose();
+        this.staffUI.getMainUI().dispose();
+        this.staffUI.getInfoUI().dispose();
+        this.staffUI.getDepositCustomerUI().dispose();
+        this.staffUI.getCustomerRequestUI().dispose();
+        this.staffUI.getCusteomRequestInfoUI().dispose();
+        this.staffUI = null;
+    }
+
     //============================================Test============================================
     public static void main(String[] args) 
     {
-        new ManagerCtrl().managerUI.getMainUI().setVisible(true);
+        
     }
 }

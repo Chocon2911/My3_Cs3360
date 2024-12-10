@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import Obj.Data.Customer;
 import Obj.Data.CustomerRequest;
 import Obj.Data.Staff;
 
@@ -84,59 +85,41 @@ public class StaffCustomerRequestUI extends JFrame
     //========================================Information=========================================
     //============================================================================================
 
-    //======================================CustomerRequests======================================
-    private JPanel displayCustomerRequests(Staff staff)
+    //============================================Set=============================================
+    public void setCustonmerInfo(Customer customer)
+    {
+        // ===Main Panel===
+        this.customerRequestsPanel.removeAll();
+        this.customerRequestsPanel.setLayout(new BoxLayout(customerRequestsPanel, BoxLayout.Y_AXIS));
+
+        // ===Staff Information Panel===
+        JPanel requestInfoPanel = this.displayRequestInfo(customer);
+
+        // ===Display===
+        this.customerRequestsPanel.add(requestInfoPanel);
+        this.customerRequestsPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
+    }
+    private JPanel displayRequestInfo(Customer customer)
     {
         // Panel
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        // Components
-        JLabel titleLabel = this.getTitleCustomerRequestsLabel();
-        JPanel customerRequestsPanel = this.getCustomerRequestsPanel(staff);
-
-        // Display
-        panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(customerRequestsPanel);
         
-        return panel;
-    }
-
-    // Title Label
-    private JLabel getTitleCustomerRequestsLabel()
-    {
         // Title Label
-        JLabel titleLabel = new JLabel("Customer Requests");
+        JLabel titleLabel = new JLabel("Requests");
         GuiUtil.getInstance().setAlignmentCenter(titleLabel);
         titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
-        
-        return titleLabel;
-    }
 
-    // CustomerRequests Panel
-    private JPanel getCustomerRequestsPanel(Staff staff)
-    {
-        JPanel customerRequestsPanel = new JPanel();
-        customerRequestsPanel.setLayout(new BoxLayout(customerRequestsPanel, BoxLayout.Y_AXIS));
+        // Requests Label
+        JLabel requestsLabel = GuiUtil.getInstance().getNormalLabel("Requests: " + customer.getCustomerRequests());
 
-        int loop = 0;
-        if (staff.getCustomerRequests() == null) return customerRequestsPanel;
-        for (CustomerRequest customerRequest : staff.getCustomerRequests())
-        {
-            JLabel label = new JLabel((loop + 1) + ". " + customerRequest.getId());
-            GuiUtil.getInstance().setAlignmentCenter(label);
-            label.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTextSize));
+        // Display
+        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
+        panel.add(titleLabel);
+        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
+        panel.add(requestsLabel);
 
-            customerRequestsPanel.add(label);
-            customerRequestsPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-            loop++;
-        }
-
-        return customerRequestsPanel;
-    }
-    // ========================Test==================
-    public static void main(String[] args){
-
+        return panel;
     }
 }
+

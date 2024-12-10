@@ -13,24 +13,33 @@ public class StaffUI
     }
 
     // Variable
+    private StaffPreMainUI preMainStaffUI;
+    private StaffCheckinCode checkinStaffUI;
     private StaffMainUI mainStaffUI;
     private StaffInfoUI infoUI;
     private StaffDepositCustomerUI depositUI;
     private StaffCustomerRequestUI requestUI;
+    private StaffRequestedItemsUI itemsUI;
 
     // Constructor
     public StaffUI(){
         this.ctrl = null;
+        this.preMainStaffUI = new StaffPreMainUI();
+        this.checkinStaffUI = new StaffCheckinCode();
         this.mainStaffUI = new StaffMainUI();
         this.infoUI = new StaffInfoUI();
         this.depositUI = new StaffDepositCustomerUI();
         this.requestUI = new StaffCustomerRequestUI();
+        this.itemsUI = new StaffRequestedItemsUI();
     }
 
     // Get
+    public StaffPreMainUI getPreMainStaffUI() {return this.preMainStaffUI;}
+    public StaffCheckinCode getStaffCheckinUI(){return this.checkinStaffUI;}
     public StaffMainUI getStaffMainUI() { return this.mainStaffUI;}
     public StaffInfoUI getInforUI() {return this.infoUI;}
     public StaffDepositCustomerUI getDepositUI() {return this.depositUI;}
     public StaffCustomerRequestUI getRequestUI() {return this.requestUI;}
+    public StaffRequestedItemsUI geItemsUI() {return this.itemsUI;}
 
 }
