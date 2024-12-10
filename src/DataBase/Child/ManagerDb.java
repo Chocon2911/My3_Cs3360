@@ -72,7 +72,7 @@ public class ManagerDb extends AbstractDb
         Manager manager = this.getManagerData(datas.get(0));
 
         // Shop
-        String shopId = datas.get(0).get(4).getValueStr();
+        String shopId = datas.get(0).get(5).getValueStr();
         Shop shop = new ShopDb().queryShopPriData(shopId);
         manager.setShop(shop);
 

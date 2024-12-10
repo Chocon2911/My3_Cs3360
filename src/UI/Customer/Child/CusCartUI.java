@@ -5,14 +5,19 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import Obj.Data.Customer;
 
 public class CusCartUI extends JFrame {
     private JButton backButton;
     private JButton requestButton;
     private JButton removeButton;
+    private JPanel itemPanel;
 
     public CusCartUI()
     {
@@ -60,4 +65,26 @@ public class CusCartUI extends JFrame {
     {
         return removeButton;
     }
+
+    //     public void setInfoPanel(Item item)
+    // {
+    //     this.itemPanel.removeAll();
+    //     if(itemPanel == null)
+    //     {
+    //         System.out.println("No information");
+    //         return;
+    //     }
+
+    //     itemPanel.add(Box.createVerticalGlue()); 
+    //     infoPanel.add(new JLabel("Name: " + customer.getName()));
+    //     infoPanel.add(Box.createVerticalStrut(10));
+    //     infoPanel.add(new JLabel("Username: " + customer.getUserName()));
+    //     infoPanel.add(Box.createVerticalStrut(10));
+    //     infoPanel.add(new JLabel("Password: " + customer.getPassword()));
+    //     infoPanel.add(Box.createVerticalStrut(10));
+    //     infoPanel.add(new JLabel("Balance: " + customer.getBalance()));
+    //     infoPanel.add(Box.createVerticalGlue()); 
+    //     infoPanel.revalidate(); 
+    //     infoPanel.repaint();
+    // }
 }
