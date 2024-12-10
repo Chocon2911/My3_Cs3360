@@ -19,6 +19,7 @@ public class StaffUI
     private StaffInfoUI infoUI;
     private StaffDepositCustomerUI depositUI;
     private StaffCustomerRequestUI requestUI;
+    private StaffRequestedItemsUI itemsUI;
 
     // Constructor
     public StaffUI(){
@@ -29,6 +30,7 @@ public class StaffUI
         this.infoUI = new StaffInfoUI();
         this.depositUI = new StaffDepositCustomerUI();
         this.requestUI = new StaffCustomerRequestUI();
+        this.itemsUI = new StaffRequestedItemsUI();
     }
 
     // Get
@@ -38,5 +40,6 @@ public class StaffUI
     public StaffInfoUI getInforUI() {return this.infoUI;}
     public StaffDepositCustomerUI getDepositUI() {return this.depositUI;}
     public StaffCustomerRequestUI getRequestUI() {return this.requestUI;}
+    public StaffRequestedItemsUI geItemsUI() {return this.itemsUI;}
 
 }

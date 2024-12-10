@@ -87,7 +87,8 @@ public class StaffCheckinCode extends JFrame{
 
         add(joinShopPanel);
     }
-
+    
+    // Get Field
     public String getCheckinCode() {return this.checkinCode.getText();}
     // Get Button
     public JButton getCancelButton() {return this.cancelButton;}

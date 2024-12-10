@@ -29,6 +29,7 @@ public class StaffCtrl extends AbstractObjCtrl
         this.defaultStaffInfoUI();
         this.defaultDepositCustomerUI();
         this.defaultCustomerRequestUI();
+        this.defaultRequestedItemsUI();
     }
     public StaffCtrl(String id) 
     { 
@@ -40,6 +41,7 @@ public class StaffCtrl extends AbstractObjCtrl
         this.defaultStaffInfoUI();
         this.defaultDepositCustomerUI();
         this.defaultCustomerRequestUI(); 
+        this.defaultRequestedItemsUI();
         staffUI.getPreMainStaffUI().setVisible(true); 
     }
 
@@ -226,6 +228,34 @@ public class StaffCtrl extends AbstractObjCtrl
         });
     }
 
+    //======================================Requested Items UI====================================
+    private void defaultRequestedItemsUI()
+    {
+        StaffRequestedItemsUI requestedItemsUI = staffUI.geItemsUI();
+
+        // Back Button
+        requestedItemsUI.getBackButton().addActionListener((ActionEvent e) ->
+        {
+            requestedItemsUI.setVisible(false);
+            staffUI.getRequestUI().setVisible(true);
+        });
+
+        // Refuse Button
+        requestedItemsUI.getRefuseButton().addActionListener((ActionEvent e) -> 
+        {
+            JOptionPane.showMessageDialog(null, "Request Refused");
+            requestedItemsUI.setVisible(false);
+            staffUI.getRequestUI().setVisible(true);
+        });
+
+        // Accept Button
+        requestedItemsUI.getAcceptButton().addActionListener((ActionEvent e) -> 
+        {
+            JOptionPane.showMessageDialog(null, "Request Accepted");
+            requestedItemsUI.setVisible(false);
+            staffUI.getRequestUI().setVisible(true);
+        });
+    }
 
     //==========================================Override==========================================
     @Override
@@ -306,6 +336,6 @@ private int enter (String checkincode)
 //============================================Test============================================
     public static void main(String[] args) 
     {
-        new StaffCtrl().staffUI.getPreMainStaffUI().setVisible(true);
+        new StaffCtrl().staffUI.getRequestUI().setVisible(true);
     }
 }
