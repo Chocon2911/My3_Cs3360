@@ -11,8 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import Obj.Data.CustomerRequest;
 import Obj.Data.Staff;
 
 public class StaffInfoUI extends JFrame
@@ -125,9 +123,6 @@ public class StaffInfoUI extends JFrame
 
         // Password Label
         JLabel staffPasswordLabel = GuiUtil.getInstance().getNormalLabel("Password: " + staff.getPassword());
-
-        // Shop name Label
-        JLabel staffShopLabel = GuiUtil.getInstance().getNormalLabel("Password: ");
 
         // Display
         panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));

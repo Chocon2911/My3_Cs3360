@@ -94,7 +94,7 @@ public class StaffCtrl extends AbstractObjCtrl
             {
                 JOptionPane.showMessageDialog(null, "Successfully Joined: ");
                 staffCheckinUI.setVisible(false);
-                staffUI.getPreMainStaffUI().setVisible(true);
+                staffUI.getStaffMainUI().setVisible(true);
             }
             else if (enter == 1)
             {
@@ -140,6 +140,9 @@ public class StaffCtrl extends AbstractObjCtrl
         // Display Customer Request Button
         staffMainUI.getDisplayRequestButton().addActionListener((ActionEvent e) ->
         {
+            StaffCustomerRequestUI requestUI = staffUI.getRequestUI();
+            Shop shop = ShopDb.getInstance().queryShopData(id);
+            requestUI.setCustomerRequests(shop.getCustomerRequests());
             staffMainUI.setVisible(false);
             staffUI.getRequestUI().setVisible(true);
         });
@@ -219,6 +222,7 @@ public class StaffCtrl extends AbstractObjCtrl
         StaffCustomerRequestUI staffRequestUI = staffUI.getRequestUI();
 
         // Display
+        
 
         // Back Button
         staffRequestUI.getBackButton().addActionListener((ActionEvent e) ->
@@ -337,5 +341,6 @@ private int enter (String checkincode)
     public static void main(String[] args) 
     {
         new StaffCtrl().staffUI.getRequestUI().setVisible(true);
+
     }
 }

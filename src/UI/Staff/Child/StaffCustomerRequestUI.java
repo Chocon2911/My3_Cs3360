@@ -4,11 +4,11 @@ import Util.GuiUtil;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
 
-import Obj.Data.Customer;
 import Obj.Data.CustomerRequest;
 import Obj.Data.Staff;
 
@@ -16,9 +16,11 @@ public class StaffCustomerRequestUI extends JFrame
 {
     // ===Variable===
     // local 
-    private JPanel customerRequestsPanel = new JPanel();
+    private JPanel crPane = new JPanel();
     // public
     private JButton backButton;
+    private List<JButton> crButtons = new ArrayList<>();
+
 
 
     // ===Constructor===
@@ -48,7 +50,7 @@ public class StaffCustomerRequestUI extends JFrame
         panel.add(Box.createVerticalGlue());
         panel.add(titleLabel);
         panel.add(Box.createHorizontalStrut(guiUtil.verticalStrut));
-        panel.add(customerRequestsPanel);
+        panel.add(crPane);
         panel.add(Box.createVerticalGlue());
 
 
@@ -80,26 +82,28 @@ public class StaffCustomerRequestUI extends JFrame
 
     // ===Get===
     public JButton getBackButton() { return this.backButton; }
+    public List<JButton> getRequestsButton() {return this.crButtons;}
 
     //============================================================================================
     //========================================Information=========================================
     //============================================================================================
 
     //============================================Set=============================================
-    public void setCustonmerInfo(Customer customer)
+    public void setCustomerRequests(List<CustomerRequest> customerReqs)
     {
         // ===Main Panel===
-        this.customerRequestsPanel.removeAll();
-        this.customerRequestsPanel.setLayout(new BoxLayout(customerRequestsPanel, BoxLayout.Y_AXIS));
+        this.crPane.removeAll();
+        this.crPane.setLayout(new BoxLayout(crPane, BoxLayout.Y_AXIS));
 
         // ===Staff Information Panel===
-        JPanel requestInfoPanel = this.displayRequestInfo(customer);
+        JPanel requestInfoPanel = this.displayRequestInfo(customerReqs);
 
         // ===Display===
-        this.customerRequestsPanel.add(requestInfoPanel);
-        this.customerRequestsPanel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
+        this.crPane.add(requestInfoPanel);
+        this.crPane.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
     }
-    private JPanel displayRequestInfo(Customer customer)
+
+    private JPanel displayRequestInfo(List<CustomerRequest> customerReqs)
     {
         // Panel
         JPanel panel = new JPanel();
@@ -110,16 +114,28 @@ public class StaffCustomerRequestUI extends JFrame
         GuiUtil.getInstance().setAlignmentCenter(titleLabel);
         titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
 
-        // Requests Label
-        JLabel requestsLabel = GuiUtil.getInstance().getNormalLabel("Requests: " + customer.getCustomerRequests());
+        // Requests Panel
+        for (int i = 0;i <customerReqs.size(); i++)
+        {
+            // Create Button
+            JButton requestsButton = new JButton();
+            requestsButton = GuiUtil.getInstance().createButton("Request " + i, GuiUtil.getInstance().bigButtonWidth, GuiUtil.getInstance().bigButtonHeight);
+            
+            // List Button
+            this.crButtons.add(requestsButton);
+
+            // Panel
+            panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
+            panel.add(requestsButton);
+
+        }
 
         // Display
         panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
         panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(requestsLabel);
 
         return panel;
     }
+    
 }
 

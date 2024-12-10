@@ -3,8 +3,6 @@ package UI.Staff.Child;
 import Util.GuiUtil;
 import javax.swing.*;
 
-import Util.GuiUtil;
-
 public class StaffCheckinCode extends JFrame{
     // ===Variable===
     // Button

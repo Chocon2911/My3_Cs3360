@@ -10,11 +10,15 @@ import DataBase.Child.ShopDb;
 import DataBase.Child.StaffDb;
 import DataBase.Child.UserNameDb;
 import Obj.Data.Customer;
+import Obj.Data.CustomerRequest;
 import Obj.Data.Manager;
 import Obj.Data.Staff;
 import UI.App1.App1UI;
 import UI.App1.Child.*;
 import Util.ObjUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

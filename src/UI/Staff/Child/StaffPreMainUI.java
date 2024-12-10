@@ -1,14 +1,7 @@
 package UI.Staff.Child;
 
 import Util.GuiUtil;
-
-import java.awt.Font;
-import java.awt.TextField;
-
 import javax.swing.*;
-
-import Obj.Data.Shop;
-import Obj.Data.Staff;
 
 public class StaffPreMainUI extends JFrame
 {
