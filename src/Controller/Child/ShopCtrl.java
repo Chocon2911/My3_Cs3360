@@ -245,6 +245,8 @@ public class ShopCtrl extends AbstractObjCtrl
     //===========================================Other============================================
     private boolean logout()
     {
+        this.cleanUI();
+        
         Shop shop = this.queryInfo();
         if (shop == null)
         {
@@ -289,9 +291,18 @@ public class ShopCtrl extends AbstractObjCtrl
         });
     }
 
+    private void cleanUI()
+    {
+        this.shopUI.getMainUI().dispose();
+        this.shopUI.getInfoUI().dispose();
+        this.shopUI.getCreateManagerUI().dispose();
+        this.shopUI.getChangeCheckInUI().dispose();
+        this.shopUI = null;
+    }
+
     //============================================Test============================================
     public static void main(String[] args) 
     {
         new ShopCtrl().shopUI.getMainUI().setVisible(true);
-    }   
+    }
 }
