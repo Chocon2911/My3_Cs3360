@@ -355,7 +355,11 @@ public class ManagerCtrl extends AbstractObjCtrl
                 {
                     JOptionPane.showMessageDialog(null, "Amount is too low");
                 }
-                else if (addItem == 0)
+                else if (addItem == 3) // Doesn't join shop
+                {
+                    JOptionPane.showMessageDialog(null, "Doesn't join Shop yet!");
+                }
+                else if (addItem == 0) // Add Successfully
                 {
                     JOptionPane.showMessageDialog(null, "Item added successfully");
                     addItemUI.setVisible(false);
@@ -476,7 +480,14 @@ public class ManagerCtrl extends AbstractObjCtrl
         }
 
         String itemId = ObjUtil.getInstance().getRandomStr(10);
-        Item item = new Item(itemId, name, price, itemType, initAmount);
+        Shop shop = this.queryInfo().getShop();
+        if (shop == null)
+        {
+            System.out.println("addItem() Error: Doesn't join shop yet!");
+            return 3;
+        }
+
+        Item item = new Item(itemId, name, shop, price, itemType, initAmount, null);
         String e = ItemDb.getInstance().insertItemData(item);
         if (e == null) return 0; // Add Successfully
         else if (e.contains("Id")) // Id already exists
