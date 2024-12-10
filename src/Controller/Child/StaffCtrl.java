@@ -141,8 +141,8 @@ public class StaffCtrl extends AbstractObjCtrl
         staffMainUI.getDisplayRequestButton().addActionListener((ActionEvent e) ->
         {
             StaffCustomerRequestUI requestUI = staffUI.getRequestUI();
-            Shop shop = ShopDb.getInstance().queryShopData(id);
-            requestUI.setCustomerRequests(shop.getCustomerRequests());
+            Staff staff = StaffDb.getInstance().queryStaffData(id);
+            requestUI.setCustomerRequests(staff.getCustomerRequests());
             staffMainUI.setVisible(false);
             staffUI.getRequestUI().setVisible(true);
         });

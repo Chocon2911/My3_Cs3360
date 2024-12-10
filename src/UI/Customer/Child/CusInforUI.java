@@ -31,6 +31,9 @@ public class CusInforUI extends JFrame{
         label.setFont(label.getFont().deriveFont(30.0f));
 
 
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS)); 
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(130, 150, 120, 0));
+
         JPanel jpanel = new JPanel();
         jpanel.setLayout(new BorderLayout());
         jpanel.add(infoPanel,BorderLayout.SOUTH);
@@ -39,11 +42,7 @@ public class CusInforUI extends JFrame{
         jpanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 100,0));
 
         label.setLayout(new BoxLayout(label, BoxLayout.Y_AXIS)); 
-        label.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 0));
-
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS)); 
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(130, 150, 120, 0));
-
+        label.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 0));        
         this.add(jpanel);
     }
 

@@ -14,10 +14,12 @@ import javax.swing.JOptionPane;
 import Controller.Base.AbstractObjCtrl;
 import DataBase.Child.CustomerDb;
 import DataBase.Child.CustomerRequestDb;
+import DataBase.Child.ItemDb;
 import DataBase.Child.RequestedItemDb;
 import DataBase.Child.ShopDb;
 import Obj.Data.Customer;
 import Obj.Data.CustomerRequest;
+import Obj.Data.Item;
 import Obj.Data.Manager;
 import Obj.Data.RequestedItem;
 import Obj.Data.Shop;
@@ -38,6 +40,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     private CusCartUI ccui = new CusCartUI();
     private ItemInforUI iiui = new ItemInforUI();
     private CusCheckShopCodeUI cscui = new CusCheckShopCodeUI();
+    private Item chosenItem; // LXHuy
 
     public CustomerController()
     {
@@ -91,6 +94,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     public void actionPerformed(ActionEvent ae)
     {
         Customer customer = this.queryInfo();
+        // List<Item> items = this.queryItemInfo();
         String src = ae.getActionCommand();
         System.out.println("Clicked" + " " + src);
         if(src.equals("Join A Shop"))  // Mở UI nhập code 
@@ -140,8 +144,24 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         }
         else if(src.equals("Shopping"))
         {
+            Shop shop = ShopDb.getInstance().queryShopData(customer.getShop().getId());
+            List<Item> items = shop.getItems();
+            // TODO: Set ItemButtons Feature
+            for (JButton itemButton : this.csui.getItemButtons())
+            {
+                if(src.equals(itemButton.getName()))
+                {
+                    cmui.setVisible(false);
+                    iiui.setVisible(true);
+                    //Show Item infor
+
+                }
+            }
+
             cmui.setVisible(false);
+            csui.setItemsPanel(items);
             csui.setVisible(true);
+
         }
         else if(src.equals("Cart"))
         {
@@ -175,7 +195,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
                 cmui.setVisible(true);
             }
         }
-        else if(src.equals("Back to Shopping"))
+        else if(src.equals("Back to Shop"))
         {
             iiui.setVisible(false);
             csui.setVisible(true); 
@@ -192,16 +212,9 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         {
             // handleAddButton();
         }
-        // LXHuy
-        // for (JButton button : this.csui.getItemButtons())
-        // {
-        //     if (src.equals(button.getName()))
-        //     {
-        //         // Do Something
-        //     }
-        // }
     }
 
+    // ===========================Check Amount Item when add to cart==============================
     // private void showMessage(String message, String title, int messageType) 
     // {
     //     JOptionPane.showMessageDialog(iiui, message, title, messageType);
@@ -306,6 +319,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
 
     @Override
     @SuppressWarnings("unchecked")
+    // Get Customer information from Db
     public final Customer queryInfo()
     {
         Customer customer = CustomerDb.getInstance().queryCustomerData(id);
@@ -347,9 +361,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     protected <T> String updateInfo(T info)
     {
         return CustomerDb.getInstance().updateCustomerData((Customer)info);
-    }
-
-    
+    }  
 }
 
 
