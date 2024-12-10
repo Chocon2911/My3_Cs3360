@@ -118,7 +118,8 @@ public class ManagerCtrl extends AbstractObjCtrl
                 System.out.println("Log out failed");
             }
 
-            System.exit(0);
+            preMainUI.dispose();
+            new App1Ctrl();
         });
     }
 
@@ -177,6 +178,7 @@ public class ManagerCtrl extends AbstractObjCtrl
                 System.out.println("Log out failed");
             }
 
+            mainUI.dispose();
             new App1Ctrl();
         });
     }
