@@ -55,7 +55,7 @@ public class Item extends AbstractMainObj
 		int leftAmount = this.initAmount;
 		for (RequestedItem ri : this.requestedItems)
 		{
-			if (!ri.getCustomerRequest().getIsSold()) continue;
+			if (ri.getCustomerRequest() == null ||!ri.getCustomerRequest().getIsSold()) continue;
  			leftAmount -= ri.getAmount();
 		}
 

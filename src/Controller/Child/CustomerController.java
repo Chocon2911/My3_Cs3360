@@ -144,7 +144,15 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         {
             Shop shop = ShopDb.getInstance().queryShopData(customer.getShop().getId());
             List<Item> items = shop.getItems();
-            csui.setItemsPanel(items); // LXHuy
+            List<Item> queriedItems = new ArrayList<>(); // LXHuy
+            for (Item item : items)
+            {
+                Item queriedItem = ItemDb.getInstance().queryItemData(item.getId()); // LXHuy
+                queriedItems.add(queriedItem);
+            }
+
+            System.out.println(queriedItems.size());
+            csui.setItemsPanel(queriedItems); // LXHuy
             this.defaultItemButtons(); // LXHuy
             cmui.setVisible(false);
             csui.setVisible(true);
@@ -159,6 +167,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
                 String reqItemId = reqItem.getId();
                 RequestedItem newReqItem = RequestedItemDb.getInstance().queryRequestedItemData(reqItemId);
                 reqItems.add(newReqItem);
+                System.out.println(newReqItem.getItem().getName());
             }
 
             System.out.println("UnRequestedItem Amount new = " + reqItems.size());
@@ -197,6 +206,11 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         }
         else if(src.equals("Back to Shop"))
         {
+            Shop shop = ShopDb.getInstance().queryShopData(customer.getShop().getId());
+            List<Item> items = shop.getItems();
+            System.out.println(items.size());
+            csui.setItemsPanel(items); // LXHuy
+            this.defaultItemButtons(); // LXHuy
             iiui.setVisible(false);
             csui.setVisible(true); 
         }
@@ -359,7 +373,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         }
     }
 
-        private boolean logout()
+    private boolean logout()
     {
         Customer customer = this.queryInfo();
         if (customer == null)

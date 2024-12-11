@@ -1,23 +1,18 @@
 package UI.Customer.Child;
 
+import Obj.Data.Item;
+import Util.GuiUtil;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import Obj.Data.Customer;
-import Obj.Data.Item;
-import Util.GuiUtil;
 
 public class CusShoppingUI extends JFrame {
     private JButton backButton;
@@ -63,21 +58,22 @@ public class CusShoppingUI extends JFrame {
         return this.itemButtons; 
     }
 
-    public void setItemsPanel(List<Item> items)
+    public void setItemsPanel(List<Item> itemsUI)
     {
-        this.items = items;
+        this.items = itemsUI;
 
         this.itemsPanel.removeAll();
         this.itemButtons.clear();
-        if(items == null || items.isEmpty())
+
+        if(itemsUI == null || itemsUI.isEmpty())
         {
             System.out.println("No information");
             return;
         }
 
-        int listSize = items.size();
+        int listSize = itemsUI.size();
         this.itemsPanel.setLayout((new GridLayout(listSize, 1,10,10)));
-        for (Item item : items)
+        for (Item item : itemsUI)
         {
             System.out.println(item.getName());
             JButton itemButton = new JButton(item.getName());

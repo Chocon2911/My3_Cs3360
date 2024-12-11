@@ -1,28 +1,24 @@
 package UI.Customer.Child;
 
+import Obj.Data.RequestedItem;
+import Util.GuiUtil;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import Obj.Data.Customer;
-import Obj.Data.Item;
-import Obj.Data.RequestedItem;
-import Util.GuiUtil;
 
 public class CusCartUI extends JFrame {
     private JButton backButton;
     private JButton requestButton;
     private JButton removeButton;
+
     private JPanel itemsPanel = new JPanel();
     private List<JButton> itemincartButtons = new ArrayList<>(); // LXHuy
     private List<RequestedItem> itemincarts = new ArrayList<>(); // LXHuy
@@ -94,6 +90,8 @@ public class CusCartUI extends JFrame {
 
         this.itemsPanel.removeAll();
         this.itemincartButtons.clear();
+
+        
         if(reqitems == null || reqitems.isEmpty())
         {
             System.out.println("No information");
@@ -104,21 +102,20 @@ public class CusCartUI extends JFrame {
         this.itemsPanel.setLayout((new GridLayout(listSize, 1,10,10)));
         for (RequestedItem reqitem : reqitems)
         {
-            System.out.println(reqitem.getItem().getName());
+            // System.out.println(reqitem.getItem().getName());
             JButton itemButton = new JButton(reqitem.getItem().getName());
             GuiUtil.getInstance().setFixedSize(itemButton, 60,40);
 
             // Button
             this.itemincartButtons.add(itemButton);
 
-            // ReqItem
-            this.itemincarts.add(reqitem);
-
             // Panel
             itemsPanel.add(Box.createVerticalGlue()); 
             itemsPanel.add(itemButton);
             itemsPanel.add(Box.createVerticalStrut(60));
         }
+
+        System.out.println("Bug here");
     }
 
 }
