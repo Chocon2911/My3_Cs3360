@@ -4,19 +4,23 @@ import Obj.Data.Item;
 import Util.GuiUtil;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 public class CusShoppingUI extends JFrame {
     private JButton backButton;
     private JPanel itemsPanel = new JPanel();
+    private JLabel label;
     private List<JButton> itemButtons = new ArrayList<>(); // LXHuy
     private List<Item> items = new ArrayList<>(); // LXHuy
 
@@ -27,19 +31,26 @@ public class CusShoppingUI extends JFrame {
         this.setLocationRelativeTo(null);
 
         backButton = new JButton("Back");
-        backButton.setPreferredSize(new Dimension(80, 30));
+        backButton.setPreferredSize(new Dimension(80, 40));
 
-        JPanel jpanel = new JPanel();
-        jpanel.setLayout(new BorderLayout());
-        jpanel.add(backButton, BorderLayout.WEST);
-        jpanel.add(itemsPanel, BorderLayout.SOUTH);
-        jpanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 380, 0));
+        label = new JLabel("Please choose an item to display information!");
 
-        JScrollPane scrollPane = new JScrollPane(jpanel);
+
+        JPanel jpanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        jpanel.add(backButton);
+        jpanel.add(label);
+        jpanel.setBorder(BorderFactory.createEmptyBorder(15, 5, 0, 0));
+
+        JScrollPane scrollPane = new JScrollPane(itemsPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
 
-        this.add(scrollPane);
+        JPanel jpanel2 = new JPanel();
+        jpanel2.setLayout(new BorderLayout());
+        jpanel2.add(jpanel, BorderLayout.NORTH);
+        jpanel2.add(scrollPane, BorderLayout.CENTER);
+
+        this.add(jpanel2);
     }
 
     public JButton getBackButton()
@@ -71,21 +82,21 @@ public class CusShoppingUI extends JFrame {
             return;
         }
 
-        int listSize = itemsUI.size();
-        this.itemsPanel.setLayout((new GridLayout(listSize, 1,10,10)));
+        this.itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
         for (Item item : itemsUI)
         {
             System.out.println(item.getName());
             JButton itemButton = new JButton(item.getName());
-            GuiUtil.getInstance().setFixedSize(itemButton, 60,40);
+            GuiUtil.getInstance().setFixedSize(itemButton, 100,40);
+            GuiUtil.getInstance().setAlignmentCenter(itemButton);
 
             // Button
             this.itemButtons.add(itemButton);
 
             // Panel
-            itemsPanel.add(Box.createVerticalGlue()); 
+            itemsPanel.add(Box.createVerticalStrut(10));
             itemsPanel.add(itemButton);
-            itemsPanel.add(Box.createVerticalStrut(60));
+            itemsPanel.add(Box.createVerticalStrut(5));
         }
     }
 }

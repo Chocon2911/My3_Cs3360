@@ -109,14 +109,18 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
             {
                 JOptionPane.showMessageDialog(null, "Wrong checkcode!");
                 cscui.getCheckcode().setText("");
+                cscui.getCheckcode().requestFocus();
             }
             else if (checkJoinShop == 2) // Not Online
             {
                 JOptionPane.showMessageDialog(null, "Unable to connect !");
                 cscui.getCheckcode().setText("");
+                cscui.getCheckcode().requestFocus();
             }
             else if (checkJoinShop == 3) // Join Success
             {
+                cscui.getCheckcode().setText("");
+                cscui.getCheckcode().requestFocus();
                 cscui.setVisible(false);
                 cmui.setVisible(true);
             }
@@ -237,7 +241,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
                 cmui.setVisible(true);   
             }
         }
-        else if(src.equals("Remove Item"))
+        else if(src.equals("Remove All Item"))
         {
 
         }
