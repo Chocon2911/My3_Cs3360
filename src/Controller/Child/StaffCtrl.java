@@ -145,17 +145,7 @@ public class StaffCtrl extends AbstractObjCtrl
         // Display Customer Request Button
         staffMainUI.getDisplayRequestButton().addActionListener((ActionEvent e) ->
         {
-            Staff staff = this.queryInfo();
-            List<CustomerRequest> staffCrs = staff.getCustomerRequests();
-            
-            List<CustomerRequest> crs = new ArrayList<>();
-            for (CustomerRequest staffCr : staffCrs)
-            {
-                CustomerRequest newCr = CustomerRequestDb.getInstance().queryCustomerRequestData(staffCr.getId());
-                crs.add(newCr);
-            }
-            
-            staffUI.getRequestUI().setCustomerReqsPanel(crs);
+            this.defaultCustomerRequestUI();
             staffMainUI.setVisible(false);
             staffUI.getRequestUI().setVisible(true);
         });
@@ -233,33 +223,54 @@ public class StaffCtrl extends AbstractObjCtrl
     //==========================================Customer Request UI===============================
     private void defaultCustomerRequestUI()
     {
-        StaffCustomerRequestUI requestUI = staffUI.getRequestUI();
-
-        // CustomerRequest Buttons
-        List<JButton> customerReqButtons = this.staffUI.getRequestUI().getCustomerReqButtons(); // ListButton
-        int index = 0;
-        for (JButton customerReqButton : customerReqButtons)
+        // Setting the panel for customer Requests
+        Staff staff = this.queryInfo();
+        Shop shop = staff.getShop();
+        shop = ShopDb.getInstance().queryShopData(shop.getId());
+        List<CustomerRequest> shopCrs = shop.getCustomerRequests();
+        List<CustomerRequest> crs = new ArrayList<>();
+        if (shopCrs == null || shopCrs.isEmpty())
         {
-            int tempIndex = index;
-            customerReqButton.addActionListener((ActionEvent e) -> 
-            {
-                // Chosen CustomerRequest
-                CustomerRequest chosenCr = requestUI.getCustomerReqs().get(tempIndex);
-
-                // Panel
-                this.staffUI.geRequestInfoUI().setCustomerRequestPanel(chosenCr);
-                requestUI.setVisible(false);
-                staffUI.geRequestInfoUI().setVisible(true);
-            });
-
-            index++;
+            System.out.println("MainUI(): Request Button: CustomerRequest is null");
+            return;
         }
-        
+        else 
+        {
+            System.out.println("Bug here: " + shopCrs.size());
+            for (CustomerRequest staffCr : shopCrs)
+            {
+                CustomerRequest newCr = CustomerRequestDb.getInstance().queryCustomerRequestData(staffCr.getId());
+                crs.add(newCr);
+            }
+
+
+
+            // CustomerRequest Buttons
+            List<JButton> customerReqButtons = staffUI.getRequestUI().setCustomerReqsPanel(crs);
+            int index = 0;
+            for (JButton customerReqButton : customerReqButtons)
+            {
+                int tempIndex = index;
+                customerReqButton.addActionListener((ActionEvent e) -> 
+                {
+                    // Chosen CustomerRequest
+                    CustomerRequest chosenCr = staffUI.getRequestUI().getCustomerReqs().get(tempIndex);
+                    // Panel
+                    this.staffUI.geRequestInfoUI().setCustomerRequestPanel(chosenCr);
+                    staffUI.getRequestUI().setVisible(false);
+                    staffUI.geRequestInfoUI().setVisible(true);
+                });
+                // Buggggggggggggggggggggggggggg
+                index++;
+            }
+            
+
+        }
 
         // Back Button
-        requestUI.getBackButton().addActionListener((ActionEvent e) ->
+        staffUI.getRequestUI().getBackButton().addActionListener((ActionEvent e) ->
         {
-            requestUI.setVisible(false);
+            staffUI.getRequestUI().setVisible(false);
             staffUI.getStaffMainUI().setVisible(true);
         });
     }
@@ -492,6 +503,6 @@ public class StaffCtrl extends AbstractObjCtrl
     //============================================Test============================================
     public static void main(String[] args) 
     {
-        new StaffCtrl().staffUI.getRequestUI().setVisible(true);
+        new StaffCtrl().staffUI.geRequestInfoUI().setVisible(true);
     }
 }
