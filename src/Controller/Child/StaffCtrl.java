@@ -462,15 +462,15 @@ public class StaffCtrl extends AbstractObjCtrl
     }
 
     //===========================================Other============================================
-    private boolean login()
-    {
+    // private boolean login()
+    // {
 
-    }
+    // }
 
-    private boolean logout()
-    {
-        
-    }
+    // private boolean logout()
+    // {
+
+    // }
 
     private void setDefaultClose(JFrame frame)
     {
@@ -479,10 +479,10 @@ public class StaffCtrl extends AbstractObjCtrl
             @Override
             public void windowClosing(WindowEvent e)
             {
-                if (!logout())
-                {
-                    System.out.println("Log out failed");
-                }
+                // if (!logout())
+                // {
+                //     System.out.println("Log out failed");
+                // }
                 
                 System.exit(0);
             }
