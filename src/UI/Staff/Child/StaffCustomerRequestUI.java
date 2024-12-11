@@ -1,141 +1,89 @@
 package UI.Staff.Child;
 
+import Obj.Data.CustomerRequest;
 import Util.GuiUtil;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.*;
 
-import Obj.Data.CustomerRequest;
-import Obj.Data.Staff;
-
-public class StaffCustomerRequestUI extends JFrame 
+public class StaffCustomerRequestUI extends JFrame
 {
-    // ===Variable===
-    // local 
-    private JPanel crPane = new JPanel();
-    // public
-    private JButton backButton;
-    private List<JButton> crButtons = new ArrayList<>();
+    //==========================================Variable==========================================
+    // Frame
+    private final JPanel customerReqsPanel = new JPanel();
+    private final JButton backButton;
+    
+    // customerReqsPanel
+    private final List<JButton> customerReqButtons = new ArrayList<>();
+    private List<CustomerRequest> customerReqs = new ArrayList<>();
 
-
-
-    // ===Constructor===
-    public StaffCustomerRequestUI()
+    //========================================Constructor=========================================
+    public StaffCustomerRequestUI() 
     {
-        super("Staff.Main.Request");
+        super("Staff.Main.CustomerRequest");
         GuiUtil guiUtil = GuiUtil.getInstance();
 
-        // Frame
-        setSize(600, 700);
-        setResizable(true);
+        // ===Frame===
+        setSize(guiUtil.frameWidth, guiUtil.frameHeight);
+        setResizable(false);
         setLayout(new BorderLayout());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
 
-        // ===Title Panel===
-        JPanel panel = new JPanel();
+        // ===Panel===
+        JPanel panel = guiUtil.getMainPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         // Title Label
-        JLabel titleLabel = new JLabel("Customer Requests");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, guiUtil.bigTitleSize));
-        guiUtil.setAlignmentCenter(titleLabel);
-
+        JLabel titleLabel = guiUtil.getTitleLabel("Customer Request");
+        
         // Display
         panel.add(Box.createVerticalGlue());
         panel.add(titleLabel);
-        panel.add(Box.createHorizontalStrut(guiUtil.verticalStrut));
-        panel.add(crPane);
+        panel.add(Box.createVerticalStrut(guiUtil.verticalStrut));
+        panel.add(this.customerReqsPanel);
         panel.add(Box.createVerticalGlue());
 
+        // ScrollPane
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(30);
 
-
-        // ===Back Button Panel===
-        // Back Panel
-        JPanel backButtonPanel = new JPanel();
-        backButtonPanel.setLayout(new BoxLayout(backButtonPanel, BoxLayout.Y_AXIS));
-
-        // Back Button
-        this.backButton = guiUtil.createButton("Back", guiUtil.smallButtonWidth, guiUtil.bigButtonHeight);
-        this.backButton.setAlignmentY(Component.TOP_ALIGNMENT);
-
-        // Display
-        backButtonPanel.add(Box.createVerticalStrut(guiUtil.verticalStrut));
-        backButtonPanel.add(this.backButton);
-
-
-
-        // ===Scroll Panel===
-        JScrollPane scrollPanel = new JScrollPane(panel);
-        scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPanel.getVerticalScrollBar().setUnitIncrement(30);
-
-        // Display
-        add(backButtonPanel, BorderLayout.WEST);
-        add(scrollPanel, BorderLayout.CENTER);
-    }
-
-    // ===Get===
-    public JButton getBackButton() { return this.backButton; }
-    public List<JButton> getRequestsButton() {return this.crButtons;}
-
-    //============================================================================================
-    //========================================Information=========================================
-    //============================================================================================
-
-    //============================================Set=============================================
-    public void setCustomerRequests(List<CustomerRequest> customerReqs)
-    {
-        // ===Main Panel===
-        this.crPane.removeAll();
-        this.crPane.setLayout(new BoxLayout(crPane, BoxLayout.Y_AXIS));
-
-        // ===Staff Information Panel===
-        JPanel requestInfoPanel = this.displayRequestInfo(customerReqs);
+        // ===Back Button===
+        this.backButton = guiUtil.createButton("Back", guiUtil.smallButtonWidth, guiUtil.smallButtonHeight);
+        guiUtil.setAlignmentCenter(this.backButton);
 
         // ===Display===
-        this.crPane.add(requestInfoPanel);
-        this.crPane.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
+        add(scrollPane, BorderLayout.CENTER);
+        add(backButton, BorderLayout.SOUTH);
     }
 
-    private JPanel displayRequestInfo(List<CustomerRequest> customerReqs)
+    //============================================Get=============================================
+    public JButton getBackButton() { return this.backButton; }
+    public List<JButton> getCustomerReqButtons() { return this.customerReqButtons; }
+    public List<CustomerRequest> getCustomerReqs() { return this.customerReqs; }
+    
+    //============================================Set=============================================
+    public void setCustomerReqsPanel(List<CustomerRequest> customerReqs)
     {
-        // Panel
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        
-        // Title Label
-        JLabel titleLabel = new JLabel("Requests");
-        GuiUtil.getInstance().setAlignmentCenter(titleLabel);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, GuiUtil.getInstance().normalTitleSize));
-
-        // Requests Panel
-        for (int i = 0;i <customerReqs.size(); i++)
+        this.customerReqsPanel.removeAll();
+        GuiUtil guiUtil = GuiUtil.getInstance();
+        this.customerReqs = customerReqs;
+        for (CustomerRequest customerReq : customerReqs)
         {
-            // Create Button
-            JButton requestsButton = new JButton();
-            requestsButton = GuiUtil.getInstance().createButton("Request " + i, GuiUtil.getInstance().bigButtonWidth, GuiUtil.getInstance().bigButtonHeight);
-            
-            // List Button
-            this.crButtons.add(requestsButton);
+            // Button
+            if (customerReq == null)
+            {
+                System.out.println("setCsPanel(): A customerRequest is null");
+                continue;
+            }
+
+            JButton customerReqButton = guiUtil.createButton(customerReq.getRequestedCustomer().getName() + " - " + customerReq.getId(), guiUtil.bigButtonWidth, guiUtil.bigButtonHeight);
+            this.customerReqButtons.add(customerReqButton);
 
             // Panel
-            panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-            panel.add(requestsButton);
-
+            this.customerReqsPanel.add(customerReqButton);
+            this.customerReqsPanel.add(Box.createVerticalStrut(guiUtil.verticalStrut));
         }
-
-        // Display
-        panel.add(Box.createVerticalStrut(GuiUtil.getInstance().verticalStrut));
-        panel.add(titleLabel);
-
-        return panel;
     }
-    
 }
-

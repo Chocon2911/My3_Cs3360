@@ -1,16 +1,5 @@
 package Controller.Child;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import Controller.Base.AbstractObjCtrl;
 import DataBase.Child.CustomerDb;
 import DataBase.Child.CustomerRequestDb;
@@ -20,7 +9,6 @@ import DataBase.Child.ShopDb;
 import Obj.Data.Customer;
 import Obj.Data.CustomerRequest;
 import Obj.Data.Item;
-import Obj.Data.Manager;
 import Obj.Data.RequestedItem;
 import Obj.Data.Shop;
 import UI.Customer.Child.CusCartUI;
@@ -30,6 +18,16 @@ import UI.Customer.Child.CusMainUI;
 import UI.Customer.Child.CusPreMainUI;
 import UI.Customer.Child.CusShoppingUI;
 import UI.Customer.Child.ItemInforUI;
+import Util.ObjUtil;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class CustomerController extends AbstractObjCtrl implements ActionListener
 {
@@ -146,25 +144,27 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         {
             Shop shop = ShopDb.getInstance().queryShopData(customer.getShop().getId());
             List<Item> items = shop.getItems();
-            // TODO: Set ItemButtons Feature
-            for (JButton itemButton : this.csui.getItemButtons())
-            {
-                if(src.equals(itemButton.getName()))
-                {
-                    cmui.setVisible(false);
-                    iiui.setVisible(true);
-                    //Show Item infor
-
-                }
-            }
-
+            csui.setItemsPanel(items); // LXHuy
+            this.defaultItemButtons(); // LXHuy
             cmui.setVisible(false);
-            csui.setItemsPanel(items);
             csui.setVisible(true);
-
         }
         else if(src.equals("Cart"))
         {
+            List<RequestedItem> tempReqItems = customer.getUnRequestedItems();
+            System.out.println("UnRequestedItem amount = " + customer.getUnRequestedItems().size());
+            List<RequestedItem> reqItems = new ArrayList<>();
+            for (RequestedItem reqItem : tempReqItems)
+            {
+                String reqItemId = reqItem.getId();
+                RequestedItem newReqItem = RequestedItemDb.getInstance().queryRequestedItemData(reqItemId);
+                reqItems.add(newReqItem);
+            }
+
+            System.out.println("UnRequestedItem Amount new = " + reqItems.size());
+
+            ccui.setReqItemsPanel(reqItems);
+            this.defaultReqItemButtons();
             cmui.setVisible(false);
             ccui.setVisible(true);
         }
@@ -202,56 +202,140 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         }
         else if(src.equals("Send Request"))
         {
+            List<RequestedItem> reqItems = ccui.getReqItems();
+            int sendRequest = this.sendRequest(reqItems);
+            if (sendRequest == 1)
+            {
+                JOptionPane.showMessageDialog(null, "No Item To Request");
+            }
 
+            else if (sendRequest == 2)
+            {
+                System.out.println("SenRequest Button pressed: Shop is null");
+            }
+
+            else if (sendRequest == 3)
+            {
+                ccui.setVisible(false);
+                cmui.setVisible(true);   
+            }
         }
         else if(src.equals("Remove Item"))
         {
 
         }
-        else if(src.equals("Add"))
+        else if(src.equals("Add to Cart"))
         {
-            // handleAddButton();
+            handleAddButton();
         }
     }
 
+    // ===Item Button===
+    private void defaultItemButtons() // LXHuy
+    {
+        int index = 0;
+        for (JButton itemButton : this.csui.getItemButtons())
+        {
+            System.out.println("Button clicked");
+            int tempIndex = index;
+            itemButton.addActionListener((ActionEvent e) ->
+            {
+                csui.setVisible(false);
+                iiui.setVisible(true);
+                this.chosenItem = csui.getItems().get(tempIndex);
+                iiui.setItemInfoPanel(this.chosenItem);
+            });
+
+            index++;
+        }
+    }
+    // =================
+
+    // ==============================================UI===============================================
+
+    // ===ReqItem Button===
+    private void defaultReqItemButtons() //LXHuy
+    {
+        int index = 0;
+        for (JButton reqItemButton : this.ccui.getInCarButtons())
+        {
+            int tempIndex = index;
+            ccui.setVisible(false);
+            reqItemButton.addActionListener((ActionEvent e) ->
+            {
+                // Get Delete Reqitem
+                RequestedItem deleteReqItem = ccui.getReqItems().get(tempIndex);
+
+                // Delete Customer from ReqItem
+                String reqItemid = deleteReqItem.getId();
+                deleteReqItem = RequestedItemDb.getInstance().queryRequestedItemData(reqItemid);
+                deleteReqItem.setCustomer(null);
+                RequestedItemDb.getInstance().updateRequestedItemData(deleteReqItem);
+
+                // DisVisible reqItemButton
+                reqItemButton.setVisible(false);
+            });
+        }
+
+        index++;
+    }
+    // ====================
+
     // ===========================Check Amount Item when add to cart==============================
-    // private void showMessage(String message, String title, int messageType) 
-    // {
-    //     JOptionPane.showMessageDialog(iiui, message, title, messageType);
-    // }
+    private void showMessage(String message, String title, int messageType) 
+    {
+        JOptionPane.showMessageDialog(iiui, message, title, messageType);
+    }
 
-    // private void handleAddButton() 
-    // {
-    //     String input = iiui.getTextField().getText();
-    //     if ( == 0)
-    //     {
-    //         showMessage("This item is out of stock!", "Notification", JOptionPane.INFORMATION_MESSAGE);
-    //     }
+    private void handleAddButton() 
+    {
+        String input = iiui.getTextField().getText();
+        if (chosenItem == null)
+        {
+            System.out.println("handleAddButton() Error: chosenItem is null");
+            iiui.getTextField().setText("");
+            return;
+        }
 
-    //     else
-    //     {
-    //         if (!input.matches("\\d+") || input.equals("0"))
-    //         {
-    //             showMessage("Please enter a valid number!", "Notification", JOptionPane.WARNING_MESSAGE);
-    //             iiui.getTextField().setText("");
-    //             iiui.getTextField().requestFocus();
-    //         } 
+        String id = chosenItem.getId();
+        chosenItem = ItemDb.getInstance().queryItemData(id);
 
-    //         else 
-    //         {
-    //             int enteredAmount = Integer.parseInt(input);
+        if (chosenItem.getLeftAmount() == 0)
+        {
+            showMessage("This item is out of stock!", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            iiui.getTextField().setText("");
+            iiui.getTextField().requestFocus();
+        }
 
-    //             if (enteredAmount > ) 
-    //             {
-    //                 showMessage("Not enough stock available! Only " +   + " items left.", "Notification", JOptionPane.WARNING_MESSAGE);
-    //             }
-    //             else 
-    //             {
-    //                 showMessage("Added " + enteredAmount + (enteredAmount == 1 ? " item" : " items") + " to your cart!", "Notification", JOptionPane.INFORMATION_MESSAGE);
-    //             }
-    //         }
-    //     }
-    // }
+        else
+        {
+            if (!input.matches("\\d+") || input.equals("0"))
+            {
+                showMessage("Please enter a valid number!", "Notification", JOptionPane.WARNING_MESSAGE);
+                iiui.getTextField().setText("");
+                iiui.getTextField().requestFocus();
+            } 
+
+            else 
+            {
+                int enteredAmount = Integer.parseInt(input);
+
+                if (enteredAmount > chosenItem.getLeftAmount()) 
+                {
+                    showMessage("Not enough stock available! Only " + chosenItem.getLeftAmount()  + " items left.", "Notification", JOptionPane.WARNING_MESSAGE);
+                    iiui.getTextField().setText("");
+                    iiui.getTextField().requestFocus();
+                }
+                else 
+                {
+                    showMessage("Added " + enteredAmount + (enteredAmount == 1 ? " item" : " items") + " to your cart!", "Notification", JOptionPane.INFORMATION_MESSAGE);
+                    iiui.getTextField().setText("");
+                    iiui.getTextField().requestFocus();
+                    this.createRequesteditem(enteredAmount, chosenItem);
+                }
+            }
+        }
+    }
 
     //======================================DataBase Handle=======================================
     private int joinShop(String checkInCode)
@@ -309,6 +393,46 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         });
     }
 
+    private void createRequesteditem(int amount, Item item)
+    {
+        String id = ObjUtil.getInstance().getRandomStr(10);
+        Customer customer = this.queryInfo();
+
+        RequestedItem reqItem = new RequestedItem(id, customer.getShop(), null, customer, item, amount);
+        String e = RequestedItemDb.getInstance().insertRequestedItemData(reqItem);
+        if (e == "RequestedItem.Id")
+        {
+            System.out.println("createRequesteditem() Error: Id already exists: " + id);
+            this.createRequesteditem(amount, item);
+        }
+
+        System.out.println("Create RequestedItem successfully with id = " + id);
+    }
+
+    private int sendRequest(List<RequestedItem> reqItems)
+    {
+        if (reqItems == null || reqItems.isEmpty())
+        {
+            System.out.println("sendRequest(): reqItems is null or empty");
+            return 1; // List is empty
+        }
+        
+        Customer customer = this.queryInfo();
+        Shop shop = customer.getShop();
+        if (shop == null)
+        {
+            System.out.println("sendRequest(): Doesn't join Shop yet!");
+            return 2; // Shop is null
+        }
+
+        for (RequestedItem reqItem : reqItems)
+        {
+            reqItem.setShop(shop);
+        }
+
+        return 1;
+    }
+
 
     //==========================================Override==========================================
     @Override
@@ -363,6 +487,3 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         return CustomerDb.getInstance().updateCustomerData((Customer)info);
     }  
 }
-
-
-

@@ -3,6 +3,9 @@ package UI.Customer.Child;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -12,12 +15,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Obj.Data.Customer;
+import Obj.Data.Item;
+import Obj.Data.RequestedItem;
+import Util.GuiUtil;
 
 public class CusCartUI extends JFrame {
     private JButton backButton;
     private JButton requestButton;
     private JButton removeButton;
-    private JPanel itemPanel;
+    private JPanel itemsPanel = new JPanel();
+    private List<JButton> itemincartButtons = new ArrayList<>(); // LXHuy
+    private List<RequestedItem> itemincarts = new ArrayList<>(); // LXHuy
 
     public CusCartUI()
     {
@@ -46,11 +54,13 @@ public class CusCartUI extends JFrame {
 
         JPanel jpanel2 = new JPanel(new BorderLayout());
         jpanel2.add(jpanel, BorderLayout.NORTH);
+        jpanel2.add(itemsPanel, BorderLayout.CENTER);
         jpanel2.add(jpanel1, BorderLayout.SOUTH);
 
         this.add(jpanel2);
     }
 
+    // ===Get===
     public JButton getBackButton()
     {
         return backButton;
@@ -66,25 +76,49 @@ public class CusCartUI extends JFrame {
         return removeButton;
     }
 
-    //     public void setInfoPanel(Item item)
-    // {
-    //     this.itemPanel.removeAll();
-    //     if(itemPanel == null)
-    //     {
-    //         System.out.println("No information");
-    //         return;
-    //     }
+    public List<JButton> getInCarButtons()
+    {
+        return this.itemincartButtons;
+    }
 
-    //     itemPanel.add(Box.createVerticalGlue()); 
-    //     infoPanel.add(new JLabel("Name: " + customer.getName()));
-    //     infoPanel.add(Box.createVerticalStrut(10));
-    //     infoPanel.add(new JLabel("Username: " + customer.getUserName()));
-    //     infoPanel.add(Box.createVerticalStrut(10));
-    //     infoPanel.add(new JLabel("Password: " + customer.getPassword()));
-    //     infoPanel.add(Box.createVerticalStrut(10));
-    //     infoPanel.add(new JLabel("Balance: " + customer.getBalance()));
-    //     infoPanel.add(Box.createVerticalGlue()); 
-    //     infoPanel.revalidate(); 
-    //     infoPanel.repaint();
-    // }
+    public List<RequestedItem> getReqItems() 
+    {
+        return this.itemincarts;
+    }
+
+
+    // ===Set===
+    public void setReqItemsPanel(List<RequestedItem> reqitems)
+    {
+        this.itemincarts = reqitems;
+
+        this.itemsPanel.removeAll();
+        this.itemincartButtons.clear();
+        if(reqitems == null || reqitems.isEmpty())
+        {
+            System.out.println("No information");
+            return;
+        }
+
+        int listSize = reqitems.size();
+        this.itemsPanel.setLayout((new GridLayout(listSize, 1,10,10)));
+        for (RequestedItem reqitem : reqitems)
+        {
+            System.out.println(reqitem.getItem().getName());
+            JButton itemButton = new JButton(reqitem.getItem().getName());
+            GuiUtil.getInstance().setFixedSize(itemButton, 60,40);
+
+            // Button
+            this.itemincartButtons.add(itemButton);
+
+            // ReqItem
+            this.itemincarts.add(reqitem);
+
+            // Panel
+            itemsPanel.add(Box.createVerticalGlue()); 
+            itemsPanel.add(itemButton);
+            itemsPanel.add(Box.createVerticalStrut(60));
+        }
+    }
+
 }

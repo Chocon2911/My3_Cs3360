@@ -30,9 +30,8 @@ public class CusInforUI extends JFrame{
         label = new JLabel("Information");
         label.setFont(label.getFont().deriveFont(30.0f));
 
-
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS)); 
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(130, 150, 120, 0));
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(130, 140, 120, 0));
 
         JPanel jpanel = new JPanel();
         jpanel.setLayout(new BorderLayout());

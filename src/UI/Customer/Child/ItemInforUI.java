@@ -39,12 +39,12 @@ public class ItemInforUI extends JFrame {
 
         addButton = new JButton("Add to Cart");
 
-        // iteminfoPanel.setLayout(new BoxLayout(iteminfoPanel, BoxLayout.Y_AXIS)); 
-        // iteminfoPanel.setBorder(BorderFactory.createEmptyBorder(130, 150, 120, 0));
-
         label = new JLabel("Amounts: ");
         textField = new JTextField(9);
         textField.setHorizontalAlignment(JTextField.CENTER);
+
+        iteminfoPanel.setLayout(new BoxLayout(iteminfoPanel, BoxLayout.Y_AXIS)); 
+        iteminfoPanel.setBorder(BorderFactory.createEmptyBorder(100, 170, 160, 0));
 
         JPanel jpanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         jpanel.add(backshoppingButton);
@@ -82,7 +82,7 @@ public class ItemInforUI extends JFrame {
         return textField;
     }
 
-    public void setIteminfoPanel(Item item)
+    public void setItemInfoPanel(Item item)
     {
         this.iteminfoPanel.removeAll();
         if(item == null)
@@ -107,10 +107,5 @@ public class ItemInforUI extends JFrame {
         iteminfoPanel.add(Box.createVerticalGlue()); 
         iteminfoPanel.revalidate(); 
         iteminfoPanel.repaint();
-    }
-
-    public static void main(String[] args) {
-        ItemInforUI iiui = new ItemInforUI();
-        iiui.setVisible(true);
     }
 }

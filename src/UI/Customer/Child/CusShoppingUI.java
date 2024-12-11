@@ -23,8 +23,7 @@ public class CusShoppingUI extends JFrame {
     private JButton backButton;
     private JPanel itemsPanel = new JPanel();
     private List<JButton> itemButtons = new ArrayList<>(); // LXHuy
-    private List<Item> items = new ArrayLsit<>(); // LXHuy
-    private Item chosenItem; // LXHuy
+    private List<Item> items = new ArrayList<>(); // LXHuy
 
     public CusShoppingUI()
     {
@@ -54,6 +53,11 @@ public class CusShoppingUI extends JFrame {
     }
 
     // LXhuy
+    public List<Item> getItems() 
+    { 
+        return this.items; 
+    }
+
     public List<JButton> getItemButtons() 
     { 
         return this.itemButtons; 
@@ -61,6 +65,8 @@ public class CusShoppingUI extends JFrame {
 
     public void setItemsPanel(List<Item> items)
     {
+        this.items = items;
+
         this.itemsPanel.removeAll();
         this.itemButtons.clear();
         if(items == null || items.isEmpty())
@@ -74,12 +80,16 @@ public class CusShoppingUI extends JFrame {
         for (Item item : items)
         {
             System.out.println(item.getName());
-            JButton itemsbutton = new JButton();
-            GuiUtil.getInstance().setFixedSize(itemsbutton, 60,40);
+            JButton itemButton = new JButton(item.getName());
+            GuiUtil.getInstance().setFixedSize(itemButton, 60,40);
+
+            // Button
+            this.itemButtons.add(itemButton);
+
+            // Panel
             itemsPanel.add(Box.createVerticalGlue()); 
-            itemsPanel.add(new JButton(item.getName()));
+            itemsPanel.add(itemButton);
             itemsPanel.add(Box.createVerticalStrut(60));
         }
-
     }
 }

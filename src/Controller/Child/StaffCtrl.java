@@ -3,16 +3,13 @@ package Controller.Child;
 import Controller.Base.AbstractObjCtrl;
 import DataBase.Child.*;
 import Obj.Data.*;
-import UI.Staff.StaffUI;
 import UI.Staff.Child.*;
-import Util.ObjUtil;
+import UI.Staff.StaffUI;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.plaf.TreeUI;
 
 public class StaffCtrl extends AbstractObjCtrl
 {
@@ -45,6 +42,8 @@ public class StaffCtrl extends AbstractObjCtrl
         staffUI.getPreMainStaffUI().setVisible(true); 
     }
 
+
+    
     //============================================================================================
     //=============================================UI=============================================
     //============================================================================================
@@ -140,9 +139,18 @@ public class StaffCtrl extends AbstractObjCtrl
         // Display Customer Request Button
         staffMainUI.getDisplayRequestButton().addActionListener((ActionEvent e) ->
         {
-            StaffCustomerRequestUI requestUI = staffUI.getRequestUI();
-            Staff staff = StaffDb.getInstance().queryStaffData(id);
-            requestUI.setCustomerRequests(staff.getCustomerRequests());
+            Staff staff = this.queryInfo();
+            List<CustomerRequest> staffCrs = staff.getCustomerRequests();
+            
+            List<CustomerRequest> crs = new ArrayList<>();
+            for (CustomerRequest staffCr : staffCrs)
+            {
+                CustomerRequest newCr = CustomerRequestDb.getInstance().queryCustomerRequestData(staffCr.getId());
+                crs.add(newCr);
+            }
+            
+            staffUI.getRequestUI().setCustomerReqsPanel(crs);
+            this.staffUI.getRequestUI().setCustomerReqsPanel(staff.getShop().getCustomerRequests());
             staffMainUI.setVisible(false);
             staffUI.getRequestUI().setVisible(true);
         });
@@ -166,6 +174,7 @@ public class StaffCtrl extends AbstractObjCtrl
             Staff staff = this.queryInfo();
             if (staff.getShop()== null)
             {
+                System.out.println();
                 staffUI.getPreMainStaffUI().setVisible(true);
             }
             else if (staff.getShop()!= null)
@@ -219,46 +228,70 @@ public class StaffCtrl extends AbstractObjCtrl
     //==========================================Customer Request UI===============================
     private void defaultCustomerRequestUI()
     {
-        StaffCustomerRequestUI staffRequestUI = staffUI.getRequestUI();
+        StaffCustomerRequestUI requestUI = staffUI.getRequestUI();
 
-        // Display
+        // CustomerRequest Buttons
+        List<JButton> customerReqButtons = this.staffUI.getRequestUI().getCustomerReqButtons(); // ListButton
+        int index = 0;
+        for (JButton customerReqButton : customerReqButtons)
+        {
+            int tempIndex = index;
+            customerReqButton.addActionListener((ActionEvent e) -> 
+            {
+                // Chosen CustomerRequest
+                CustomerRequest chosenCr = requestUI.getCustomerReqs().get(tempIndex);
+
+                // Panel
+                this.staffUI.geRequestInfoUI().setCustomerRequestPanel(chosenCr);
+                requestUI.setVisible(false);
+                staffUI.geRequestInfoUI().setVisible(true);
+            });
+
+            index++;
+        }
         
 
         // Back Button
-        staffRequestUI.getBackButton().addActionListener((ActionEvent e) ->
+        requestUI.getBackButton().addActionListener((ActionEvent e) ->
         {
-            staffRequestUI.setVisible(false);
+            requestUI.setVisible(false);
             staffUI.getStaffMainUI().setVisible(true);
         });
     }
 
-    //======================================Requested Items UI====================================
+    //======================================Request Info UI=======================================
     private void defaultRequestedItemsUI()
     {
-        StaffRequestedItemsUI requestedItemsUI = staffUI.geItemsUI();
+        StaffCustomerRequestInfoUI requestInfoUI = staffUI.geRequestInfoUI();
 
         // Back Button
-        requestedItemsUI.getBackButton().addActionListener((ActionEvent e) ->
+        requestInfoUI.getBackButton().addActionListener((ActionEvent e) ->
         {
-            requestedItemsUI.setVisible(false);
+            requestInfoUI.setVisible(false);
             staffUI.getRequestUI().setVisible(true);
         });
 
         // Refuse Button
-        requestedItemsUI.getRefuseButton().addActionListener((ActionEvent e) -> 
+        requestInfoUI.getRefuseButton().addActionListener((ActionEvent e) ->
         {
-            JOptionPane.showMessageDialog(null, "Request Refused");
-            requestedItemsUI.setVisible(false);
-            staffUI.getRequestUI().setVisible(true);
+            
         });
 
         // Accept Button
-        requestedItemsUI.getAcceptButton().addActionListener((ActionEvent e) -> 
+        requestInfoUI.getAcceptButton().addActionListener((ActionEvent e) -> 
         {
+
+            
             JOptionPane.showMessageDialog(null, "Request Accepted");
-            requestedItemsUI.setVisible(false);
+            requestInfoUI.setVisible(false);
             staffUI.getRequestUI().setVisible(true);
         });
+    }
+
+    //=======================================Accept Request=======================================
+    public int acceptRequest(CustomerRequest customerRequest)
+    {
+        
     }
 
     //==========================================Override==========================================
@@ -303,44 +336,56 @@ public class StaffCtrl extends AbstractObjCtrl
         return new StaffDb().updateStaffData((Staff)info);
     }
 
-//============================================================================================
-//=========================================Controller=========================================
-//============================================================================================
 
-//===========================================Accept===========================================
 
-private int accept(String username, String amount) //
-{
-    try
-    {   
-        float amountFloat = Float.parseFloat(amount);
-        if (amountFloat < 0){return 2;}
-        Customer customer = CustomerDb.getInstance().queryCustomerByUserName(username); //
-        if (customer == null) {return 1;} // Name Not Found
-        float balance = amountFloat + customer.getBalance();
-        customer.setBalance(balance);
-        CustomerDb.getInstance().updateCustomerData(customer);
-        return 0;
-    }
-    catch (NumberFormatException e)
+    //============================================================================================
+    //=========================================Controller=========================================
+    //============================================================================================
+
+    //===========================================Accept===========================================
+    private int accept(String username, String amount) //
     {
-        System.out.println("StaffCtrl.accept() Error: amount = " + amount);
-        return 2; // Amount is not an integer
+        try
+        {   
+            float amountFloat = Float.parseFloat(amount);
+            if (amountFloat < 0){return 2;}
+            Customer customer = CustomerDb.getInstance().queryCustomerByUserName(username); //
+            if (customer == null) {return 1;} // Name Not Found
+            float balance = amountFloat + customer.getBalance();
+            customer.setBalance(balance);
+            CustomerDb.getInstance().updateCustomerData(customer);
+            return 0;
+        }
+        catch (NumberFormatException e)
+        {
+            System.out.println("StaffCtrl.accept() Error: amount = " + amount);
+            return 2; // Amount is not an integer
+        }
     }
-}
-//============================================Enter===========================================
-private int enter (String checkincode)
-{
-    Shop shop = ShopDb.getInstance().queryShopByCheckInCode(checkincode);
-    if (shop == null) {return 1;} // Wrong Checkin Code
-    else if (!shop.getIsLogin()){return 2;}  // Shop is not online yet
-    return 0;
-}
+    //============================================Enter===========================================
+    private int enter (String checkincode)
+    {
+        Shop shop = ShopDb.getInstance().queryShopByCheckInCode(checkincode);
+        if (shop == null) {
+            System.out.println("going to shop null: " + checkincode);
+            return 1;} // Wrong Checkin Code
+        else if (!shop.getIsLogin()){
+            System.out.println("Going to shop isnt online ");
+            return 2;}  // Shop is not online yet
+        // Update shop id to staff
+        else{
+            System.out.println("Shop success " + checkincode);
+            Staff staff = StaffDb.getInstance().queryStaffData(id);
+            staff.setShop(shop);
+            StaffDb.getInstance().updateStaffData(staff);
+            return 0;
+        }
 
-//============================================Test============================================
+    }
+
+    //============================================Test============================================
     public static void main(String[] args) 
     {
         new StaffCtrl().staffUI.getRequestUI().setVisible(true);
-
     }
 }
