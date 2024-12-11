@@ -69,6 +69,12 @@ public class StaffCustomerRequestUI extends JFrame
         this.customerReqsPanel.removeAll();
         GuiUtil guiUtil = GuiUtil.getInstance();
         this.customerReqs = customerReqs;
+        if (customerReqs == null || customerReqs.isEmpty())
+        {
+            System.out.println("setCsPanel(): customerReqs is null or empty");
+            return;
+        }
+
         for (CustomerRequest customerReq : customerReqs)
         {
             // Button

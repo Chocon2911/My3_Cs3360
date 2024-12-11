@@ -41,5 +41,4 @@ public class StaffUI
     public StaffDepositCustomerUI getDepositUI() {return this.depositUI;}
     public StaffCustomerRequestUI getRequestUI() {return this.requestUI;}
     public StaffCustomerRequestInfoUI geRequestInfoUI() {return this.requestInfoUI;}
-
 }

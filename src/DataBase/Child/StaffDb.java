@@ -72,7 +72,7 @@ public class StaffDb extends AbstractDb
         Staff staff = this.getStaffData(datas.get(0));
         
         // Shop
-        String shopId = datas.get(0).get(4).getValueStr();
+        String shopId = datas.get(0).get(5).getValueStr();
         Shop shop = new ShopDb().queryShopPriData(shopId);
 
         // List<CustomerRequest>

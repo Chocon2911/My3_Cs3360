@@ -103,6 +103,7 @@ public class StaffCustomerRequestInfoUI extends JFrame
     { 
         GuiUtil guiUtil = GuiUtil.getInstance();
         this.customerReqPanel.removeAll();
+        this.customerReq = chosenCustomerRequest;
 
         if (chosenCustomerRequest == null) return;
         else if (chosenCustomerRequest.getRequestedItems() == null) return;

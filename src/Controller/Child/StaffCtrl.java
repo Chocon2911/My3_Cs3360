@@ -6,9 +6,12 @@ import Obj.Data.*;
 import UI.Staff.Child.*;
 import UI.Staff.StaffUI;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class StaffCtrl extends AbstractObjCtrl
@@ -52,6 +55,7 @@ public class StaffCtrl extends AbstractObjCtrl
     private void defaultStaffPreMainUI()
     {
         StaffPreMainUI staffPreMainUI = staffUI.getPreMainStaffUI();
+        this.setDefaultClose(staffPreMainUI);
 
         // Display Staff Information Button
         staffPreMainUI.getDisplayInformationButton().addActionListener((ActionEvent e) ->
@@ -80,6 +84,7 @@ public class StaffCtrl extends AbstractObjCtrl
     private void defaultStaffCheckinUI()
     {
         StaffCheckinCode staffCheckinUI = staffUI.getStaffCheckinUI();
+        this.setDefaultClose(staffCheckinUI);
 
         // Enter Button
         staffCheckinUI.getEnterButton().addActionListener((ActionEvent e) -> 
@@ -118,6 +123,7 @@ public class StaffCtrl extends AbstractObjCtrl
     private void defaultStaffMainUI()
     {
         StaffMainUI staffMainUI = staffUI.getStaffMainUI();
+        this.setDefaultClose(staffMainUI);
 
         // Display Staff Information Button
         staffMainUI.getDisplayInformationButton().addActionListener((ActionEvent e) ->
@@ -150,7 +156,6 @@ public class StaffCtrl extends AbstractObjCtrl
             }
             
             staffUI.getRequestUI().setCustomerReqsPanel(crs);
-            this.staffUI.getRequestUI().setCustomerReqsPanel(staff.getShop().getCustomerRequests());
             staffMainUI.setVisible(false);
             staffUI.getRequestUI().setVisible(true);
         });
@@ -274,24 +279,41 @@ public class StaffCtrl extends AbstractObjCtrl
         // Refuse Button
         requestInfoUI.getRefuseButton().addActionListener((ActionEvent e) ->
         {
-            
+            System.out.println("//=======================================Refuse Request=======================================");
+            int refuseRequest = this.refuseRequest(requestInfoUI.getCustomerRequest());
+            if (refuseRequest == 3)
+            {
+                JOptionPane.showMessageDialog(null, "Request Already Handled");
+                requestInfoUI.setVisible(false);
+                staffUI.getRequestUI().setVisible(true);
+            }
+
+            else if (refuseRequest == 0)
+            {
+                JOptionPane.showMessageDialog(null, "Request Refused");
+                requestInfoUI.setVisible(false);
+                staffUI.getRequestUI().setVisible(true);
+            }
         });
 
         // Accept Button
         requestInfoUI.getAcceptButton().addActionListener((ActionEvent e) -> 
         {
-
-            
-            JOptionPane.showMessageDialog(null, "Request Accepted");
-            requestInfoUI.setVisible(false);
-            staffUI.getRequestUI().setVisible(true);
+            System.out.println("//=======================================Accept Request=======================================");
+            int acceptRequest = this.acceptRequest(requestInfoUI.getCustomerRequest());
+            if (acceptRequest == 3)
+            {
+                JOptionPane.showMessageDialog(null, "Request Already Handled");
+                requestInfoUI.setVisible(false);
+                staffUI.getRequestUI().setVisible(true);
+            }
+            else if (acceptRequest == 0)
+            {
+                JOptionPane.showMessageDialog(null, "Request Accepted");
+                requestInfoUI.setVisible(false);
+                staffUI.getRequestUI().setVisible(true);
+            }
         });
-    }
-
-    //=======================================Accept Request=======================================
-    public int acceptRequest(CustomerRequest customerRequest)
-    {
-        
     }
 
     //==========================================Override==========================================
@@ -381,6 +403,90 @@ public class StaffCtrl extends AbstractObjCtrl
             return 0;
         }
 
+    }
+
+    //=======================================Accept Request=======================================
+    public int acceptRequest(CustomerRequest customerRequest)
+    {
+        if (customerRequest == null) // CustomerRequest is null
+        {
+            System.out.println("acceptRequest(): CustomerRequest is null");
+            return 1;
+        }
+
+        CustomerRequest queriedCustomerReq = CustomerRequestDb.getInstance().queryCustomerRequestData(customerRequest.getId());
+        if (queriedCustomerReq == null) // Id not found
+        {
+            System.out.println("acceptRequest(): CustomerRequest not found: " + customerRequest.getId());
+            return 2;
+        }
+
+        if (queriedCustomerReq.getHandledStaff() != null) // Already handled
+        {
+            System.out.println("acceptRequest(): CustomerRequest already handled: " + customerRequest.getId());
+            return 3;
+        }
+
+        queriedCustomerReq.setHandledStaff(this.queryInfo());
+        queriedCustomerReq.setIsSold(true);
+        CustomerRequestDb.getInstance().updateCustomerRequestData(queriedCustomerReq);
+        return 0;
+    }
+
+    // =======================================Refuse Request=======================================
+    public int refuseRequest(CustomerRequest customerRequest)
+    {
+        if (customerRequest == null) // CustomerRequest is null
+        {
+            System.out.println("refuseRequest(): CustomerRequest is null");
+            return 1;
+        }
+
+        CustomerRequest queriedCustomerReq = CustomerRequestDb.getInstance().queryCustomerRequestData(customerRequest.getId());
+        if (queriedCustomerReq == null) // Id not found
+        {
+            System.out.println("refuseRequest(): CustomerRequest not found: " + customerRequest.getId());
+            return 2;
+        }
+
+        if (queriedCustomerReq.getHandledStaff() != null) // Already handled
+        {
+            System.out.println("refuseRequest(): CustomerRequest already handled: " + customerRequest.getId());
+            return 3;
+        }
+
+        queriedCustomerReq.setHandledStaff(this.queryInfo());
+        queriedCustomerReq.setIsSold(false);
+        CustomerRequestDb.getInstance().updateCustomerRequestData(queriedCustomerReq);
+        return 0;
+    }
+
+    //===========================================Other============================================
+    private boolean login()
+    {
+
+    }
+
+    private boolean logout()
+    {
+        
+    }
+
+    private void setDefaultClose(JFrame frame)
+    {
+        frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                if (!logout())
+                {
+                    System.out.println("Log out failed");
+                }
+                
+                System.exit(0);
+            }
+        });
     }
 
     //============================================Test============================================
