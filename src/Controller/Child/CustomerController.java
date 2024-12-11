@@ -216,7 +216,9 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         }
         else if(src.equals("Send Request"))
         {
+            System.out.println("//========================================Send Request========================================");
             List<RequestedItem> reqItems = ccui.getReqItems();
+            System.out.println("Send Request Amount = " + reqItems.size());
             int sendRequest = this.sendRequest(reqItems);
             if (sendRequest == 1)
             {
@@ -228,8 +230,9 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
                 System.out.println("SenRequest Button pressed: Shop is null");
             }
 
-            else if (sendRequest == 3)
+            else if (sendRequest == 0)
             {
+                JOptionPane.showMessageDialog(null, "Request Sucessfully");
                 ccui.setVisible(false);
                 cmui.setVisible(true);   
             }
@@ -266,14 +269,13 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     // =================
 
     // ==============================================UI===============================================
-
     // ===ReqItem Button===
     private void defaultReqItemButtons() //LXHuy
     {
         int index = 0;
         for (JButton reqItemButton : this.ccui.getInCarButtons())
         {
-            int tempIndex = index;
+            int tempIndex = index; 
             ccui.setVisible(false);
             reqItemButton.addActionListener((ActionEvent e) ->
             {
@@ -288,10 +290,11 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
 
                 // DisVisible reqItemButton
                 reqItemButton.setVisible(false);
+                System.out.println("Deleet Item: " + tempIndex);
             });
-        }
 
-        index++;
+            index++;
+        }
     }
     // ====================
 
@@ -444,7 +447,24 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
             reqItem.setShop(shop);
         }
 
-        return 1;
+        String newId = ObjUtil.getInstance().getRandomStr(10);
+        String name = "NULL";
+        CustomerRequest customerRequest = new CustomerRequest(newId, name, shop, customer, null, reqItems, false);
+        String e = CustomerRequestDb.getInstance().insertCustomerRequestData(customerRequest);
+        if (e == null) {}
+        else if (e.contains("CustomerRequests.Id"))
+        {
+            System.out.println("Id exist already: " + newId);
+            return this.sendRequest(reqItems);
+        }
+
+        for (RequestedItem reqItem : reqItems)
+        {
+            reqItem.setCustomerRequest(customerRequest);
+            RequestedItemDb.getInstance().updateRequestedItemData(reqItem);
+        }
+
+        return 0;
     }
 
 
@@ -478,6 +498,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         for (CustomerRequest cr : customer.getCustomerRequests())
         {
             CustomerRequest newCr = CustomerRequestDb.getInstance().queryCustomerRequestData(cr.getId());
+            if (newCr.getRequestedItems() == null || newCr.getRequestedItems().isEmpty()) continue;
 
             List<RequestedItem> ris = new ArrayList<>();
             // Get RequestedItems of CustomerRequest From Db

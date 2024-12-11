@@ -92,6 +92,7 @@ public class CustomerDb extends AbstractDb
         List<RequestedItem> requestedItems = new ArrayList<>();
         for (List<DbData> requestedItemData : datas)
         {
+            if (requestedItemData.get(2).getValueStr() == "NULL") continue;
             RequestedItem requestedItem = new RequestedItemDb().getRequestedItemData(requestedItemData);
             requestedItems.add(requestedItem);
         }

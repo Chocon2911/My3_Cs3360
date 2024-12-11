@@ -114,8 +114,6 @@ public class CusCartUI extends JFrame {
             itemsPanel.add(itemButton);
             itemsPanel.add(Box.createVerticalStrut(60));
         }
-
-        System.out.println("Bug here");
     }
 
 }
