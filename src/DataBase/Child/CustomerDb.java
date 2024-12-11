@@ -118,6 +118,7 @@ public class CustomerDb extends AbstractDb
         DbData queryData = new DbData(id);
         String queryValue = "Id";
         List<List<DbData>> datas = this.queryCustomerRawDatas(queryData, queryValue);
+        if (datas.isEmpty()) return null;
 
         return this.getCustomerData(datas.get(0));
     }

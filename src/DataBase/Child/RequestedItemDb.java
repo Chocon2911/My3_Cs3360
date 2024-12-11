@@ -92,6 +92,7 @@ public class RequestedItemDb extends AbstractDb
         DbData queryData = new DbData(id);
         String queryValue = "Id";
         List<List<DbData>> datas = this.queryRequestedItemRawDatas(queryData, queryValue);
+        if (datas.isEmpty()) return null;
         
         return this.getRequestedItemData(datas.get(0));
     }
