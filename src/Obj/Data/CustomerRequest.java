@@ -3,6 +3,8 @@ package Obj.Data;
 import Obj.Base.AbstractMainObj;
 import java.util.*;
 
+import DataBase.Child.RequestedItemDb;
+
 public class CustomerRequest extends AbstractMainObj
 {
 	//==========================================Variable==========================================
@@ -54,7 +56,8 @@ public class CustomerRequest extends AbstractMainObj
 		float totalMoney = 0.0f;
 		for (RequestedItem requestedItem : requestedItems)
 		{
-			totalMoney += requestedItem.getAmount() * requestedItem.getTotalMoney();
+			RequestedItem queriedReqItem = RequestedItemDb.getInstance().queryRequestedItemData(requestedItem.getId());
+			totalMoney += queriedReqItem.getTotalMoney();
 		}
 
 		return totalMoney;

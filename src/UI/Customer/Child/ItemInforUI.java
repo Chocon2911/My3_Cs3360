@@ -32,6 +32,7 @@ public class ItemInforUI extends JFrame {
     {
         this.setTitle("Item information");
         this.setSize(450,550);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
 
         backshoppingButton = new JButton("Back to Shop");
@@ -101,7 +102,7 @@ public class ItemInforUI extends JFrame {
         iteminfoPanel.add(Box.createVerticalStrut(10));
         iteminfoPanel.add(new JLabel("Type: " + itemTypeStr));
         iteminfoPanel.add(Box.createVerticalStrut(10));
-        iteminfoPanel.add(new JLabel("Price: " + item.getPrice()));
+        iteminfoPanel.add(new JLabel("Price: $" + item.getPrice()));
         iteminfoPanel.add(Box.createVerticalStrut(10));
         iteminfoPanel.add(new JLabel("Amount: " + item.getLeftAmount()));
         iteminfoPanel.add(Box.createVerticalGlue()); 

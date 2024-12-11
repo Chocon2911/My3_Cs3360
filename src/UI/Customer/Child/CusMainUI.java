@@ -20,6 +20,7 @@ public class CusMainUI extends JFrame{
     {
         this.setTitle("Welcome to our shop!");
         this.setSize(450,550);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
 
         labelMainUI = new JLabel("Customer", JLabel.CENTER);

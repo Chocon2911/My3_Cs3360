@@ -1,5 +1,6 @@
 package UI.Customer.Child;
 
+import Obj.Data.CustomerRequest;
 import Obj.Data.RequestedItem;
 import Util.GuiUtil;
 import java.awt.BorderLayout;
@@ -13,10 +14,14 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+import DataBase.Child.RequestedItemDb;
 
 public class CusCartUI extends JFrame {
     private JButton backButton;
@@ -24,57 +29,68 @@ public class CusCartUI extends JFrame {
     private JButton removeButton;
     private JLabel label;
     private JLabel label1;
-    private JLabel label2;
+    private JCheckBox selectAllBox;
 
     private JPanel itemsPanel = new JPanel();
-    private List<JButton> itemincartButtons = new ArrayList<>(); // LXHuy
+    private List<JCheckBox> itemincartCheckboxs = new ArrayList<>(); // LXHuy
     private List<RequestedItem> itemincarts = new ArrayList<>(); // LXHuy
+    private JLabel totalMoneyLabel = new JLabel(); // LXHuy
 
     public CusCartUI()
     {
         this.setTitle("Your Cart");
         this.setSize(450,550);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
 
-        label = new JLabel("Mention: Click to item if you want to delete it from cart!");
+        label = new JLabel("Mention: Tick to box of item you want to delete from cart!");
         label.setForeground(Color.RED);
 
         label1 = new JLabel("Format: [Itemname : Amounts]");
 
+        selectAllBox = new JCheckBox("Select All");
+
         backButton = new JButton("Back");
         backButton.setPreferredSize(new Dimension(80, 40));
 
-        removeButton = new JButton("Remove All Item");
+        removeButton = new JButton("Remove");
         removeButton.setPreferredSize(new Dimension(130,35));
 
         requestButton = new JButton("Send Request");
         requestButton.setPreferredSize(new Dimension(130,35));
 
-        JPanel jp = new JPanel(new GridLayout(2,1,0,0));
-        jp.add(label);
+        JPanel jp = new JPanel(new FlowLayout(FlowLayout.LEFT));
         jp.add(label1);
+        jp.add(selectAllBox);
+
+        JPanel jp1 = new JPanel(new GridLayout(2,1,0,-10));
+        jp1.add(label);
+        jp1.add(jp);
 
         JPanel jpanel = new JPanel(new FlowLayout());
         jpanel.add(backButton);
-        jpanel.add(jp);
+        jpanel.add(jp1);
         jpanel.setBorder(BorderFactory.createEmptyBorder(15, 10, 0, 0));
         
-
         JPanel jpanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
         jpanel1.add(removeButton);
         jpanel1.add(requestButton);
         jpanel1.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
+        JPanel jpanel2 = new JPanel(new GridLayout(2, 1, 0,-15));
+        jpanel2.add(totalMoneyLabel);
+        jpanel2.add(jpanel1);
+
         JScrollPane scrollPane = new JScrollPane(itemsPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
 
-        JPanel jpanel2 = new JPanel(new BorderLayout());
-        jpanel2.add(jpanel, BorderLayout.NORTH);
-        jpanel2.add(scrollPane, BorderLayout.CENTER);
-        jpanel2.add(jpanel1, BorderLayout.SOUTH);
+        JPanel jpanel3 = new JPanel(new BorderLayout());
+        jpanel3.add(jpanel, BorderLayout.NORTH);
+        jpanel3.add(scrollPane, BorderLayout.CENTER);
+        jpanel3.add(jpanel2, BorderLayout.SOUTH);
 
-        this.add(jpanel2);
+        this.add(jpanel3);
     }
 
     // ===Get===
@@ -93,14 +109,19 @@ public class CusCartUI extends JFrame {
         return removeButton;
     }
 
-    public List<JButton> getInCarButtons()
+    public List<JCheckBox> getInCartCheckbox()
     {
-        return this.itemincartButtons;
+        return this.itemincartCheckboxs;
     }
 
     public List<RequestedItem> getReqItems() 
     {
         return this.itemincarts;
+    }
+
+    public JCheckBox getSelectAllBox()
+    {
+        return this.selectAllBox;
     }
 
 
@@ -110,7 +131,7 @@ public class CusCartUI extends JFrame {
         this.itemincarts = reqitems;
 
         this.itemsPanel.removeAll();
-        this.itemincartButtons.clear();
+        this.itemincartCheckboxs.clear();
 
         
         if(reqitems == null || reqitems.isEmpty())
@@ -120,20 +141,30 @@ public class CusCartUI extends JFrame {
         }
 
         this.itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
+
+        List<RequestedItem> queriedReqItems = new ArrayList<>();
         for (RequestedItem reqitem : reqitems)
         {
-            JButton itemButton = new JButton(reqitem.getItem().getName());
-            GuiUtil.getInstance().setFixedSize(itemButton, 100,50);
-            GuiUtil.getInstance().setAlignmentCenter(itemButton);
+            int amountInCart = reqitem.getAmount();
+            JCheckBox itemCheckbox = new JCheckBox(reqitem.getItem().getName()+ " : " + amountInCart);
+            GuiUtil.getInstance().setFixedSize(itemCheckbox, 100,20);
+            GuiUtil.getInstance().setAlignmentCenterLeft(itemCheckbox);
 
             // Button
-            this.itemincartButtons.add(itemButton);
+            this.itemincartCheckboxs.add(itemCheckbox);
 
             // Panel
-            itemsPanel.add(Box.createVerticalStrut(10));
-            itemsPanel.add(itemButton);
             itemsPanel.add(Box.createVerticalStrut(5));
-        }
-    }
+            itemsPanel.add(itemCheckbox);
+            itemsPanel.add(Box.createVerticalStrut(5));
 
+            // Query
+            RequestedItem queriedReqItem = RequestedItemDb.getInstance().queryRequestedItemData(reqitem.getId());
+            queriedReqItems.add(queriedReqItem);
+        }
+
+        CustomerRequest tempCustomerReq = new CustomerRequest();
+        tempCustomerReq.setRequestedItems(queriedReqItems);
+        this.totalMoneyLabel.setText("                                                          Total Price: $" + tempCustomerReq.getTotalMoney());
+    }
 }

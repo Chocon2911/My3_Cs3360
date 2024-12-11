@@ -26,6 +26,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -73,6 +74,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         ccui.getBackButton().addActionListener(this); //Back(Cart)
         ccui.getRequestButton().addActionListener(this); //Request
         ccui.getRemoveButton().addActionListener(this); //Remove
+        ccui.getSelectAllBox().addActionListener(this); //Select all
         this.setDefaultClose(ccui);
 
         iiui.getBackshoppingButton().addActionListener(this); //Back (Item)//
@@ -163,6 +165,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         }
         else if(src.equals("Cart"))
         {
+            ccui.getSelectAllBox().setSelected(false);
             List<RequestedItem> tempReqItems = customer.getUnRequestedItems();
             System.out.println("UnRequestedItem amount = " + customer.getUnRequestedItems().size());
             List<RequestedItem> reqItems = new ArrayList<>();
@@ -177,7 +180,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
             System.out.println("UnRequestedItem Amount new = " + reqItems.size());
 
             ccui.setReqItemsPanel(reqItems);
-            this.defaultReqItemButtons();
+            // this.defaultReqItemButtons();
             cmui.setVisible(false);
             ccui.setVisible(true);
         }
@@ -210,6 +213,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         }
         else if(src.equals("Back to Shop"))
         {
+            iiui.getTextField().setText("");
             Shop shop = ShopDb.getInstance().queryShopData(customer.getShop().getId());
             List<Item> items = shop.getItems();
             System.out.println(items.size());
@@ -221,6 +225,12 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         else if(src.equals("Send Request"))
         {
             System.out.println("//========================================Send Request========================================");
+            if(ccui.getSelectAllBox().isSelected())
+            {
+                showMessage("Tickbox is only for delete!", "Error!", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             List<RequestedItem> reqItems = ccui.getReqItems();
             System.out.println("Send Request Amount = " + reqItems.size());
             int sendRequest = this.sendRequest(reqItems);
@@ -240,14 +250,20 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
                 ccui.setVisible(false);
                 cmui.setVisible(true);   
             }
-        }
-        else if(src.equals("Remove All Item"))
-        {
 
+            System.out.println("Checkbox Select All status: " + ccui.getSelectAllBox().isSelected());
+        }
+        else if(src.equals("Remove"))
+        {
+            ccui.getSelectAllBox().setSelected(false);
         }
         else if(src.equals("Add to Cart"))
         {
             handleAddButton();
+        }
+        else if(src.equals("Select All"))
+        {
+            this.SelectAllBox();
         }
     }
 
@@ -277,7 +293,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     private void defaultReqItemButtons() //LXHuy
     {
         int index = 0;
-        for (JButton reqItemButton : this.ccui.getInCarButtons())
+        for (JCheckBox reqItemButton : this.ccui.getInCartCheckbox())
         {
             int tempIndex = index; 
             ccui.setVisible(false);
@@ -300,6 +316,17 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
             index++;
         }
     }
+
+    private void SelectAllBox()
+    {
+        JCheckBox selectAllCheckBox = ccui.getSelectAllBox();
+        boolean isSelected = selectAllCheckBox.isSelected();
+        for (JCheckBox reqItemButton : this.ccui.getInCartCheckbox()) 
+        {
+            reqItemButton.setSelected(isSelected);
+        }
+    }
+
     // ====================
 
     // ===========================Check Amount Item when add to cart==============================
@@ -524,5 +551,6 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     protected <T> String updateInfo(T info)
     {
         return CustomerDb.getInstance().updateCustomerData((Customer)info);
-    }  
+    } 
+
 }

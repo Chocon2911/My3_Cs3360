@@ -22,6 +22,7 @@ public class CusCheckShopCodeUI extends JFrame {
     {
         this.setTitle("Checkcode UI");
         this.setSize(300,400);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
 
         label = new JLabel("    Enter checkcode to join a shop!");

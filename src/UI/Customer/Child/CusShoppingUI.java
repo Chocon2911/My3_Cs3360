@@ -5,7 +5,6 @@ import Util.GuiUtil;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -28,6 +27,7 @@ public class CusShoppingUI extends JFrame {
     {
         this.setTitle("Choose your Product");
         this.setSize(450,550);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
 
         backButton = new JButton("Back");
