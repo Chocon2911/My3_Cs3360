@@ -43,6 +43,8 @@ public class StaffCtrl extends AbstractObjCtrl
         this.defaultCustomerRequestUI(); 
         this.defaultRequestedItemsUI();
         staffUI.getPreMainStaffUI().setVisible(true); 
+
+        this.login();
     }
 
 
@@ -77,6 +79,11 @@ public class StaffCtrl extends AbstractObjCtrl
         // Quit Button
         staffPreMainUI.getQuitButton().addActionListener((ActionEvent e) ->
         {
+            if (!this.logout())
+            {
+                System.out.println("Log out failed");
+            }
+
             System.exit(0);
         });
     }
@@ -145,6 +152,52 @@ public class StaffCtrl extends AbstractObjCtrl
         // Display Customer Request Button
         staffMainUI.getDisplayRequestButton().addActionListener((ActionEvent e) ->
         {
+            System.out.println("//=======================================Display Request=======================================");
+            Staff staff = this.queryInfo();
+            Shop shop = staff.getShop();
+            shop = ShopDb.getInstance().queryShopData(shop.getId());
+            List<CustomerRequest> shopCrs = shop.getCustomerRequests();
+            if (shopCrs == null || shopCrs.isEmpty())
+            {
+                System.out.println("MainUI(): Request Button: CustomerRequest is null");
+                return;
+            }
+
+            List<CustomerRequest> crs = new ArrayList<>();
+            System.out.println("Bug here: " + shopCrs.size());
+            for (CustomerRequest staffCr : shopCrs)
+            {
+                CustomerRequest newCr = CustomerRequestDb.getInstance().queryCustomerRequestData(staffCr.getId());
+                if (newCr.getHandledStaff() != null) continue;
+                crs.add(newCr);
+            }
+
+            // CustomerRequest Buttons
+            staffUI.getRequestUI().setCustomerReqsPanel(crs);
+            List<JButton> customerReqButtons = staffUI.getRequestUI().getCustomerReqButtons();
+            if (customerReqButtons == null || customerReqButtons.isEmpty()) {}
+            
+            else 
+            {
+                int index = 0;
+                for (JButton customerReqButton : customerReqButtons)
+                {
+                    int tempIndex = index;
+                    customerReqButton.addActionListener((ActionEvent e1) -> 
+                    {
+                        // Chosen CustomerRequest
+                        CustomerRequest chosenCr = staffUI.getRequestUI().getCustomerReqs().get(tempIndex);
+                        chosenCr = CustomerRequestDb.getInstance().queryCustomerRequestData(chosenCr.getId());
+                        
+                        // Panel
+                        this.staffUI.geRequestInfoUI().setCustomerRequestPanel(chosenCr);
+                        staffUI.getRequestUI().setVisible(false);
+                        staffUI.geRequestInfoUI().setVisible(true);
+                    });
+                    index++;
+                }
+            }
+
             this.defaultCustomerRequestUI();
             staffMainUI.setVisible(false);
             staffUI.getRequestUI().setVisible(true);
@@ -153,6 +206,11 @@ public class StaffCtrl extends AbstractObjCtrl
         // Quit Button
         staffMainUI.getQuitButton().addActionListener((ActionEvent e) ->
         {
+            if (!this.logout())
+            {
+                System.out.println("Log out failed");
+            }
+
             System.exit(0);
         });
     }
@@ -161,6 +219,7 @@ public class StaffCtrl extends AbstractObjCtrl
     private void defaultStaffInfoUI()
     {
         StaffInfoUI staffInfoUI = staffUI.getInforUI();
+        this.setDefaultClose(staffInfoUI);
 
         // Back Button
         staffInfoUI.getBackButton().addActionListener((ActionEvent e) ->
@@ -183,6 +242,7 @@ public class StaffCtrl extends AbstractObjCtrl
     private void defaultDepositCustomerUI()
     {
         StaffDepositCustomerUI staffDepositUI = staffUI.getDepositUI();
+        this.setDefaultClose(staffDepositUI);
 
         // Accept Button
         staffDepositUI.getAcceptButton().addActionListener((ActionEvent e) -> 
@@ -223,49 +283,8 @@ public class StaffCtrl extends AbstractObjCtrl
     //==========================================Customer Request UI===============================
     private void defaultCustomerRequestUI()
     {
-        // Setting the panel for customer Requests
-        Staff staff = this.queryInfo();
-        Shop shop = staff.getShop();
-        shop = ShopDb.getInstance().queryShopData(shop.getId());
-        List<CustomerRequest> shopCrs = shop.getCustomerRequests();
-        List<CustomerRequest> crs = new ArrayList<>();
-        if (shopCrs == null || shopCrs.isEmpty())
-        {
-            System.out.println("MainUI(): Request Button: CustomerRequest is null");
-            return;
-        }
-        else 
-        {
-            System.out.println("Bug here: " + shopCrs.size());
-            for (CustomerRequest staffCr : shopCrs)
-            {
-                CustomerRequest newCr = CustomerRequestDb.getInstance().queryCustomerRequestData(staffCr.getId());
-                crs.add(newCr);
-            }
-
-
-
-            // CustomerRequest Buttons
-            List<JButton> customerReqButtons = staffUI.getRequestUI().setCustomerReqsPanel(crs);
-            int index = 0;
-            for (JButton customerReqButton : customerReqButtons)
-            {
-                int tempIndex = index;
-                customerReqButton.addActionListener((ActionEvent e) -> 
-                {
-                    // Chosen CustomerRequest
-                    CustomerRequest chosenCr = staffUI.getRequestUI().getCustomerReqs().get(tempIndex);
-                    // Panel
-                    this.staffUI.geRequestInfoUI().setCustomerRequestPanel(chosenCr);
-                    staffUI.getRequestUI().setVisible(false);
-                    staffUI.geRequestInfoUI().setVisible(true);
-                });
-                // Buggggggggggggggggggggggggggg
-                index++;
-            }
-            
-
-        }
+        StaffCustomerRequestUI requestUI = staffUI.getRequestUI();
+        this.setDefaultClose(requestUI);
 
         // Back Button
         staffUI.getRequestUI().getBackButton().addActionListener((ActionEvent e) ->
@@ -279,6 +298,7 @@ public class StaffCtrl extends AbstractObjCtrl
     private void defaultRequestedItemsUI()
     {
         StaffCustomerRequestInfoUI requestInfoUI = staffUI.geRequestInfoUI();
+        this.setDefaultClose(requestInfoUI);
 
         // Back Button
         requestInfoUI.getBackButton().addActionListener((ActionEvent e) ->
@@ -349,7 +369,7 @@ public class StaffCtrl extends AbstractObjCtrl
         {
             CustomerRequest newCr = CustomerRequestDb.getInstance().queryCustomerRequestData(cr.getId());
             List<RequestedItem> ris = new ArrayList<>();
-            // Get RequestedItems of CustomerRequest From Db
+            if (newCr.getRequestedItems() == null || newCr.getRequestedItems().isEmpty()) continue;
             for (RequestedItem ri : newCr.getRequestedItems())
             {
                 RequestedItem newRi = RequestedItemDb.getInstance().queryRequestedItemData(ri.getId());
@@ -473,15 +493,52 @@ public class StaffCtrl extends AbstractObjCtrl
     }
 
     //===========================================Other============================================
-    // private boolean login()
-    // {
+    private boolean login()
+    {
+        Staff staff = this.queryInfo();
+        if (staff == null)
+        {
+            System.out.println("login(): Error: Staff not found");
+            return false;
+        }
 
-    // }
+        staff.setIsLogin(true);
+        staff.setShop(null);
+        this.updateInfo(staff);
+        this.staffUI.getPreMainStaffUI().setVisible(true);
+        return true;
+    }
 
-    // private boolean logout()
-    // {
+    private boolean logout()
+    {   
+        this.cleanUI();
 
-    // }
+        Staff staff = this.queryInfo();
+        if (staff == null)
+        {
+            System.out.println("logout(): Error: Staff not found");
+            return false;
+        }
+
+        System.out.println("logout(): Log out successfully");
+        staff.setIsLogin(false);
+        staff.setShop(null);
+        this.updateInfo(staff);
+        return true;
+    }
+
+    private void cleanUI()
+    {
+        this.staffUI.getPreMainStaffUI().dispose();
+        this.staffUI.getStaffMainUI().dispose();
+        this.staffUI.getInforUI().dispose();
+        this.staffUI.getStaffCheckinUI().dispose();
+        this.staffUI.getDepositUI().dispose();
+        this.staffUI.getRequestUI().dispose();
+        this.staffUI.geRequestInfoUI().dispose();
+
+        this.staffUI = null;
+    }
 
     private void setDefaultClose(JFrame frame)
     {
@@ -490,10 +547,10 @@ public class StaffCtrl extends AbstractObjCtrl
             @Override
             public void windowClosing(WindowEvent e)
             {
-                // if (!logout())
-                // {
-                //     System.out.println("Log out failed");
-                // }
+                if (!logout())
+                {
+                    System.out.println("Log out failed");
+                }
                 
                 System.exit(0);
             }

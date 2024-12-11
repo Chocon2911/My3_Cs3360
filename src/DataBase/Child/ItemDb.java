@@ -65,15 +65,15 @@ public class ItemDb extends AbstractDb
 
         // Shop
         String shopId = datas.get(0).get(2).getValueStr();
-        Shop shop = new ShopDb().queryShopPriData(shopId);
+        Shop shop = ShopDb.getInstance().queryShopPriData(shopId);
 
         // RequestedItems
         queryValue = "ItemId";
-        datas = new RequestedItemDb().queryRequestedItemRawDatas(queryData, queryValue);
+        datas = RequestedItemDb.getInstance().queryRequestedItemRawDatas(queryData, queryValue);
         List<RequestedItem> requestedItems = new ArrayList<>();
         for (List<DbData> requestedItemData : datas)
         {
-            RequestedItem requestedItem = new RequestedItemDb().getRequestedItemData(requestedItemData);
+            RequestedItem requestedItem = RequestedItemDb.getInstance().getRequestedItemData(requestedItemData);
             requestedItems.add(requestedItem);
         }
 

@@ -45,10 +45,10 @@ public class CustomerDb extends AbstractDb
         List<DbData> data = this.getDataFromCustomer(customer);
 
         // Insert Global
-        String idE = new IdDb().insertId(customer.getId());
+        String idE = IdDb.getInstance().insertId(customer.getId());
         if (idE != null) return idE;
 
-        String userNameE = new UserNameDb().insertUserName(customer.getUserName());
+        String userNameE = UserNameDb.getInstance().insertUserName(customer.getUserName());
         if (userNameE != null) return userNameE;
 
         // Insert Customer
@@ -74,21 +74,21 @@ public class CustomerDb extends AbstractDb
 
         // Shop
         String shopId = datas.get(0).get(6).getValueStr();
-        Shop shop = new ShopDb().queryShopPriData(shopId);
+        Shop shop = ShopDb.getInstance().queryShopPriData(shopId);
 
         // CustomerRequests
         queryValue = "RequestedCustomerId";
-        datas = new CustomerRequestDb().queryCustomerRequestRawDatas(queryData, queryValue);
+        datas = CustomerRequestDb.getInstance().queryCustomerRequestRawDatas(queryData, queryValue);
         List<CustomerRequest> customerRequests = new ArrayList<>();
         for (List<DbData> customerRequestData : datas)
         {
-            CustomerRequest customerRequest = new CustomerRequestDb().getCustomerRequestData(customerRequestData);
+            CustomerRequest customerRequest = CustomerRequestDb.getInstance().getCustomerRequestData(customerRequestData);
             customerRequests.add(customerRequest);
         }
 
         // RequestedItems
         queryValue = "CustomerId";
-        datas = new RequestedItemDb().queryRequestedItemRawDatas(queryData, queryValue);
+        datas = RequestedItemDb.getInstance().queryRequestedItemRawDatas(queryData, queryValue);
         List<RequestedItem> requestedItems = new ArrayList<>();
         for (List<DbData> requestedItemData : datas)
         {
@@ -161,8 +161,8 @@ public class CustomerDb extends AbstractDb
         boolean result = this.deleteRow(url, sql, idData);
         if (result) 
         {
-            new IdDb().deleteId(customer.getId());
-            new UserNameDb().deleteUserName(customer.getUserName());
+            IdDb.getInstance().deleteId(customer.getId());
+            UserNameDb.getInstance().deleteUserName(customer.getUserName());
         }
 
         return result;

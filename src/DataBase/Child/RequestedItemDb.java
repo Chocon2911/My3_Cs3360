@@ -86,6 +86,23 @@ public class RequestedItemDb extends AbstractDb
         return requestedItem;
     }
 
+    public List<RequestedItem> queryReqItemsByCustomerReqId(String customerReqId)
+    {
+        DbData queryData = new DbData(customerReqId);
+        String queryValue = "CustomerRequestId";
+        List<List<DbData>> datas = this.queryRequestedItemRawDatas(queryData, queryValue);
+        if (datas.isEmpty()) return null;
+
+        List<RequestedItem> requestedItems = new ArrayList<>();
+        for (List<DbData> data : datas)
+        {
+            RequestedItem requestedItem = this.getRequestedItemData(data);
+            requestedItems.add(requestedItem);
+        }
+
+        return requestedItems;
+    }
+
     // Private Info
     public RequestedItem queryRequestedItemPriData(String id)
     {

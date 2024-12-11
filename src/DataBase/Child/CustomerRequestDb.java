@@ -43,7 +43,7 @@ public class CustomerRequestDb extends AbstractDb
         List<DbData> data = this.getDataFromCustomerRequest(customerRequest);
 
         // Insert Global
-        String idE = new IdDb().insertId(customerRequest.getId());
+        String idE = IdDb.getInstance().insertId(customerRequest.getId());
         if (idE != null) return idE;
 
         // Insert CustomerRequest
@@ -65,19 +65,23 @@ public class CustomerRequestDb extends AbstractDb
 
         // Shop
         String shopId = datas.get(0).get(2).getValueStr();
-        Shop shop = new ShopDb().queryShopPriData(shopId);
+        Shop shop = ShopDb.getInstance().queryShopPriData(shopId);
 
         // Customer
         String customerId = datas.get(0).get(3).getValueStr();
-        Customer customer = new CustomerDb().queryCustomerPriData(customerId);
+        Customer customer = CustomerDb.getInstance().queryCustomerPriData(customerId);
 
         // Staff
         String staffId = datas.get(0).get(4).getValueStr();
-        Staff staff = new StaffDb().queryStaffPriData(staffId);
+        Staff staff = StaffDb.getInstance().queryStaffPriData(staffId);
+
+        // ReqeuestedItem
+        List<RequestedItem> requestedItems = RequestedItemDb.getInstance().queryReqItemsByCustomerReqId(id); 
 
         customerRequest.setShop(shop);
         customerRequest.setRequestedCustomer(customer);
         customerRequest.setHandledStaff(staff);
+        customerRequest.setRequestedItems(requestedItems);
         return customerRequest;
     }
 
@@ -129,7 +133,7 @@ public class CustomerRequestDb extends AbstractDb
         boolean result = this.deleteRow(url, sql, idData);
         if (result) 
         {
-            new IdDb().deleteId(customerRequest.getId());
+            IdDb.getInstance().deleteId(customerRequest.getId());
         }
 
         return result;

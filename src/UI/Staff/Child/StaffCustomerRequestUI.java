@@ -64,14 +64,16 @@ public class StaffCustomerRequestUI extends JFrame
     public List<CustomerRequest> getCustomerReqs() { return this.customerReqs; }
     
     //============================================Set=============================================
-    public List<JButton> setCustomerReqsPanel(List<CustomerRequest> customerRequests)
+    public void setCustomerReqsPanel(List<CustomerRequest> customerRequests)
     {
         this.customerReqsPanel.removeAll();
+        this.customerReqButtons.clear();
         GuiUtil guiUtil = GuiUtil.getInstance();
         this.customerReqs = customerRequests;
         if (customerReqs == null || customerReqs.isEmpty())
         {
             System.out.println("setCsPanel(): customerReqs is null or empty");
+            return;
         }
 
         for (CustomerRequest customerReq : customerReqs)
@@ -90,6 +92,5 @@ public class StaffCustomerRequestUI extends JFrame
             this.customerReqsPanel.add(customerReqButton);
             this.customerReqsPanel.add(Box.createVerticalStrut(guiUtil.verticalStrut));
         }
-        return this.customerReqButtons;
     }
 }

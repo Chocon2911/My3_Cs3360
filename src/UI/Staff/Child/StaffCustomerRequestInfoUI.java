@@ -1,9 +1,11 @@
 package UI.Staff.Child;
 
+import DataBase.Child.RequestedItemDb;
 import Obj.Data.CustomerRequest;
 import Obj.Data.RequestedItem;
 import Util.GuiUtil;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import javax.swing.*;
 
 public class StaffCustomerRequestInfoUI extends JFrame
@@ -25,7 +27,7 @@ public class StaffCustomerRequestInfoUI extends JFrame
         GuiUtil guiUtil = GuiUtil.getInstance();
 
         // ===Frame===
-        setSize(guiUtil.frameWidth, guiUtil.frameHeight);
+        setSize(700, guiUtil.frameHeight);
         setResizable(false);
         setLayout(new BorderLayout());
 
@@ -79,14 +81,27 @@ public class StaffCustomerRequestInfoUI extends JFrame
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(30);
 
+
+
         // ===Back Button===
-        this.backButton = guiUtil.createButton("Back", guiUtil.smallButtonWidth, guiUtil.smallButtonHeight);
-        guiUtil.setAlignmentCenter(this.backButton);
+        // Panel
+        JPanel backPanel = new JPanel();
+        backPanel.setLayout(new BoxLayout(backPanel, BoxLayout.Y_AXIS));
+
+        // Button
+        this.backButton = guiUtil.createButton("Back", guiUtil.smallButtonWidth, guiUtil.bigButtonHeight);
+        this.backButton.setAlignmentY(Component.TOP_ALIGNMENT);
+
+        // Display
+        backPanel.add(Box.createVerticalStrut(guiUtil.verticalStrut));
+        backPanel.add(this.backButton);
+
+
 
         // ===Display===
         // Display
+        this.add(backPanel, BorderLayout.WEST);
         this.add(scrollPane, BorderLayout.CENTER);
-        this.add(this.backButton, BorderLayout.WEST);
     }
 
     //============================================Get=============================================
@@ -105,16 +120,29 @@ public class StaffCustomerRequestInfoUI extends JFrame
         this.customerReqPanel.removeAll();
         this.customerReq = chosenCustomerRequest;
 
-        if (chosenCustomerRequest == null) return;
-        else if (chosenCustomerRequest.getRequestedItems() == null) return;
-        else if (chosenCustomerRequest.getRequestedItems().isEmpty()) return;
-        
+        if (chosenCustomerRequest == null)
+        {
+            System.out.println("setCustomerRequestPanel(): CustomerRequest is null");
+            return;
+        }
+        else if (chosenCustomerRequest.getRequestedItems() == null 
+        || chosenCustomerRequest.getRequestedItems().isEmpty())
+        {
+            System.out.println("setCustomerRequestPanel(): RequestedItems is null or empty");
+            return;
+        }    
+
+        int index = 0;
         for (RequestedItem reqItem : chosenCustomerRequest.getRequestedItems())
         {
+            index++;
             if (reqItem == null) continue;
 
+            // queried RequestedItem
+            RequestedItem queriedReqItem = RequestedItemDb.getInstance().queryRequestedItemData(reqItem.getId());
+
             // ItemName Label
-            JLabel itemNameLabel = guiUtil.getNormalLabel(reqItem.getItem().getName() + " - $" + reqItem.getTotalMoney());
+            JLabel itemNameLabel = guiUtil.getNormalLabel(index + ". " + queriedReqItem.getItem().getName() + " - $" + queriedReqItem.getTotalMoney());
 
             // Display
             this.customerReqPanel.add(itemNameLabel);
