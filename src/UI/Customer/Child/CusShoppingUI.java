@@ -94,7 +94,7 @@ public class CusShoppingUI extends JFrame {
 
             // Item
             Item queriedItem = ItemDb.getInstance().queryItemData(item.getId());
-            if (queriedItem.getLeftAmount() <= 0) return;
+            if (queriedItem.getLeftAmount() <= 0) continue;
 
             finalItems.add(queriedItem);
 
@@ -106,6 +106,7 @@ public class CusShoppingUI extends JFrame {
             itemsPanel.add(itemButton);
             itemsPanel.add(Box.createVerticalStrut(5));
         }
+
         this.items = finalItems;
     }
 }

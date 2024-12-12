@@ -102,7 +102,7 @@ public class ItemInforUI extends JFrame {
         iteminfoPanel.add(new JLabel("Price: $" + queriedItem.getPrice()));
         iteminfoPanel.add(Box.createVerticalStrut(10));
         iteminfoPanel.add(new JLabel("Amount: " + queriedItem.getLeftAmount()));
-        iteminfoPanel.add(Box.createVerticalGlue()); 
+        iteminfoPanel.add(Box.createVerticalGlue());
         iteminfoPanel.revalidate(); 
         iteminfoPanel.repaint();
     }
