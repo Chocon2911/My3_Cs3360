@@ -250,6 +250,11 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
                 System.out.println("SenRequest Button pressed: Shop is null");
             }
 
+            else if (sendRequest == 3)
+            {
+                this.showMessage("your balance is not enough", "Balance Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+
             else if (sendRequest == 0)
             {
                 JOptionPane.showMessageDialog(null, "Request Sucessfully");
@@ -310,33 +315,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     }
     // =================
 
-    // ===ReqItem Button===
-    private void defaultReqItemButtons() //LXHuy
-    {
-        int index = 0;
-        for (JCheckBox reqItemButton : this.ccui.getInCartCheckbox())
-        {
-            int tempIndex = index; 
-            ccui.setVisible(false);
-            reqItemButton.addActionListener((ActionEvent e) ->
-            {
-                // Get Delete Reqitem
-                RequestedItem deleteReqItem = ccui.getReqItems().get(tempIndex);
-
-                // Delete Customer from ReqItem
-                String reqItemid = deleteReqItem.getId();
-                deleteReqItem = RequestedItemDb.getInstance().queryRequestedItemData(reqItemid);
-                deleteReqItem.setCustomer(null);
-                RequestedItemDb.getInstance().updateRequestedItemData(deleteReqItem);
-
-                // DisVisible reqItemButton
-                reqItemButton.setVisible(false);
-                System.out.println("Deleet Item: " + tempIndex);
-            });
-
-            index++;
-        }
-    }
+    // ===ReqItem CheckBox===
 
     private void SelectAllBox()
     {
@@ -365,8 +344,8 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
             return;
         }
 
-        String id = chosenItem.getId();
-        chosenItem = ItemDb.getInstance().queryItemData(id);
+        String chosenItemId = chosenItem.getId();
+        chosenItem = ItemDb.getInstance().queryItemData(chosenItemId);
 
         if (chosenItem.getLeftAmount() == 0)
         {
@@ -526,6 +505,15 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         {
             System.out.println("sendRequest(): Doesn't join Shop yet!");
             return 2; // Shop is null
+        }
+
+        CustomerRequest tempCustomerRequest = new CustomerRequest();
+        tempCustomerRequest.setRequestedItems(reqItems);
+        float totalPrice = tempCustomerRequest.getTotalMoney();
+        if (customer.getBalance() < totalPrice)
+        {
+            System.out.println("sendRequest(): Not enough money");
+            return 3; // Not enough money
         }
 
         for (RequestedItem reqItem : reqItems)
