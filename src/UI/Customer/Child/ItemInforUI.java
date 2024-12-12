@@ -87,19 +87,21 @@ public class ItemInforUI extends JFrame {
             return;
         }
 
+        Item queriedItem = ItemDb.getInstance().queryItemData(item.getId());
+
         // LXHuy
         String itemId = item.getId();
         item = ItemDb.getInstance().queryItemData(itemId);
 
-        String itemTypeStr = ObjUtil.getInstance().getStrFromItemType(item.getItemType());
+        String itemTypeStr = ObjUtil.getInstance().getStrFromItemType(queriedItem.getItemType());
         iteminfoPanel.add(Box.createVerticalGlue()); 
-        iteminfoPanel.add(new JLabel("Name: " + item.getName()));
+        iteminfoPanel.add(new JLabel("Name: " + queriedItem.getName()));
         iteminfoPanel.add(Box.createVerticalStrut(10));
         iteminfoPanel.add(new JLabel("Type: " + itemTypeStr));
         iteminfoPanel.add(Box.createVerticalStrut(10));
-        iteminfoPanel.add(new JLabel("Price: $" + item.getPrice()));
+        iteminfoPanel.add(new JLabel("Price: $" + queriedItem.getPrice()));
         iteminfoPanel.add(Box.createVerticalStrut(10));
-        iteminfoPanel.add(new JLabel("Amount: " + item.getLeftAmount()));
+        iteminfoPanel.add(new JLabel("Amount: " + queriedItem.getLeftAmount()));
         iteminfoPanel.add(Box.createVerticalGlue()); 
         iteminfoPanel.revalidate(); 
         iteminfoPanel.repaint();
