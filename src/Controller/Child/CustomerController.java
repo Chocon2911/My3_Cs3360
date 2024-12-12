@@ -462,37 +462,40 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     //========================================Add to Cart=========================================
     private void createRequesteditem(int amount, Item item)
     {
-        String id = ObjUtil.getInstance().getRandomStr(10);
+        String reqItemid = ObjUtil.getInstance().getRandomStr(10);
         Customer customer = this.queryInfo();
         List<RequestedItem> tempReqItems = customer.getUnRequestedItems();
+        System.out.println("Size: " + tempReqItems.size());
         for (RequestedItem reqItem : tempReqItems)
         {
             RequestedItem queriedRequestedItem = RequestedItemDb.getInstance().queryRequestedItemData(reqItem.getId());
-            if (queriedRequestedItem.getItem().getId() == item.getId()) 
+            if (queriedRequestedItem.getItem().getId().equals(item.getId())) 
             {
-                RequestedItem newReqItem = new RequestedItem(id, customer.getShop(), null, customer, item, amount);
+                RequestedItem newReqItem = new RequestedItem(reqItemid, customer.getShop(), null, customer, item, amount);
                 String e = RequestedItemDb.getInstance().insertRequestedItemData(newReqItem);
-                if (e == "RequestedItem.Id")
+                if (e == null) {}
+                else if (e.equals("RequestedItem.Id"))
                 {
-                    System.out.println("createRequesteditem() Error: Id already exists: " + id);
+                    System.out.println("createRequesteditem() Error: Id already exists: " + reqItemid);
                     this.createRequesteditem(amount, item);
-
-                    queriedRequestedItem.setCustomer(null);
-                    RequestedItemDb.getInstance().updateRequestedItemData(queriedRequestedItem);
-                    return;
                 }
+
+                queriedRequestedItem.setCustomer(null);
+                RequestedItemDb.getInstance().updateRequestedItemData(queriedRequestedItem);
+                return;
             }
         }
 
-        RequestedItem newReqItem = new RequestedItem(id, customer.getShop(), null, customer, item, amount);
+        RequestedItem newReqItem = new RequestedItem(reqItemid, customer.getShop(), null, customer, item, amount);
         String e = RequestedItemDb.getInstance().insertRequestedItemData(newReqItem);
-        if (e == "RequestedItem.Id")
+        if (e == null) {}
+        else if (e.equals("RequestedItem.Id"))
         {
-            System.out.println("createRequesteditem() Error: Id already exists: " + id);
+            System.out.println("createRequesteditem() Error: Id already exists: " + reqItemid);
             this.createRequesteditem(amount, item);
         }
 
-        System.out.println("Create RequestedItem successfully with id = " + id);
+        System.out.println("Create RequestedItem successfully with id = " + reqItemid);
     }
 
     //========================================Cart Handler========================================
