@@ -1,5 +1,6 @@
 package Obj.Data;
 
+import DataBase.Child.RequestedItemDb;
 import Obj.Base.AbstractMainObj;
 import java.util.*;
 
@@ -55,7 +56,8 @@ public class Item extends AbstractMainObj
 		int leftAmount = this.initAmount;
 		for (RequestedItem ri : this.requestedItems)
 		{
-			if (ri.getCustomerRequest() == null ||!ri.getCustomerRequest().getIsSold()) continue;
+			RequestedItem queriedRi = RequestedItemDb.getInstance().queryRequestedItemData(ri.getId());
+			if (queriedRi.getCustomerRequest() == null || !queriedRi.getCustomerRequest().getIsSold()) continue;
  			leftAmount -= ri.getAmount();
 		}
 
