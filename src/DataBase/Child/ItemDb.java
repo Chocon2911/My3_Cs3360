@@ -43,7 +43,7 @@ public class ItemDb extends AbstractDb
         List<DbData> data = this.getDataFromItem(item);
 
         // Insert Global        
-        String idE = new IdDb().insertId(item.getId());
+        String idE = IdDb.getInstance().insertId(item.getId());
         if (idE != null) return idE;
 
         // Insert Item

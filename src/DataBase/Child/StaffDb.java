@@ -3,6 +3,7 @@ package DataBase.Child;
 import DataBase.Base.AbstractDb;
 import DataBase.Base.DbData;
 import DataBase.Base.DbType;
+import Obj.Data.Customer;
 import Obj.Data.CustomerRequest;
 import Obj.Data.Shop;
 import Obj.Data.Staff;
@@ -48,10 +49,10 @@ public class StaffDb extends AbstractDb
         List<DbData> data = this.getDataFromStaff(staff);
 
         // Insert Global
-        String idE = new IdDb().insertId(staff.getId());
+        String idE = IdDb.getInstance().insertId(staff.getId());
         if (idE != null) return idE;
 
-        String userNameE = new UserNameDb().insertUserName(staff.getUserName());
+        String userNameE = UserNameDb.getInstance().insertUserName(staff.getUserName());
         if (userNameE != null) return userNameE;
 
         // Insert Staff
@@ -77,11 +78,11 @@ public class StaffDb extends AbstractDb
 
         // List<CustomerRequest>
         queryValue = "HandledStaffId";
-        datas = new CustomerRequestDb().queryCustomerRequestRawDatas(queryData, queryValue);
+        datas = CustomerRequestDb.getInstance().queryCustomerRequestRawDatas(queryData, queryValue);
         List<CustomerRequest> customerRequests = new ArrayList<>();
         for (List<DbData> customerRequestData : datas)
         {
-            CustomerRequest customerRequest = new CustomerRequestDb().getCustomerRequestData(customerRequestData);
+            CustomerRequest customerRequest = CustomerRequestDb.getInstance().getCustomerRequestData(customerRequestData);
             customerRequests.add(customerRequest);
         }
 

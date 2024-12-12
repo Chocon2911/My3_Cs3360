@@ -48,10 +48,10 @@ public class ManagerDb extends AbstractDb
         List<DbData> data = this.getDataFromManager(manager);
 
         // Insert Global
-        String idE = new IdDb().insertId(manager.getId());
+        String idE = IdDb.getInstance().insertId(manager.getId());
         if (idE != null) return idE;
 
-        String userNameE = new UserNameDb().insertUserName(manager.getUserName());
+        String userNameE = UserNameDb.getInstance().insertUserName(manager.getUserName());
         if (userNameE != null) return userNameE;
 
         // Insert Manager

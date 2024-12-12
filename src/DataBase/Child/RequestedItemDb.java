@@ -43,7 +43,7 @@ public class RequestedItemDb extends AbstractDb
         List<DbData> data = this.getDataFromRequestedItem(requestedItem);
 
         // Insert Global
-        String idE = new IdDb().insertId(requestedItem.getId());
+        String idE = IdDb.getInstance().insertId(requestedItem.getId());
         if (idE != null) return idE;
 
         // Insert RequestedItem
@@ -65,19 +65,19 @@ public class RequestedItemDb extends AbstractDb
 
         // Shop
         String shopId = datas.get(0).get(1).getValueStr();
-        Shop shop = new ShopDb().queryShopPriData(shopId);
+        Shop shop = ShopDb.getInstance().queryShopPriData(shopId);
 
         // CustomerRequest
         String customerRequestId = datas.get(0).get(2).getValueStr();
-        CustomerRequest customerRequest = new CustomerRequestDb().queryCustomerRequestPriData(customerRequestId);
+        CustomerRequest customerRequest = CustomerRequestDb.getInstance().queryCustomerRequestPriData(customerRequestId);
 
         // Customer
         String customerId = datas.get(0).get(3).getValueStr();
-        Customer customer = new CustomerDb().queryCustomerPriData(customerId);
+        Customer customer = CustomerDb.getInstance().queryCustomerPriData(customerId);
 
         // Item
         String itemId = datas.get(0).get(4).getValueStr();
-        Item item = new ItemDb().queryItemPriData(itemId);
+        Item item = ItemDb.getInstance().queryItemPriData(itemId);
 
         requestedItem.setShop(shop);
         requestedItem.setCustomerRequest(customerRequest);

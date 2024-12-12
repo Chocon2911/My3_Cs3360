@@ -46,10 +46,10 @@ public class ShopDb extends AbstractDb
         List<DbData> data = this.getDataFromShop(shop);
 
         // Insert Global
-        String idE = new IdDb().insertId(shop.getId());
+        String idE = IdDb.getInstance().insertId(shop.getId());
         if (idE != null) return idE;
 
-        String userNameE = new UserNameDb().insertUserName(shop.getUserName());
+        String userNameE = UserNameDb.getInstance().insertUserName(shop.getUserName());
         if (userNameE != null) return userNameE;
 
         // Insert Shop
@@ -73,51 +73,51 @@ public class ShopDb extends AbstractDb
 
         // ActiveManagers
         queryValue = "ShopId";
-        datas = new ManagerDb().queryManagerRawDatas(queryData, queryValue);
+        datas = ManagerDb.getInstance().queryManagerRawDatas(queryData, queryValue);
         List<Manager> managers = new ArrayList<>();
         for (List<DbData> managerData : datas)
         {
-            Manager manager = new ManagerDb().getManagerData(managerData);
+            Manager manager = ManagerDb.getInstance().getManagerData(managerData);
             managers.add(manager);
         }
 
         // ActiveStaffs
         queryValue = "ShopId";
-        datas = new StaffDb().queryStaffRawDatas(queryData, queryValue);
+        datas = StaffDb.getInstance().queryStaffRawDatas(queryData, queryValue);
         List<Staff> staffs = new ArrayList<>();
         for (List<DbData> staffData : datas)
         {
-            Staff staff = new StaffDb().getStaffData(staffData);
+            Staff staff = StaffDb.getInstance().getStaffData(staffData);
             staffs.add(staff);
         }
 
         // ActiveCustomers
         queryValue = "ShopId";
-        datas = new CustomerDb().queryCustomerRawDatas(queryData, queryValue);
+        datas = CustomerDb.getInstance().queryCustomerRawDatas(queryData, queryValue);
         List<Customer> customers = new ArrayList<>();
         for (List<DbData> customerData : datas)
         {
-            Customer customer = new CustomerDb().getCustomerData(customerData);
+            Customer customer = CustomerDb.getInstance().getCustomerData(customerData);
             customers.add(customer);
         }
 
         // Items
         queryValue = "ShopId";
-        datas = new ItemDb().queryItemRawDatas(queryData, queryValue);
+        datas = ItemDb.getInstance().queryItemRawDatas(queryData, queryValue);
         List<Item> items = new ArrayList<>();
         for (List<DbData> itemData : datas)
         {
-            Item item = new ItemDb().getItemData(itemData);
+            Item item = ItemDb.getInstance().getItemData(itemData);
             items.add(item);
         }
 
         // CustomerRequests
         queryValue = "ShopId";
-        datas = new CustomerRequestDb().queryCustomerRequestRawDatas(queryData, queryValue);
+        datas = CustomerRequestDb.getInstance().queryCustomerRequestRawDatas(queryData, queryValue);
         List<CustomerRequest> customerRequests = new ArrayList<>();
         for (List<DbData> customerRequestData : datas)
         {
-            CustomerRequest customerRequest = new CustomerRequestDb().getCustomerRequestData(customerRequestData);
+            CustomerRequest customerRequest = CustomerRequestDb.getInstance().getCustomerRequestData(customerRequestData);
             customerRequests.add(customerRequest);
         }
 
