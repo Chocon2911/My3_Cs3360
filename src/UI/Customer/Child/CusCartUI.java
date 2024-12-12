@@ -1,5 +1,6 @@
 package UI.Customer.Child;
 
+import DataBase.Child.RequestedItemDb;
 import Obj.Data.CustomerRequest;
 import Obj.Data.RequestedItem;
 import Util.GuiUtil;
@@ -19,9 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-
-import DataBase.Child.RequestedItemDb;
 
 public class CusCartUI extends JFrame {
     private JButton backButton;
@@ -140,7 +138,7 @@ public class CusCartUI extends JFrame {
             return;
         }
 
-        this.itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
+        this.itemsPanel.setLayout(new BoxLayout(this.itemsPanel, BoxLayout.Y_AXIS));
 
         List<RequestedItem> queriedReqItems = new ArrayList<>();
         for (RequestedItem reqitem : reqitems)

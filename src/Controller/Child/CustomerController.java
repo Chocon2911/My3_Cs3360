@@ -50,13 +50,14 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     {
         super(id);
         System.out.println(id);
+        this.login();
 
         //===MainUI===
         pmui.getJoinshopPreMainUIButton().addActionListener(this); //Join Shop
         pmui.getInformationPreMainUIButton().addActionListener(this);//Information PreMainUI//
         pmui.getQuitPreMainUIButton().addActionListener(this); //Quit
         this.setDefaultClose(pmui);
-        pmui.setVisible(true);
+        // pmui.setVisible(true);
 
 
         cmui.getInformation_button().addActionListener(this); //Information MainUI//
@@ -89,7 +90,9 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         
     }
 
+    //============================================================================================
     //=========================================UI Handle==========================================
+    //============================================================================================
     @Override
     public void actionPerformed(ActionEvent ae)
     {
@@ -143,8 +146,11 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
             csui = null;
             ccui = null;
             iiui = null;
+            if (!logout())
+            {
+                System.out.println("Quit Pressed Error: logout failed");
+            }
             new App1Ctrl();
-            customer.setIsLogin(false);
         }
         else if(src.equals("Shopping"))
         {
@@ -256,6 +262,22 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         else if(src.equals("Remove"))
         {
             ccui.getSelectAllBox().setSelected(false);
+            List<RequestedItem> removedReqItems = new ArrayList<>();
+            List<JCheckBox> checkBoxs = ccui.getInCartCheckbox();
+            List<JCheckBox>  removedCheckBoxs = new ArrayList<>();
+
+            int index = -1;
+            for (JCheckBox checkBox : checkBoxs)
+            {
+                index++;
+                if (!checkBox.isSelected()) continue;
+                
+                removedCheckBoxs.add(checkBox);
+                RequestedItem reqItem = ccui.getReqItems().get(index);
+                removedReqItems.add(reqItem);
+            }
+
+            removeItemFromCart(removedReqItems, removedCheckBoxs);
         }
         else if(src.equals("Add to Cart"))
         {
@@ -288,7 +310,6 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     }
     // =================
 
-    // ==============================================UI===============================================
     // ===ReqItem Button===
     private void defaultReqItemButtons() //LXHuy
     {
@@ -326,7 +347,6 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
             reqItemButton.setSelected(isSelected);
         }
     }
-
     // ====================
 
     // ===========================Check Amount Item when add to cart==============================
@@ -385,7 +405,9 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         }
     }
 
+    //============================================================================================
     //======================================DataBase Handle=======================================
+    //============================================================================================
     private int joinShop(String checkInCode)
     {
         Shop shop = ShopDb.getInstance().queryShopByCheckInCode(checkInCode);
@@ -405,6 +427,23 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
             CustomerDb.getInstance().updateCustomerData(customer);
             return 3; // Success
         }
+    }
+
+    //==========================================Account===========================================
+    private boolean login()
+    {
+        Customer customer = this.queryInfo();
+        if (customer == null)
+        {
+            System.out.println("login(): Error: Manager not found");
+            return false;
+        }
+
+        customer.setIsLogin(true);
+        customer.setShop(null);
+        this.updateInfo(customer);
+        this.pmui.setVisible(true);
+        return true;
     }
 
     private boolean logout()
@@ -441,6 +480,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         });
     }
 
+    //========================================Add to Cart=========================================
     private void createRequesteditem(int amount, Item item)
     {
         String id = ObjUtil.getInstance().getRandomStr(10);
@@ -455,6 +495,21 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         }
 
         System.out.println("Create RequestedItem successfully with id = " + id);
+    }
+
+    //========================================Cart Handler========================================
+    private void removeItemFromCart(List<RequestedItem> reqItems, List<JCheckBox> checkBoxs)
+    {
+        for (RequestedItem reqItem : reqItems)
+        {
+            reqItem.setCustomer(null);
+            RequestedItemDb.getInstance().updateRequestedItemData(reqItem);
+        }
+
+        for (JCheckBox checkBox : checkBoxs)
+        {
+            checkBox.setVisible(false);
+        }
     }
 
     private int sendRequest(List<RequestedItem> reqItems)
@@ -492,6 +547,7 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
         for (RequestedItem reqItem : reqItems)
         {
             reqItem.setCustomerRequest(customerRequest);
+            reqItem.setCustomer(null);
             RequestedItemDb.getInstance().updateRequestedItemData(reqItem);
         }
 
