@@ -464,13 +464,23 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
     {
         String id = ObjUtil.getInstance().getRandomStr(10);
         Customer customer = this.queryInfo();
-
-        RequestedItem reqItem = new RequestedItem(id, customer.getShop(), null, customer, item, amount);
-        String e = RequestedItemDb.getInstance().insertRequestedItemData(reqItem);
-        if (e == "RequestedItem.Id")
+        List<RequestedItem> tempReqItems = customer.getUnRequestedItems();
+        for (RequestedItem reqItem : tempReqItems)
         {
-            System.out.println("createRequesteditem() Error: Id already exists: " + id);
-            this.createRequesteditem(amount, item);
+            RequestedItem queriedRequestedItem = RequestedItemDb.getInstance().queryRequestedItemData(reqItem.getId());
+            if (queriedRequestedItem.getItem().getId() == item.getId()) 
+            {
+                RequestedItem newReqItem = new RequestedItem(id, customer.getShop(), null, customer, item, amount);
+                String e = RequestedItemDb.getInstance().insertRequestedItemData(newReqItem);
+                if (e == "RequestedItem.Id")
+                {
+                    System.out.println("createRequesteditem() Error: Id already exists: " + id);
+                    this.createRequesteditem(amount, item);
+
+                    queriedRequestedItem.setCustomer(null);
+                    RequestedItemDb.getInstance().updateRequestedItemData(queriedRequestedItem);
+                }
+            }
         }
 
         System.out.println("Create RequestedItem successfully with id = " + id);
