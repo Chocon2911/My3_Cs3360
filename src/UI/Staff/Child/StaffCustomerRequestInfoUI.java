@@ -20,6 +20,9 @@ public class StaffCustomerRequestInfoUI extends JFrame
     private final JButton refuseButton;
     private final JButton acceptButton;
 
+    // Label
+    private final JLabel totalPriceLabel = new JLabel();
+
     //========================================Constructor=========================================
     public StaffCustomerRequestInfoUI() 
     {
@@ -118,7 +121,9 @@ public class StaffCustomerRequestInfoUI extends JFrame
     { 
         GuiUtil guiUtil = GuiUtil.getInstance();
         this.customerReqPanel.removeAll();
+        this.customerReqPanel.setLayout(new BoxLayout(this.customerReqPanel, BoxLayout.Y_AXIS));
         this.customerReq = chosenCustomerRequest;
+        this.totalPriceLabel.setText("Total Price: $" + 0);
 
         if (chosenCustomerRequest == null)
         {
@@ -148,5 +153,8 @@ public class StaffCustomerRequestInfoUI extends JFrame
             this.customerReqPanel.add(itemNameLabel);
             this.customerReqPanel.add(Box.createVerticalStrut(guiUtil.verticalStrut));
         }
+
+        this.customerReqPanel.add(totalPriceLabel);
+        this.totalPriceLabel.setText("Total Price: $" + chosenCustomerRequest.getTotalMoney());
     }
 }

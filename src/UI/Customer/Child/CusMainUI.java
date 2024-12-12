@@ -1,15 +1,15 @@
 package UI.Customer.Child;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
 
-public class CusMainUI extends JFrame{
-    // private Customer_model model;
+public class CusMainUI extends JFrame
+{
     private JLabel labelMainUI;
     private JButton informationMainUI;
     private JButton shoppingMainUI;

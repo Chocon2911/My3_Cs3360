@@ -130,6 +130,7 @@ public class CusCartUI extends JFrame {
 
         this.itemsPanel.removeAll();
         this.itemincartCheckboxs.clear();
+        this.totalMoneyLabel.setText("                                                          Total Price: $0");
 
         
         if(reqitems == null || reqitems.isEmpty())
