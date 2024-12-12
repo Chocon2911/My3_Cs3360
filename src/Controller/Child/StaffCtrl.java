@@ -84,7 +84,7 @@ public class StaffCtrl extends AbstractObjCtrl
                 System.out.println("Log out failed");
             }
 
-            System.exit(0);
+            new App1Ctrl();
         });
     }
     //========================================Staff Checkin UI====================================
@@ -165,7 +165,7 @@ public class StaffCtrl extends AbstractObjCtrl
                 System.out.println("Log out failed");
             }
 
-            System.exit(0);
+            new App1Ctrl();
         });
     }
 
