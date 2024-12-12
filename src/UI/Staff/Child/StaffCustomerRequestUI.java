@@ -67,6 +67,7 @@ public class StaffCustomerRequestUI extends JFrame
     public void setCustomerReqsPanel(List<CustomerRequest> customerRequests)
     {
         this.customerReqsPanel.removeAll();
+        this.customerReqsPanel.setLayout(new BoxLayout(this.customerReqsPanel, BoxLayout.Y_AXIS));
         this.customerReqButtons.clear();
         GuiUtil guiUtil = GuiUtil.getInstance();
         this.customerReqs = customerRequests;

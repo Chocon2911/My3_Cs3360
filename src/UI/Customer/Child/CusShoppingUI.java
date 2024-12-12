@@ -1,5 +1,6 @@
 package UI.Customer.Child;
 
+import DataBase.Child.ItemDb;
 import Obj.Data.Item;
 import Util.GuiUtil;
 import java.awt.BorderLayout;
@@ -83,12 +84,19 @@ public class CusShoppingUI extends JFrame {
         }
 
         this.itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
+        List<Item> finalItems = new ArrayList<>();
         for (Item item : itemsUI)
         {
             System.out.println(item.getName());
             JButton itemButton = new JButton(item.getName());
             GuiUtil.getInstance().setFixedSize(itemButton, 100,40);
             GuiUtil.getInstance().setAlignmentCenter(itemButton);
+
+            // Item
+            Item queriedItem = ItemDb.getInstance().queryItemData(item.getId());
+            if (queriedItem.getLeftAmount() <= 0) return;
+
+            finalItems.add(queriedItem);
 
             // Button
             this.itemButtons.add(itemButton);
@@ -98,5 +106,6 @@ public class CusShoppingUI extends JFrame {
             itemsPanel.add(itemButton);
             itemsPanel.add(Box.createVerticalStrut(5));
         }
+        this.items = finalItems;
     }
 }
