@@ -479,8 +479,17 @@ public class CustomerController extends AbstractObjCtrl implements ActionListene
 
                     queriedRequestedItem.setCustomer(null);
                     RequestedItemDb.getInstance().updateRequestedItemData(queriedRequestedItem);
+                    return;
                 }
             }
+        }
+
+        RequestedItem newReqItem = new RequestedItem(id, customer.getShop(), null, customer, item, amount);
+        String e = RequestedItemDb.getInstance().insertRequestedItemData(newReqItem);
+        if (e == "RequestedItem.Id")
+        {
+            System.out.println("createRequesteditem() Error: Id already exists: " + id);
+            this.createRequesteditem(amount, item);
         }
 
         System.out.println("Create RequestedItem successfully with id = " + id);

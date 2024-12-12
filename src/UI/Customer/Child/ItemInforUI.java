@@ -1,10 +1,12 @@
 package UI.Customer.Child;
 
+import DataBase.Child.ItemDb;
+import Obj.Data.Item;
+import Util.GuiUtil;
+import Util.ObjUtil;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -13,13 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-
-import DataBase.Child.ItemDb;
-import Obj.Data.Customer;
-import Obj.Data.Item;
-import Util.GuiUtil;
-import Util.ObjUtil;
 
 public class ItemInforUI extends JFrame {
     private JButton backshoppingButton;
