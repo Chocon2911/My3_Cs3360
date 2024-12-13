@@ -477,7 +477,7 @@ public class ManagerCtrl extends AbstractObjCtrl
         }
 
         String itemId = ObjUtil.getInstance().getRandomStr(10);
-        Item item = new Item(itemId, name, price, itemType, initAmount);
+        Item item = new Item(itemId, name, this.queryInfo().getShop(), price, itemType, initAmount, null);
         String e = ItemDb.getInstance().insertItemData(item);
         if (e == null) return 0; // Add Successfully
         else if (e.contains("Id")) // Id already exists
